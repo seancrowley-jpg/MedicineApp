@@ -30,10 +30,6 @@ class GroupFragment : Fragment() {
         _binding = FragmentGroupBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        groupViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
         return root
     }
 
