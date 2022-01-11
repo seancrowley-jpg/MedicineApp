@@ -1,4 +1,4 @@
-package ie.wit.mediceneapp
+package ie.wit.medicineapp
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

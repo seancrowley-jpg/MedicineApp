@@ -1,13 +1,13 @@
-package ie.wit.mediceneapp.ui.home
+package ie.wit.medicineapp.ui.medicine
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class HomeViewModel : ViewModel() {
+class MedicineViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+        value = "This is slideshow Fragment"
     }
     val text: LiveData<String> = _text
 }

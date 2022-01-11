@@ -1,4 +1,4 @@
-package ie.wit.mediceneapp
+package ie.wit.medicineapp.ui.home
 
 import android.os.Bundle
 import android.view.Menu
@@ -11,22 +11,24 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
-import ie.wit.mediceneapp.databinding.ActivityMainBinding
+import androidx.appcompat.widget.Toolbar
+import ie.wit.medicineapp.R
+import ie.wit.medicineapp.databinding.HomeBinding
 
-class MainActivity : AppCompatActivity() {
+class Home : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: HomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = HomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
-        setSupportActionBar(binding.appBarMain.toolbar)
-
-        binding.appBarMain.fab.setOnClickListener { view ->
+        binding.appBarHome.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ie.wit.mediceneapp">
+    package="ie.wit.medicineapp">
 
     <application
         android:allowBackup="true"
@@ -8,12 +8,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MediceneApp">
+        android:theme="@style/Theme.MedicineApp">
         <activity
-            android:name=".MainActivity"
+            android:name="ie.wit.medicineapp.ui.home.Home"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.MediceneApp.NoActionBar">
+            android:theme="@style/Theme.MedicineApp.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

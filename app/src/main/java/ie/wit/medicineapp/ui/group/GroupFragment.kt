@@ -1,4 +1,4 @@
-package ie.wit.mediceneapp.ui.home
+package ie.wit.medicineapp.ui.group
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,13 +8,12 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import ie.wit.mediceneapp.R
-import ie.wit.mediceneapp.databinding.FragmentHomeBinding
+import ie.wit.medicineapp.databinding.FragmentGroupBinding
 
-class HomeFragment : Fragment() {
+class GroupFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
-    private var _binding: FragmentHomeBinding? = null
+    private lateinit var groupViewModel: GroupViewModel
+    private var _binding: FragmentGroupBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -25,14 +24,14 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+        groupViewModel =
+            ViewModelProvider(this).get(GroupViewModel::class.java)
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentGroupBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
+        groupViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root

@@ -1,4 +1,4 @@
-package ie.wit.mediceneapp
+package ie.wit.medicineapp
 
 import org.junit.Test
 

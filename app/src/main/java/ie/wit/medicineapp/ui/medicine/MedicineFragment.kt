@@ -1,4 +1,4 @@
-package ie.wit.mediceneapp.ui.gallery
+package ie.wit.medicineapp.ui.medicine
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,13 +8,12 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import ie.wit.mediceneapp.R
-import ie.wit.mediceneapp.databinding.FragmentGalleryBinding
+import ie.wit.medicineapp.databinding.FragmentMedicineBinding
 
-class GalleryFragment : Fragment() {
+class MedicineFragment : Fragment() {
 
-    private lateinit var galleryViewModel: GalleryViewModel
-    private var _binding: FragmentGalleryBinding? = null
+    private lateinit var medicineViewModel: MedicineViewModel
+    private var _binding: FragmentMedicineBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -25,14 +24,14 @@ class GalleryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        galleryViewModel =
-            ViewModelProvider(this).get(GalleryViewModel::class.java)
+        medicineViewModel =
+            ViewModelProvider(this).get(MedicineViewModel::class.java)
 
-        _binding = FragmentGalleryBinding.inflate(inflater, container, false)
+        _binding = FragmentMedicineBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textGallery
-        galleryViewModel.text.observe(viewLifecycleOwner, Observer {
+        val textView: TextView = binding.textSlideshow
+        medicineViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root
