@@ -30,10 +30,6 @@ class GroupListFragment : Fragment() {
         _binding = FragmentGroupListBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textGallery
-        groupListViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
         return root
     }
 

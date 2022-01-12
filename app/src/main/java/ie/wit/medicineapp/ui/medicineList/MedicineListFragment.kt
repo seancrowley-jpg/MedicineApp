@@ -23,10 +23,4 @@ class MedicineListFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_medicine_list, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MedicineListViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
 }
