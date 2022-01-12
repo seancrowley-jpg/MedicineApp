@@ -11,27 +11,52 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="33dp"
-        android:text="TextView"
+        android:text="@string/group_header"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/groupName"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/GroupNameTextField"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_margin="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="8dp"
-        android:inputType="textMultiLine"
-        android:padding="8dp"
-        android:textColor="@color/teal_700"
-        android:textSize="14sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:hint="@string/hint_group"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupText" />
+        app:layout_constraintTop_toBottomOf="@+id/groupText">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/groupName"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="8dp"
+            android:inputType="textMultiLine"
+            android:padding="8dp"
+            android:textColor="@color/teal_700"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/groupText" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/groupPriorityText"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="@string/hint_group_priority"
+        app:layout_constraintBottom_toTopOf="@+id/priorityLevelPicker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/GroupNameTextField" />
 
     <View
         android:id="@+id/divider"
@@ -47,7 +72,7 @@
         android:id="@+id/priorityLevelPicker"
         android:layout_width="match_parent"
         android:layout_height="107dp"
-        android:layout_marginTop="204dp"
+        android:layout_marginTop="240dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,6 +84,17 @@
         android:layout_height="5dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/priorityLevelPicker" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="@string/btn_add_group"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/priorityLevelPicker" />
 
