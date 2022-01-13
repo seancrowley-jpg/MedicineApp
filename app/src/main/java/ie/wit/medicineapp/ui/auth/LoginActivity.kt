@@ -5,17 +5,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import ie.wit.medicineapp.databinding.ActivityLoginBinding
 import ie.wit.medicineapp.ui.home.Home
 import timber.log.Timber
 import androidx.lifecycle.Observer
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.common.SignInButton
+import com.google.android.gms.common.api.ApiException
+import com.google.android.material.snackbar.Snackbar
 import ie.wit.medicineapp.R
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginRegisterViewModel : LoginRegisterViewModel
     private lateinit var loginBinding : ActivityLoginBinding
+    private lateinit var startForResult : ActivityResultLauncher<Intent>
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +38,9 @@ class LoginActivity : AppCompatActivity() {
             createAccount(loginBinding.emailField.text.toString(),
                 loginBinding.passwordField.text.toString())
         }
+        loginBinding.googleSignInButton.setSize(SignInButton.SIZE_WIDE)
+        loginBinding.googleSignInButton.setColorScheme(2)
+        loginBinding.googleSignInButton.setOnClickListener { googleSignIn() }
     }
 
     public override fun onStart() {
@@ -43,6 +53,7 @@ class LoginActivity : AppCompatActivity() {
 
         loginRegisterViewModel.firebaseAuthManager.errorStatus.observe(this, Observer
         { status -> checkStatus(status) })
+        setupGoogleSignInCallback()
     }
 
     //Required to exit app from Login Screen - must investigate this further
@@ -92,5 +103,37 @@ class LoginActivity : AppCompatActivity() {
             loginBinding.passwordField.error = null
         }
         return valid
+    }
+
+    private fun googleSignIn() {
+        val signInIntent = loginRegisterViewModel.firebaseAuthManager
+            .googleSignInClient.value!!.signInIntent
+
+        startForResult.launch(signInIntent)
+    }
+
+    private fun setupGoogleSignInCallback() {
+        startForResult =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                when(result.resultCode){
+                    RESULT_OK -> {
+                        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                        try {
+                            // Google Sign In was successful, authenticate with Firebase
+                            val account = task.getResult(ApiException::class.java)
+                            loginRegisterViewModel.authWithGoogle(account!!)
+                        } catch (e: ApiException) {
+                            // Google Sign In failed
+                            Timber.i( "Google sign in failed $e")
+                            Snackbar.make(loginBinding.appBarLayout, "Authentication Failed.",
+                                Snackbar.LENGTH_SHORT).show()
+                        }
+                        Timber.i("RecipesApp Google Result $result.data")
+                    }
+                    RESULT_CANCELED -> {
+
+                    } else -> { }
+                }
+            }
     }
 }
