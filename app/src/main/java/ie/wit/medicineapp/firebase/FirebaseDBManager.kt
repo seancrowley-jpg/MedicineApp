@@ -6,6 +6,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import ie.wit.medicineapp.models.GroupModel
 import ie.wit.medicineapp.models.GroupStore
+import timber.log.Timber
 
 object FirebaseDBManager : GroupStore {
 
@@ -24,7 +25,18 @@ object FirebaseDBManager : GroupStore {
     }
 
     override fun createGroup(firebaseUser: MutableLiveData<FirebaseUser>, group: GroupModel) {
-        TODO("Not yet implemented")
+        Timber.i("Firebase DB Reference : $database")
+        val uid = firebaseUser.value!!.uid
+        val key = database.child("groups").push().key
+        if (key == null) {
+            Timber.i("Firebase Error : Key Empty")
+            return
+        }
+        group.uid = key
+        val groupValues = group.toMap()
+        val childAdd = HashMap<String, Any>()
+        childAdd["/user-groups/$uid/$key"] = groupValues
+        database.updateChildren(childAdd)
     }
 
     override fun deleteGroup(userid: String, groupId: String) {

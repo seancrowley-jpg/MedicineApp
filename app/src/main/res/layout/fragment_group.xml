@@ -48,15 +48,25 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/groupPriorityText"
+        android:id="@+id/groupPriorityHeader"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_marginTop="36dp"
         android:text="@string/hint_group_priority"
-        app:layout_constraintBottom_toTopOf="@+id/priorityLevelPicker"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/GroupNameTextField" />
+
+    <TextView
+        android:id="@+id/groupPriorityText"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center_horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/priorityLevelPicker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/groupPriorityHeader" />
 
     <View
         android:id="@+id/divider"
@@ -72,7 +82,7 @@
         android:id="@+id/priorityLevelPicker"
         android:layout_width="match_parent"
         android:layout_height="107dp"
-        android:layout_marginTop="240dp"
+        android:layout_marginTop="324dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -88,7 +98,7 @@
         app:layout_constraintTop_toBottomOf="@+id/priorityLevelPicker" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/add_group_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
