@@ -3,19 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/groupFragment">
+    app:startDestination="@id/groupListFragment">
 
     <fragment
         android:id="@+id/groupFragment"
         android:name="ie.wit.medicineapp.ui.group.GroupFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_group" />
+        tools:layout="@layout/fragment_group" >
+        <action
+            android:id="@+id/action_groupFragment_to_groupListFragment"
+            app:destination="@id/groupListFragment" />
+        <argument
+            android:name="edit"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="uid"
+            app:argType="string"
+            android:defaultValue="0" />
+    </fragment>
 
     <fragment
         android:id="@+id/groupListFragment"
         android:name="ie.wit.medicineapp.ui.groupList.GroupListFragment"
         android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_group_list" />
+        tools:layout="@layout/fragment_group_list" >
+        <action
+            android:id="@+id/action_groupListFragment_to_groupFragment"
+            app:destination="@id/groupFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/medicineFragment"

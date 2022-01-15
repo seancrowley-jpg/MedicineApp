@@ -38,8 +38,13 @@ object FirebaseDBManager : GroupStore {
         groupId: String,
         group: MutableLiveData<GroupModel>
     ) {
-        TODO("Not yet implemented")
-    }
+        database.child("user-groups").child(userid)
+            .child(groupId).get().addOnSuccessListener {
+                group.value = it.getValue(GroupModel::class.java)
+                Timber.i("firebase Got value ${it.value}")
+            }.addOnFailureListener{
+                Timber.e("firebase Error getting data $it")
+            }    }
 
     override fun createGroup(firebaseUser: MutableLiveData<FirebaseUser>, group: GroupModel) {
         Timber.i("Firebase DB Reference : $database")
@@ -61,6 +66,9 @@ object FirebaseDBManager : GroupStore {
     }
 
     override fun updateGroup(userid: String, groupId: String, group: GroupModel) {
-        TODO("Not yet implemented")
+        val groupValues = group.toMap()
+        val childUpdate : MutableMap<String, Any?> = HashMap()
+        childUpdate["user-groups/$userid/$groupId"] = groupValues
+        database.updateChildren(childUpdate)
     }
 }

@@ -34,6 +34,7 @@ class GroupAdapter constructor(private var groups: ArrayList<GroupModel>, privat
             binding.groupName.text = group.name
             binding.priorityLevel.text = group.priorityLevel.toString()
             binding.root.setOnClickListener{ listener.onGroupClick(group)}
+            binding.executePendingBindings()
         }
     }
 }

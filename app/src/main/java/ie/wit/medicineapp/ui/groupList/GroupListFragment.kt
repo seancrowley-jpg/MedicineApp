@@ -10,7 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ie.wit.medicineapp.adapters.GroupAdapter
 import ie.wit.medicineapp.adapters.GroupListener
 import ie.wit.medicineapp.databinding.FragmentGroupListBinding
@@ -44,6 +46,11 @@ class GroupListFragment : Fragment(), GroupListener {
             render(groups as ArrayList<GroupModel>)
                 }
         })
+        val fab: FloatingActionButton = fragBinding.fab
+        fab.setOnClickListener {
+            val action = GroupListFragmentDirections.actionGroupListFragmentToGroupFragment()
+            findNavController().navigate(action)
+        }
         return root
     }
 
@@ -68,6 +75,7 @@ class GroupListFragment : Fragment(), GroupListener {
     }
 
     override fun onGroupClick(group: GroupModel) {
-        
+        val action = GroupListFragmentDirections.actionGroupListFragmentToGroupFragment(edit = true, group.uid!!)
+        findNavController().navigate(action)
     }
 }
