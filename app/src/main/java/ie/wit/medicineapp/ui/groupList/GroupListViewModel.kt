@@ -3,11 +3,32 @@ package ie.wit.medicineapp.ui.groupList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.FirebaseUser
+import ie.wit.medicineapp.firebase.FirebaseDBManager
+import ie.wit.medicineapp.models.GroupModel
+import timber.log.Timber
+import java.lang.Exception
 
 class GroupListViewModel : ViewModel() {
+    private val groupList = MutableLiveData<List<GroupModel>>()
+    var liveFirebaseUser = MutableLiveData<FirebaseUser>()
+    val observableRecipesList: LiveData<List<GroupModel>>
+        get() = groupList
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is gallery Fragment"
+    init {
+        load()
     }
-    val text: LiveData<String> = _text
+
+    fun load() {
+        try {
+            Timber.i("Firebase User Id: ${liveFirebaseUser.value?.uid!!}")
+            FirebaseDBManager.findAllGroups(liveFirebaseUser.value?.uid!!,
+                groupList)
+            Timber.i("Load Success : ${groupList.value.toString()}")
+        }
+        catch (e: Exception) {
+            Timber.i("Load Error : $e.message")
+        }
+    }
+
 }
