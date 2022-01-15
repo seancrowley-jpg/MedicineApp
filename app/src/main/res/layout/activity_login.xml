@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.auth.LoginActivity">
 
-
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
@@ -27,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="134dp"
-        android:text="login/signup"
+        android:text="@string/header_login_account"
         android:textColor="#000"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -43,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="208dp"
         android:ems="10"
-        android:hint="email"
+        android:hint="@string/hint_email"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="password"
+        android:hint="@string/hint_password"
         android:inputType="textPassword"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,7 +72,7 @@
         android:layout_marginTop="400dp"
         android:layout_marginEnd="269dp"
         android:layout_marginBottom="283dp"
-        android:text="Login"
+        android:text="@string/btn_login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -89,7 +88,7 @@
         android:layout_marginTop="420dp"
         android:layout_marginEnd="52dp"
         android:layout_marginBottom="283dp"
-        android:text="Signup"
+        android:text="@string/btn_signUp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

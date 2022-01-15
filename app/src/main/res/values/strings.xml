@@ -15,7 +15,12 @@
     <string name="hint_group">Group Name</string>
     <string name="btn_add_group">Add Group</string>
     <string name="hint_group_priority">Pick a Priority Level</string>
+
     <string name="auth_failed">Error Authenticating with Firebase</string>
     <string name="sign_out">Sign Out</string>
-
+    <string name="header_login_account">Login to your Account or Create an Account</string>
+    <string name="hint_email">Enter your Email</string>
+    <string name="hint_password">Enter your Password</string>
+    <string name="btn_signUp">Signup</string>
+    <string name="btn_login">Login</string>
 </resources>
