@@ -14,7 +14,9 @@
     <string name="group_header">Create a Group</string>
     <string name="hint_group">Group Name</string>
     <string name="btn_add_group">Add Group</string>
+    <string name="btn_edit_group">Edit Group</string>
     <string name="hint_group_priority">Pick a Priority Level</string>
+    <string name="group_error">Error Creating Group</string>
 
     <string name="auth_failed">Error Authenticating with Firebase</string>
     <string name="sign_out">Sign Out</string>
