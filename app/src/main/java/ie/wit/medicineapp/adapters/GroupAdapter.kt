@@ -8,6 +8,7 @@ import ie.wit.medicineapp.models.GroupModel
 
 interface GroupListener{
     fun onGroupClick(group: GroupModel)
+    fun onDeleteGroupClick(group: GroupModel)
 }
 
 class GroupAdapter constructor(private var groups: ArrayList<GroupModel>, private val listener: GroupListener) :

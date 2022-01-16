@@ -31,4 +31,14 @@ class GroupListViewModel : ViewModel() {
         }
     }
 
+    fun deleteGroup(group: GroupModel){
+        try{
+            FirebaseDBManager.deleteGroup(liveFirebaseUser.value?.uid!!, group.uid!!)
+            Timber.i("Group Deleted")
+        }
+        catch (e: Exception) {
+            Timber.i("Delete Error : ${e.message}")
+        }
+    }
+
 }

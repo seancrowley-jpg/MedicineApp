@@ -78,4 +78,8 @@ class GroupListFragment : Fragment(), GroupListener {
         val action = GroupListFragmentDirections.actionGroupListFragmentToGroupFragment(edit = true, group.uid!!)
         findNavController().navigate(action)
     }
+
+    override fun onDeleteGroupClick(group: GroupModel) {
+        groupListViewModel.deleteGroup(group)
+    }
 }
