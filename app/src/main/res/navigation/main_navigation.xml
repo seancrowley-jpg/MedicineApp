@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_groupListFragment_to_groupFragment"
             app:destination="@id/groupFragment" />
+        <action
+            android:id="@+id/action_groupListFragment_to_medicineListFragment"
+            app:destination="@id/medicineListFragment" />
     </fragment>
 
     <fragment
@@ -38,4 +41,17 @@
         android:name="ie.wit.medicineapp.ui.medicine.MedicineFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_medicine" />
+    <fragment
+        android:id="@+id/medicineListFragment"
+        android:name="ie.wit.medicineapp.ui.medicineList.MedicineListFragment"
+        android:label="fragment_medicine_list"
+        tools:layout="@layout/fragment_medicine_list" >
+        <action
+            android:id="@+id/action_medicineListFragment_to_medicineFragment"
+            app:destination="@id/medicineFragment" />
+        <argument
+            android:name="groupId"
+            app:argType="string"
+            android:defaultValue="0" />
+    </fragment>
 </navigation>

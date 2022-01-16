@@ -9,6 +9,7 @@ import ie.wit.medicineapp.models.GroupModel
 interface GroupListener{
     fun onGroupClick(group: GroupModel)
     fun onDeleteGroupClick(group: GroupModel)
+    fun onEditGroupClick(group: GroupModel)
 }
 
 class GroupAdapter constructor(private var groups: ArrayList<GroupModel>, private val listener: GroupListener) :
@@ -29,11 +30,16 @@ class GroupAdapter constructor(private var groups: ArrayList<GroupModel>, privat
 
     override fun getItemCount(): Int = groups.size
 
+    fun removeAt(position: Int) {
+        groups.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
     class MainHolder(private val binding : CardGroupBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(group: GroupModel, listener: GroupListener) {
-            binding.groupName.text = group.name
-            binding.priorityLevel.text = group.priorityLevel.toString()
+            binding.group = group
+            binding.root.tag = group
             binding.root.setOnClickListener{ listener.onGroupClick(group)}
             binding.executePendingBindings()
         }

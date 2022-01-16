@@ -12,7 +12,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ie.wit.medicineapp.adapters.GroupAdapter
 import ie.wit.medicineapp.adapters.GroupListener
@@ -22,6 +24,8 @@ import ie.wit.medicineapp.helpers.hideLoader
 import ie.wit.medicineapp.helpers.showLoader
 import ie.wit.medicineapp.models.GroupModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
+import ie.wit.medicineapp.ui.utils.SwipeToDeleteCallback
+import ie.wit.medicineapp.ui.utils.SwipeToEditCallback
 
 class GroupListFragment : Fragment(), GroupListener {
 
@@ -61,6 +65,23 @@ class GroupListFragment : Fragment(), GroupListener {
             val action = GroupListFragmentDirections.actionGroupListFragmentToGroupFragment()
             findNavController().navigate(action)
         }
+        val swipeDeleteHandler = object : SwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                adapter.removeAt(viewHolder.adapterPosition)
+                groupListViewModel.deleteGroup(viewHolder.itemView.tag as GroupModel)
+                hideLoader(loader)
+            }
+        }
+        val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
+        itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerView)
+
+        val swipeEditHandler = object : SwipeToEditCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                onEditGroupClick(viewHolder.itemView.tag as GroupModel)
+            }
+        }
+        val itemTouchEditHelper = ItemTouchHelper(swipeEditHandler)
+        itemTouchEditHelper.attachToRecyclerView(fragBinding.recyclerView)
         return root
     }
 
@@ -106,11 +127,18 @@ class GroupListFragment : Fragment(), GroupListener {
     }
 
     override fun onGroupClick(group: GroupModel) {
-        val action = GroupListFragmentDirections.actionGroupListFragmentToGroupFragment(edit = true, group.uid!!)
+        val action = GroupListFragmentDirections.actionGroupListFragmentToMedicineListFragment(group.uid!!)
         findNavController().navigate(action)
     }
 
     override fun onDeleteGroupClick(group: GroupModel) {
         groupListViewModel.deleteGroup(group)
+        fragBinding.recyclerView.adapter?.notifyDataSetChanged()
+
+    }
+
+    override fun onEditGroupClick(group: GroupModel) {
+        val action = GroupListFragmentDirections.actionGroupListFragmentToGroupFragment(edit = true, group.uid!!)
+        findNavController().navigate(action)
     }
 }
