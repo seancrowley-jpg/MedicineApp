@@ -1,5 +1,6 @@
 package ie.wit.medicineapp.ui.groupList
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ie.wit.medicineapp.adapters.GroupAdapter
 import ie.wit.medicineapp.adapters.GroupListener
 import ie.wit.medicineapp.databinding.FragmentGroupListBinding
+import ie.wit.medicineapp.helpers.createLoader
+import ie.wit.medicineapp.helpers.hideLoader
+import ie.wit.medicineapp.helpers.showLoader
 import ie.wit.medicineapp.models.GroupModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
 
@@ -26,6 +30,7 @@ class GroupListFragment : Fragment(), GroupListener {
     private val groupListViewModel: GroupListViewModel by activityViewModels()
     private val loggedInViewModel: LoggedInViewModel by activityViewModels()
     private lateinit var adapter: GroupAdapter
+    lateinit var loader : AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
@@ -40,12 +45,17 @@ class GroupListFragment : Fragment(), GroupListener {
     ): View? {
         _fragBinding = FragmentGroupListBinding.inflate(inflater, container, false)
         val root = fragBinding.root
+        loader = createLoader(requireActivity())
         fragBinding.recyclerView.layoutManager = LinearLayoutManager(activity)
+        showLoader(loader,"Loading Groups")
         groupListViewModel.observableRecipesList.observe(viewLifecycleOwner, Observer {
                 groups -> groups?.let {
             render(groups as ArrayList<GroupModel>)
+            hideLoader(loader)
+            checkSwipeRefresh()
                 }
         })
+        setSwipeRefresh()
         val fab: FloatingActionButton = fragBinding.fab
         fab.setOnClickListener {
             val action = GroupListFragmentDirections.actionGroupListFragmentToGroupFragment()
@@ -57,16 +67,37 @@ class GroupListFragment : Fragment(), GroupListener {
     private fun render(groupList: ArrayList<GroupModel>) {
         fragBinding.recyclerView.adapter = GroupAdapter(groupList, this)
         adapter = fragBinding.recyclerView.adapter as GroupAdapter
+        if (groupList.isEmpty()) {
+            fragBinding.recyclerView.visibility = View.GONE
+            fragBinding.recipesNotFound.visibility = View.VISIBLE
+        } else {
+            fragBinding.recyclerView.visibility = View.VISIBLE
+            fragBinding.recipesNotFound.visibility = View.GONE
+        }
     }
 
     override fun onResume() {
         super.onResume()
+        showLoader(loader,"Loading...")
         loggedInViewModel.liveFirebaseUser.observe(viewLifecycleOwner, Observer { firebaseUser ->
             if (firebaseUser != null) {
                 groupListViewModel.liveFirebaseUser.value = firebaseUser
                 groupListViewModel.load()
             }
         })
+    }
+
+    private fun setSwipeRefresh() {
+        fragBinding.swiperefresh.setOnRefreshListener {
+            fragBinding.swiperefresh.isRefreshing = true
+            showLoader(loader, "Loading..")
+            groupListViewModel.load()
+        }
+    }
+
+    private fun checkSwipeRefresh() {
+        if (fragBinding.swiperefresh.isRefreshing)
+            fragBinding.swiperefresh.isRefreshing = false
     }
 
     override fun onDestroyView() {

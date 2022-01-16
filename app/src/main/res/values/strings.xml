@@ -25,4 +25,7 @@
     <string name="hint_password">Enter your Password</string>
     <string name="btn_signUp">Signup</string>
     <string name="btn_login">Login</string>
+
+    <string name="message_loading">Loading…</string>
+    <string name="empty_groups">No Groups found. Add some with the button below</string>
 </resources>
