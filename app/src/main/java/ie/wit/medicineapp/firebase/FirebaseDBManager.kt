@@ -145,4 +145,10 @@ object FirebaseDBManager : GroupStore {
         childUpdate["user-medication/$userid/$groupId/$medicineId"] = medicineValues
         database.updateChildren(childUpdate)
     }
+
+    override fun deleteMedicine(userid: String, groupId: String, medicineId: String) {
+        val childDelete : MutableMap<String, Any?> = HashMap()
+        childDelete["/user-medication/$userid/$groupId/$medicineId"] = null
+        database.updateChildren(childDelete)
+    }
 }

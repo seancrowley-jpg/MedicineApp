@@ -29,5 +29,15 @@ class MedicineListViewModel : ViewModel() {
         }
     }
 
+    fun deleteMedicine(medicine: MedicineModel, groupId: String){
+        try {
+            FirebaseDBManager.deleteMedicine(liveFirebaseUser.value?.uid!!, groupId, medicine.uid!!)
+            Timber.i("Medicine Deleted")
+        }
+        catch (e: Exception) {
+            Timber.i("Delete Error : ${e.message}")
+        }
+    }
+
 
 }

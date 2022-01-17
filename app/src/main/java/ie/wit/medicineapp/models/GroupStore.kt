@@ -17,4 +17,5 @@ interface GroupStore {
     fun findMedicineById(userid: String, groupId: String, medicineId: String, medicine: MutableLiveData<MedicineModel>)
     fun createMedicine(firebaseUser: MutableLiveData<FirebaseUser>, medicine: MedicineModel, groupId: String)
     fun updateMedicine(userid: String, groupId: String, medicineId: String, medicine: MedicineModel)
+    fun deleteMedicine(userid:String, groupId: String, medicineId: String)
 }

@@ -24,6 +24,7 @@ import ie.wit.medicineapp.models.GroupModel
 import ie.wit.medicineapp.models.MedicineModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
 import ie.wit.medicineapp.ui.groupList.GroupListFragmentDirections
+import ie.wit.medicineapp.ui.utils.SwipeToDeleteCallback
 import ie.wit.medicineapp.ui.utils.SwipeToEditCallback
 
 class MedicineListFragment : Fragment(), MedicineListener {
@@ -70,6 +71,15 @@ class MedicineListFragment : Fragment(), MedicineListener {
         }
         val itemTouchEditHelper = ItemTouchHelper(swipeEditHandler)
         itemTouchEditHelper.attachToRecyclerView(fragBinding.recyclerView)
+        val swipeDeleteHandler = object : SwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                adapter.removeAt(viewHolder.adapterPosition)
+                medicineListViewModel.deleteMedicine(viewHolder.itemView.tag as MedicineModel, args.groupId)
+                hideLoader(loader)
+            }
+        }
+        val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
+        itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerView)
         return root
     }
 
@@ -113,6 +123,8 @@ class MedicineListFragment : Fragment(), MedicineListener {
     }
 
     override fun onDeleteMedicineClick(medicine: MedicineModel) {
+        medicineListViewModel.deleteMedicine(medicine, args.groupId)
+        fragBinding.recyclerView.adapter?.notifyDataSetChanged()
     }
 
     override fun onEditMedicineClick(medicine: MedicineModel) {
