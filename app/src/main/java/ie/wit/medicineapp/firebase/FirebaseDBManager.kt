@@ -104,10 +104,16 @@ object FirebaseDBManager : GroupStore {
     override fun findMedicineById(
         userid: String,
         groupId: String,
+        medicineId: String,
         medicine: MutableLiveData<MedicineModel>
     ) {
-        TODO("Not yet implemented")
-    }
+        database.child("user-medication").child(userid)
+            .child(groupId).child(medicineId).get().addOnSuccessListener {
+                medicine.value = it.getValue(MedicineModel::class.java)
+                Timber.i("firebase Got value ${it.value}")
+            }.addOnFailureListener{
+                Timber.e("firebase Error getting data $it")
+            }    }
 
     override fun createMedicine(
         firebaseUser: MutableLiveData<FirebaseUser>,
@@ -126,5 +132,17 @@ object FirebaseDBManager : GroupStore {
         val childAdd = HashMap<String, Any>()
         childAdd["/user-medication/$uid/$groupId/$key"] = medicineValues
         database.updateChildren(childAdd)
+    }
+
+    override fun updateMedicine(
+        userid: String,
+        groupId: String,
+        medicineId: String,
+        medicine: MedicineModel
+    ) {
+        val medicineValues = medicine.toMap()
+        val childUpdate : MutableMap<String, Any?> = HashMap()
+        childUpdate["user-medication/$userid/$groupId/$medicineId"] = medicineValues
+        database.updateChildren(childUpdate)
     }
 }

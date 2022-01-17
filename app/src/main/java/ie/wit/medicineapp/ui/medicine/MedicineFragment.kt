@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
+import ie.wit.medicineapp.R
 import ie.wit.medicineapp.databinding.FragmentMedicineBinding
 import ie.wit.medicineapp.models.MedicineModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
@@ -35,22 +37,55 @@ class MedicineFragment : Fragment() {
     ): View? {
         _fragBinding = FragmentMedicineBinding.inflate(inflater, container, false)
         val root: View = fragBinding.root
+        if(args.edit){
+            medicineViewModel.getMedicine(loggedInViewModel.liveFirebaseUser.value?.uid!!,args.groupId, args.medicineId)
+            medicineViewModel.observableMedicine.observe(viewLifecycleOwner, Observer {
+                    medicine -> medicine?.let { render() }
+            })
+        }
         setButtonListener(fragBinding)
         return root
     }
 
     private fun setButtonListener(layout: FragmentMedicineBinding) {
-        layout.addMedicineButton.setOnClickListener() {
-            medicine.name = layout.medicineName.text.toString()
-            if (layout.medicineQuantity.text!!.isNotEmpty()) {
-                medicine.quantity = layout.medicineQuantity.text.toString().toInt()
+        if (args.edit) {
+            layout.addMedicineButton.text = getString(R.string.btn_edit_medication)
+            layout.addMedicineButton.setOnClickListener() {
+                medicine.uid = args.medicineId
+                medicine.name = layout.medicineName.text.toString()
+                if (layout.medicineQuantity.text!!.isNotEmpty()) {
+                    medicine.quantity = layout.medicineQuantity.text.toString().toInt()
+                }
+                if (layout.medicineReminderLimit.text!!.isNotEmpty()) {
+                    medicine.reminderLimit = layout.medicineReminderLimit.text.toString().toInt()
+                }
+                medicine.usageDir = layout.medicineUserDir.text.toString()
+                medicineViewModel.updateMedicine(loggedInViewModel.liveFirebaseUser.value?.uid!!,
+                    args.groupId, args.medicineId, medicine
+                )
             }
-            if (layout.medicineReminderLimit.text!!.isNotEmpty()) {
-                medicine.reminderLimit = layout.medicineReminderLimit.text.toString().toInt()
-            }
-            medicine.usageDir = layout.medicineUserDir.text.toString()
-            medicineViewModel.addMedicine(loggedInViewModel.liveFirebaseUser,medicine, args.groupId)
         }
+        else {
+            layout.addMedicineButton.setOnClickListener() {
+                medicine.name = layout.medicineName.text.toString()
+                if (layout.medicineQuantity.text!!.isNotEmpty()) {
+                    medicine.quantity = layout.medicineQuantity.text.toString().toInt()
+                }
+                if (layout.medicineReminderLimit.text!!.isNotEmpty()) {
+                    medicine.reminderLimit = layout.medicineReminderLimit.text.toString().toInt()
+                }
+                medicine.usageDir = layout.medicineUserDir.text.toString()
+                medicineViewModel.addMedicine(
+                    loggedInViewModel.liveFirebaseUser,
+                    medicine,
+                    args.groupId
+                )
+            }
+        }
+    }
+
+    private fun render() {
+        fragBinding.medicinevm = medicineViewModel
     }
 
     override fun onDestroyView() {

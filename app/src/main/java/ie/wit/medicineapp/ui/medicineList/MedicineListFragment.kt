@@ -10,7 +10,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ie.wit.medicineapp.adapters.MedicineAdapter
 import ie.wit.medicineapp.adapters.MedicineListener
@@ -21,6 +23,8 @@ import ie.wit.medicineapp.helpers.showLoader
 import ie.wit.medicineapp.models.GroupModel
 import ie.wit.medicineapp.models.MedicineModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
+import ie.wit.medicineapp.ui.groupList.GroupListFragmentDirections
+import ie.wit.medicineapp.ui.utils.SwipeToEditCallback
 
 class MedicineListFragment : Fragment(), MedicineListener {
 
@@ -59,6 +63,13 @@ class MedicineListFragment : Fragment(), MedicineListener {
             val action = MedicineListFragmentDirections.actionMedicineListFragmentToMedicineFragment(args.groupId)
             findNavController().navigate(action)
         }
+        val swipeEditHandler = object : SwipeToEditCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                onEditMedicineClick(viewHolder.itemView.tag as MedicineModel)
+            }
+        }
+        val itemTouchEditHelper = ItemTouchHelper(swipeEditHandler)
+        itemTouchEditHelper.attachToRecyclerView(fragBinding.recyclerView)
         return root
     }
 
@@ -105,6 +116,9 @@ class MedicineListFragment : Fragment(), MedicineListener {
     }
 
     override fun onEditMedicineClick(medicine: MedicineModel) {
+        val action = MedicineListFragmentDirections.actionMedicineListFragmentToMedicineFragment(edit = true, medicineId = medicine.uid!!, groupId = args.groupId
+        )
+        findNavController().navigate(action)
     }
 
 }
