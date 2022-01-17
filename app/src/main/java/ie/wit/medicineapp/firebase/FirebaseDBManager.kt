@@ -80,7 +80,25 @@ object FirebaseDBManager : GroupStore {
         groupId: String,
         medicineList: MutableLiveData<List<MedicineModel>>
     ) {
-        TODO("Not yet implemented")
+        database.child("user-medication").child(userid).child(groupId)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val localList = ArrayList<MedicineModel>()
+                    val children = snapshot.children
+                    children.forEach {
+                        val medicine = it.getValue(MedicineModel::class.java)
+                        localList.add(medicine!!)
+                    }
+                    database.child("user-medication").child(userid).child(groupId)
+                        .removeEventListener(this)
+
+                    medicineList.value = localList
+                }
+            })
     }
 
     override fun findMedicineById(
