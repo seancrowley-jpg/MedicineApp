@@ -6,39 +6,33 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import ie.wit.medicineapp.databinding.FragmentMedicineBinding
+import ie.wit.medicineapp.ui.group.GroupFragmentArgs
 
 class MedicineFragment : Fragment() {
 
-    private lateinit var medicineViewModel: MedicineViewModel
-    private var _binding: FragmentMedicineBinding? = null
+    private val medicineViewModel: MedicineViewModel by activityViewModels()
+    private var _fragBinding: FragmentMedicineBinding? = null
+    private val fragBinding get() = _fragBinding!!
+    private val args by navArgs<GroupFragmentArgs>()
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        medicineViewModel =
-            ViewModelProvider(this).get(MedicineViewModel::class.java)
-
-        _binding = FragmentMedicineBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val textView: TextView = binding.textSlideshow
-        medicineViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
+        _fragBinding = FragmentMedicineBinding.inflate(inflater, container, false)
+        val root: View = fragBinding.root
         return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _fragBinding = null
     }
 }

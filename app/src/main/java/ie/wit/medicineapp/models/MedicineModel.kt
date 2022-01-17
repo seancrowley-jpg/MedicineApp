@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 data class MedicineModel(
     var uid: String? = "",
     var name: String = "",
-    var quantity: Long = 0,
+    var quantity: Int = 0,
     var usageDir: String? = "",
-    var reminderLimit: Long? = 0,
+    var reminderLimit: Int? = 0,
 ):Parcelable

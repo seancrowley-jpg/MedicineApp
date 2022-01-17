@@ -28,4 +28,14 @@
 
     <string name="message_loading">Loading…</string>
     <string name="empty_groups">No Groups found. Add some with the button below</string>
+    <string name="empty_medication">No Medication Found For this Group. Add some with the button below</string>
+
+    <string name="medicine_header">Enter the info of your Medication</string>
+    <string name="hint_medicine_name">Medicine Name</string>
+    <string name="hint_medicine_quantity">Medicine Quantity</string>
+    <string name="hint_medicine_usageDir">Medicine Usage Directions</string>
+    <string name="hint_medicine_reminderLimit">Medicine Reminder Limit</string>
+    <string name="enter_quantity_text">Enter Quantity:</string>
+    <string name="enter_reminder_limit">Enter Reminder Limit:</string>
+    <string name="btn_add_medication">Add Medicine</string>
 </resources>

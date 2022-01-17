@@ -12,7 +12,7 @@ import java.lang.Exception
 class GroupListViewModel : ViewModel() {
     private val groupList = MutableLiveData<List<GroupModel>>()
     var liveFirebaseUser = MutableLiveData<FirebaseUser>()
-    val observableRecipesList: LiveData<List<GroupModel>>
+    val observableGroupsList: LiveData<List<GroupModel>>
         get() = groupList
 
     init {

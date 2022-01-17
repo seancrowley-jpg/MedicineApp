@@ -40,7 +40,20 @@
         android:id="@+id/medicineFragment"
         android:name="ie.wit.medicineapp.ui.medicine.MedicineFragment"
         android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_medicine" />
+        tools:layout="@layout/fragment_medicine" >
+        <argument
+            android:name="groupId"
+            app:argType="string"
+            android:defaultValue="0" />
+        <argument
+            android:name="medicineId"
+            app:argType="string"
+            android:defaultValue="0" />
+        <argument
+            android:name="edit"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
     <fragment
         android:id="@+id/medicineListFragment"
         android:name="ie.wit.medicineapp.ui.medicineList.MedicineListFragment"
