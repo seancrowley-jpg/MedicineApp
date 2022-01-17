@@ -4,22 +4,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import ie.wit.medicineapp.databinding.FragmentMedicineBinding
-import ie.wit.medicineapp.ui.group.GroupFragmentArgs
+import ie.wit.medicineapp.models.MedicineModel
+import ie.wit.medicineapp.ui.auth.LoggedInViewModel
+import timber.log.Timber
 
 class MedicineFragment : Fragment() {
 
     private val medicineViewModel: MedicineViewModel by activityViewModels()
+    private val loggedInViewModel : LoggedInViewModel by activityViewModels()
     private var _fragBinding: FragmentMedicineBinding? = null
     private val fragBinding get() = _fragBinding!!
-    private val args by navArgs<GroupFragmentArgs>()
+    var medicine = MedicineModel()
+    private val args by navArgs<MedicineFragmentArgs>()
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+        Timber.i("GROUP ID: ${args.groupId}")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +35,22 @@ class MedicineFragment : Fragment() {
     ): View? {
         _fragBinding = FragmentMedicineBinding.inflate(inflater, container, false)
         val root: View = fragBinding.root
+        setButtonListener(fragBinding)
         return root
+    }
+
+    private fun setButtonListener(layout: FragmentMedicineBinding) {
+        layout.addMedicineButton.setOnClickListener() {
+            medicine.name = layout.medicineName.text.toString()
+            if (layout.medicineQuantity.text!!.isNotEmpty()) {
+                medicine.quantity = layout.medicineQuantity.text.toString().toInt()
+            }
+            if (layout.medicineReminderLimit.text!!.isNotEmpty()) {
+                medicine.reminderLimit = layout.medicineReminderLimit.text.toString().toInt()
+            }
+            medicine.usageDir = layout.medicineUserDir.text.toString()
+            medicineViewModel.addMedicine(loggedInViewModel.liveFirebaseUser,medicine, args.groupId)
+        }
     }
 
     override fun onDestroyView() {

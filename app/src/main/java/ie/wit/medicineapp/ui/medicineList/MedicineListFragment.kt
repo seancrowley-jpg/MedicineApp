@@ -1,7 +1,6 @@
 package ie.wit.medicineapp.ui.medicineList
 
 import android.app.AlertDialog
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,16 +11,11 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import ie.wit.medicineapp.R
-import ie.wit.medicineapp.adapters.GroupAdapter
 import ie.wit.medicineapp.adapters.MedicineAdapter
 import ie.wit.medicineapp.adapters.MedicineListener
 import ie.wit.medicineapp.databinding.FragmentMedicineListBinding
-import ie.wit.medicineapp.models.GroupModel
 import ie.wit.medicineapp.models.MedicineModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
-import ie.wit.medicineapp.ui.group.GroupFragmentArgs
-import ie.wit.medicineapp.ui.groupList.GroupListFragmentDirections
 
 class MedicineListFragment : Fragment(), MedicineListener {
 
@@ -29,7 +23,7 @@ class MedicineListFragment : Fragment(), MedicineListener {
     private val fragBinding get() = _fragBinding!!
     private val medicineListViewModel: MedicineListViewModel by activityViewModels()
     private val loggedInViewModel : LoggedInViewModel by activityViewModels()
-    private val args by navArgs<GroupFragmentArgs>()
+    private val args by navArgs<MedicineListFragmentArgs>()
     lateinit var loader : AlertDialog
     private lateinit var adapter: MedicineAdapter
 
@@ -49,7 +43,7 @@ class MedicineListFragment : Fragment(), MedicineListener {
         val root = fragBinding.root
         val fab: FloatingActionButton = fragBinding.fab
         fab.setOnClickListener {
-            val action = MedicineListFragmentDirections.actionMedicineListFragmentToMedicineFragment(args.uid)
+            val action = MedicineListFragmentDirections.actionMedicineListFragmentToMedicineFragment(args.groupId)
             findNavController().navigate(action)
         }
         return root
