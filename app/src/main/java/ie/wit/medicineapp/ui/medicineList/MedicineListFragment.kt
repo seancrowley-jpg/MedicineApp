@@ -120,6 +120,9 @@ class MedicineListFragment : Fragment(), MedicineListener {
     }
 
     override fun onMedicineClick(medicine: MedicineModel) {
+        val action = MedicineListFragmentDirections.actionMedicineListFragmentToMedicineDetails(medicineId = medicine.uid!!, groupId = args.groupId
+        )
+        findNavController().navigate(action)
     }
 
     override fun onDeleteMedicineClick(medicine: MedicineModel) {

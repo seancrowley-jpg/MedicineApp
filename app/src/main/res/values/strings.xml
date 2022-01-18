@@ -39,4 +39,11 @@
     <string name="enter_reminder_limit">Enter Reminder Limit:</string>
     <string name="btn_add_medication">Add Medicine</string>
     <string name="btn_edit_medication">Edit Medicine</string>
+    <string name="medicine_details_header">Medicine Info</string>
+    <string name="medicine_details_quantity">Quantity:</string>
+    <string name="medicine_details_reminder_limit">Reminder limit:</string>
+    <string name="medicine_details_usage_directions">Usage Directions:</string>
+
+
+
 </resources>

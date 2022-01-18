@@ -42,6 +42,7 @@ class MedicineAdapter constructor(private var medicine: ArrayList<MedicineModel>
         fun bind(medicine: MedicineModel, listener: MedicineListener) {
             binding.medicine = medicine
             binding.root.tag = medicine
+            binding.root.setOnClickListener{listener.onMedicineClick(medicine)}
         }
     }
 }

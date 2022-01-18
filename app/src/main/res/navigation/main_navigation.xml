@@ -66,5 +66,21 @@
             android:name="groupId"
             app:argType="string"
             android:defaultValue="0" />
+        <action
+            android:id="@+id/action_medicineListFragment_to_medicineDetails"
+            app:destination="@id/medicineDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/medicineDetails"
+        android:name="ie.wit.medicineapp.ui.medicineDetails.MedicineDetailsFragment"
+        android:label="MedicineDetails" >
+        <argument
+            android:name="groupId"
+            app:argType="string"
+            android:defaultValue="0" />
+        <argument
+            android:name="medicineId"
+            app:argType="string"
+            android:defaultValue="0" />
     </fragment>
 </navigation>
