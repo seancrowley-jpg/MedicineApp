@@ -26,11 +26,18 @@ class SideEffectAdapter constructor(private var sideEffects: MutableList<String?
 
     override fun getItemCount(): Int = sideEffects.size
 
+    fun removeAt(position: Int) {
+        sideEffects.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
     class MainHolder(private val binding: CardSideEffectBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(sideEffect: String?, listener: SideEffectListener) {
             binding.SideEffectText.text = sideEffect
+            binding.root.tag = sideEffect
+            binding.btnDeleteSideEffect.setOnClickListener{listener.onSideEffectBtnClick(sideEffect)}
             binding.executePendingBindings()
         }
     }
