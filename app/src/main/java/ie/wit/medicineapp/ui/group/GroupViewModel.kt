@@ -42,7 +42,7 @@ class GroupViewModel : ViewModel() {
     fun updateGroup(group: GroupModel,userid:String, id: String) {
         try {
             FirebaseDBManager.updateGroup(userid, id, group)
-            Timber.i("Success updated recipe : $group")
+            Timber.i("Success updated Group : $group")
         } catch (e: Exception) {
             Timber.i("Error : $e.message")
         }

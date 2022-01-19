@@ -52,7 +52,7 @@ class GroupListFragment : Fragment(), GroupListener {
         loader = createLoader(requireActivity())
         fragBinding.recyclerView.layoutManager = LinearLayoutManager(activity)
         showLoader(loader,"Loading Groups")
-        groupListViewModel.observableRecipesList.observe(viewLifecycleOwner, Observer {
+        groupListViewModel.observableGroupsList.observe(viewLifecycleOwner, Observer {
                 groups -> groups?.let {
             render(groups as ArrayList<GroupModel>)
             hideLoader(loader)
@@ -90,10 +90,10 @@ class GroupListFragment : Fragment(), GroupListener {
         adapter = fragBinding.recyclerView.adapter as GroupAdapter
         if (groupList.isEmpty()) {
             fragBinding.recyclerView.visibility = View.GONE
-            fragBinding.recipesNotFound.visibility = View.VISIBLE
+            fragBinding.groupsNotFound.visibility = View.VISIBLE
         } else {
             fragBinding.recyclerView.visibility = View.VISIBLE
-            fragBinding.recipesNotFound.visibility = View.GONE
+            fragBinding.groupsNotFound.visibility = View.GONE
         }
     }
 

@@ -33,7 +33,7 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <TextView
-        android:id="@+id/recipesNotFound"
+        android:id="@+id/groupsNotFound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/empty_groups"
