@@ -60,6 +60,7 @@ class MedicineFragment : Fragment() {
                     medicine.reminderLimit = layout.medicineReminderLimit.text.toString().toInt()
                 }
                 medicine.usageDir = layout.medicineUserDir.text.toString()
+                medicine.dosage = layout.medicineDosage.text.toString()
                 medicineViewModel.updateMedicine(loggedInViewModel.liveFirebaseUser.value?.uid!!,
                     args.groupId, args.medicineId, medicine
                 )
@@ -75,6 +76,7 @@ class MedicineFragment : Fragment() {
                     medicine.reminderLimit = layout.medicineReminderLimit.text.toString().toInt()
                 }
                 medicine.usageDir = layout.medicineUserDir.text.toString()
+                medicine.dosage = layout.medicineDosage.text.toString()
                 medicineViewModel.addMedicine(
                     loggedInViewModel.liveFirebaseUser,
                     medicine,

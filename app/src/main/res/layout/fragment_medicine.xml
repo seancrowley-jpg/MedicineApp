@@ -62,6 +62,7 @@
 
 
             <TextView
+                android:id="@+id/medicineQuantityHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -70,8 +71,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/MedicineQuantityTextField"
                 app:layout_constraintHorizontal_bias="0.272"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/MedicineNameTextField"
-                >
+                app:layout_constraintTop_toBottomOf="@+id/MedicineNameTextField">
 
             </TextView>
 
@@ -107,42 +107,87 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="80dp"
+                android:text="@string/enter_dosage"
+                app:layout_constraintEnd_toStartOf="@+id/MedicineDosageTextField"
+                app:layout_constraintHorizontal_bias="0.269"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/medicineQuantityHeader">
+
+            </TextView>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/MedicineDosageTextField"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="214dp"
+                android:layout_height="62dp"
+                android:layout_marginTop="36dp"
+                android:hint="@string/hint_medicine_dosage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.847"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/MedicineQuantityTextField">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/medicineDosage"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_margin="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="28dp"
+                    android:layout_marginEnd="8dp"
+                    android:inputType="text"
+                    android:padding="8dp"
+                    android:text="@{medicinevm.observableMedicine.dosage}"
+                    android:textColor="@color/teal_700"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/MedicineQuantityTextField" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/MedicineUserDirTextField"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="36dp"
                 android:hint="@string/hint_medicine_usageDir"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/MedicineQuantityTextField">
+                app:layout_constraintTop_toBottomOf="@+id/MedicineDosageTextField">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/medicineUserDir"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_margin="8dp"
-                    android:text="@{medicinevm.observableMedicine.usageDir}"
                     android:ems="10"
                     android:gravity="start|top"
                     android:inputType="textMultiLine"
                     android:padding="8dp"
+                    android:text="@{medicinevm.observableMedicine.usageDir}"
                     android:textColor="@color/teal_700"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
-
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="76dp"
+                android:layout_marginTop="64dp"
                 android:layout_marginEnd="9dp"
                 android:text="@string/enter_reminder_limit"
                 app:layout_constraintEnd_toStartOf="@+id/MedicineReminderLimitTextField"
-                app:layout_constraintHorizontal_bias="0.388"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/MedicineUserDirTextField">
 
@@ -153,7 +198,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="214dp"
                 android:layout_height="62dp"
-                android:layout_marginTop="54dp"
+                android:layout_marginTop="40dp"
                 android:hint="@string/hint_medicine_reminderLimit"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.847"
@@ -188,8 +233,10 @@
                 android:text="@string/btn_add_medication"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/MedicineReminderLimitTextField" />
+                app:layout_constraintTop_toBottomOf="@+id/MedicineReminderLimitTextField"
+                app:layout_constraintVertical_bias="1.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

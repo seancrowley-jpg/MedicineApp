@@ -57,27 +57,54 @@
             tools:text="200" />
 
         <TextView
-            android:id="@+id/medicine_details_reminder_limit"
+            android:id="@+id/medicine_details_dosage"
             android:layout_width="189dp"
             android:layout_height="48dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="96dp"
             android:autoSizeTextType="uniform"
             android:textSize="20sp"
-            android:text="@string/medicine_details_reminder_limit"
-            app:layout_constraintEnd_toStartOf="@+id/medicine_details_reminder_limit_num"
+            android:text="@string/medicine_details_dosage"
+            app:layout_constraintEnd_toStartOf="@+id/medicine_details_quantity_num"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/medicine_details_quantity"
-             />
+            />
 
         <TextView
-            android:id="@+id/medicine_details_reminder_limit_num"
+            android:id="@+id/medicine_details_dosage_num"
             android:layout_width="84dp"
             android:layout_height="48dp"
             android:layout_marginTop="40dp"
             android:autoSizeTextType="uniform"
             android:textSize="20sp"
+            android:text="@{medicineVM.observableMedicine.dosage}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.951"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/medicine_details_quantity"
+            tools:text="200" />
+
+        <TextView
+            android:id="@+id/medicine_details_reminder_limit"
+            android:layout_width="189dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="128dp"
+            android:layout_marginEnd="96dp"
+            android:autoSizeTextType="uniform"
+            android:text="@string/medicine_details_reminder_limit"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/medicine_details_reminder_limit_num"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/medicine_details_quantity" />
+
+        <TextView
+            android:id="@+id/medicine_details_reminder_limit_num"
+            android:layout_width="84dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="128dp"
+            android:autoSizeTextType="uniform"
             android:text="@{`` + medicineVM.observableMedicine.reminderLimit}"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.951"
             app:layout_constraintStart_toStartOf="parent"

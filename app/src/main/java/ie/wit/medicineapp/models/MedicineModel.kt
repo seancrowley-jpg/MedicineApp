@@ -9,7 +9,8 @@ data class MedicineModel(
     var name: String = "",
     var quantity: Int = 0,
     var usageDir: String? = "",
-    var reminderLimit: Int? = 0,
+    var reminderLimit: Int = 0,
+    var dosage: String? = "",
 ):Parcelable{
     @Exclude
     fun toMap(): Map<String, Any?> {
@@ -19,6 +20,7 @@ data class MedicineModel(
             "quantity" to quantity,
             "usageDir" to usageDir,
             "reminderLimit" to reminderLimit,
-        )
+            "dosage" to dosage,
+            )
     }
 }
