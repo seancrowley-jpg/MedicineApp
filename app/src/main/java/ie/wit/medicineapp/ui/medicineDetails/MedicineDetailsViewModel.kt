@@ -22,4 +22,13 @@ class MedicineDetailsViewModel : ViewModel() {
             Timber.i("Error : $e.message")
         }
     }
+
+    fun updateMedicine(userid:String, groupId: String, medicineId: String, medicine: MedicineModel){
+        try {
+            FirebaseDBManager.updateMedicine(userid, groupId, medicineId, medicine)
+            Timber.i("Success updated Medication : $medicine")
+        } catch (e: Exception) {
+            Timber.i("Error : $e.message")
+        }
+    }
 }

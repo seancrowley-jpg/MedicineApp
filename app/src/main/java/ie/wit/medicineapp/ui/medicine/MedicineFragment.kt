@@ -61,6 +61,7 @@ class MedicineFragment : Fragment() {
                 }
                 medicine.usageDir = layout.medicineUserDir.text.toString()
                 medicine.dosage = layout.medicineDosage.text.toString()
+                medicine.sideEffects = medicineViewModel.observableMedicine.value!!.sideEffects
                 medicineViewModel.updateMedicine(loggedInViewModel.liveFirebaseUser.value?.uid!!,
                     args.groupId, args.medicineId, medicine
                 )

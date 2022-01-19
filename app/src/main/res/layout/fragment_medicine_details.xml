@@ -8,135 +8,218 @@
             type="ie.wit.medicineapp.ui.medicineDetails.MedicineDetailsViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.viewRecipe.ViewRecipeFragment">
+        android:fillViewport="true">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".ui.medicineDetails.MedicineDetailsFragment">
 
-        <TextView
-            android:id="@+id/medicine_details_name"
-            android:layout_width="360dp"
-            android:layout_height="46dp"
-            android:layout_marginTop="28dp"
-            android:autoSizeTextType="uniform"
-            android:text="@{medicineVM.observableMedicine.name}"
-            android:textSize="35sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.406"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Medicine Name" />
+            <TextView
+                android:id="@+id/medicine_details_name"
+                android:layout_width="360dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="28dp"
+                android:autoSizeTextType="uniform"
+                android:text="@{medicineVM.observableMedicine.name}"
+                android:textSize="35sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.406"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Medicine Name" />
 
-        <TextView
-            android:id="@+id/medicine_details_quantity"
-            android:layout_width="189dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="96dp"
-            android:autoSizeTextType="uniform"
-            android:textSize="20sp"
-            android:text="@string/medicine_details_quantity"
-            app:layout_constraintEnd_toStartOf="@+id/medicine_details_quantity_num"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/medicine_details_name"
-            />
+            <TextView
+                android:id="@+id/medicine_details_quantity"
+                android:layout_width="189dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="96dp"
+                android:autoSizeTextType="uniform"
+                android:textSize="20sp"
+                android:text="@string/medicine_details_quantity"
+                app:layout_constraintEnd_toStartOf="@+id/medicine_details_quantity_num"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/medicine_details_name"
+                />
 
-        <TextView
-            android:id="@+id/medicine_details_quantity_num"
-            android:layout_width="84dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="40dp"
-            android:autoSizeTextType="uniform"
-            android:textSize="20sp"
-            android:text="@{`` + medicineVM.observableMedicine.quantity}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.951"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/medicine_details_name"
-            tools:text="200" />
+            <TextView
+                android:id="@+id/medicine_details_quantity_num"
+                android:layout_width="84dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="40dp"
+                android:autoSizeTextType="uniform"
+                android:textSize="20sp"
+                android:text="@{`` + medicineVM.observableMedicine.quantity}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.951"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/medicine_details_name"
+                tools:text="200" />
 
-        <TextView
-            android:id="@+id/medicine_details_dosage"
-            android:layout_width="189dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="96dp"
-            android:autoSizeTextType="uniform"
-            android:textSize="20sp"
-            android:text="@string/medicine_details_dosage"
-            app:layout_constraintEnd_toStartOf="@+id/medicine_details_quantity_num"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/medicine_details_quantity"
-            />
+            <TextView
+                android:id="@+id/medicine_details_dosage"
+                android:layout_width="189dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="96dp"
+                android:autoSizeTextType="uniform"
+                android:textSize="20sp"
+                android:text="@string/medicine_details_dosage"
+                app:layout_constraintEnd_toStartOf="@+id/medicine_details_quantity_num"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/medicine_details_quantity"
+                />
 
-        <TextView
-            android:id="@+id/medicine_details_dosage_num"
-            android:layout_width="84dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="40dp"
-            android:autoSizeTextType="uniform"
-            android:textSize="20sp"
-            android:text="@{medicineVM.observableMedicine.dosage}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.951"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/medicine_details_quantity"
-            tools:text="200" />
+            <TextView
+                android:id="@+id/medicine_details_dosage_num"
+                android:layout_width="84dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="40dp"
+                android:autoSizeTextType="uniform"
+                android:textSize="20sp"
+                android:text="@{medicineVM.observableMedicine.dosage}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.951"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/medicine_details_quantity"
+                tools:text="200" />
 
-        <TextView
-            android:id="@+id/medicine_details_reminder_limit"
-            android:layout_width="189dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="128dp"
-            android:layout_marginEnd="96dp"
-            android:autoSizeTextType="uniform"
-            android:text="@string/medicine_details_reminder_limit"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toStartOf="@+id/medicine_details_reminder_limit_num"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/medicine_details_quantity" />
+            <TextView
+                android:id="@+id/medicine_details_reminder_limit"
+                android:layout_width="189dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="128dp"
+                android:layout_marginEnd="96dp"
+                android:autoSizeTextType="uniform"
+                android:text="@string/medicine_details_reminder_limit"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/medicine_details_reminder_limit_num"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/medicine_details_quantity" />
 
-        <TextView
-            android:id="@+id/medicine_details_reminder_limit_num"
-            android:layout_width="84dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="128dp"
-            android:autoSizeTextType="uniform"
-            android:text="@{`` + medicineVM.observableMedicine.reminderLimit}"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.951"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/medicine_details_quantity_num"
-            tools:text="200" />
+            <TextView
+                android:id="@+id/medicine_details_reminder_limit_num"
+                android:layout_width="84dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="128dp"
+                android:autoSizeTextType="uniform"
+                android:text="@{`` + medicineVM.observableMedicine.reminderLimit}"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.951"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/medicine_details_quantity_num"
+                tools:text="200" />
 
-        <TextView
-            android:id="@+id/medicine_details_usage_dir_header"
-            android:layout_width="377dp"
-            android:layout_height="57dp"
-            android:layout_marginTop="40dp"
-            android:autoSizeTextType="uniform"
-            android:textSize="35sp"
-            android:text="@string/medicine_details_usage_directions"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/medicine_details_reminder_limit"
-            />
+            <TextView
+                android:id="@+id/medicine_details_usage_dir_header"
+                android:layout_width="377dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="40dp"
+                android:autoSizeTextType="uniform"
+                android:textSize="35sp"
+                android:text="@string/medicine_details_usage_directions"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/medicine_details_reminder_limit"
+                />
 
-        <TextView
-            android:id="@+id/medicine_details_usage_dir"
-            android:layout_width="377dp"
-            android:layout_height="57dp"
-            android:layout_marginTop="10dp"
-            android:autoSizeTextType="uniform"
-            android:textSize="11sp"
-            android:text="@{medicineVM.observableMedicine.usageDir}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/medicine_details_usage_dir_header"
-            app:layout_constraintVertical_bias="0.066"
-            tools:text="Usage Directions" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/medicine_details_usage_dir"
+                android:layout_width="377dp"
+                android:layout_height="57dp"
+                android:layout_marginTop="10dp"
+                android:autoSizeTextType="uniform"
+                android:textSize="11sp"
+                android:text="@{medicineVM.observableMedicine.usageDir}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/medicine_details_usage_dir_header"
+                app:layout_constraintVertical_bias="0.066"
+                tools:text="Usage Directions" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginBottom="8dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintBottom_toTopOf="@+id/MedicineSideEffectTextField"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/MedicineSideEffectTextField"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="241dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="36dp"
+                android:hint="@string/hint_medicine_sideEffects"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/medicine_details_usage_dir">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/sideEffectText"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_margin="8dp"
+                    android:ems="10"
+                    android:gravity="start|top"
+                    android:inputType="textMultiLine"
+                    android:lines="4"
+                    android:maxLength="180"
+                    android:maxLines="4"
+                    android:padding="8dp"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginBottom="8dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/btn_add_sideEffect"
+                style="@style/Widget.MaterialComponents.Button.Icon"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="44dp"
+                android:textAlignment="center"
+                app:icon="@android:drawable/ic_input_add"
+                app:iconGravity="textStart"
+                app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.524"
+                app:layout_constraintStart_toEndOf="@+id/MedicineSideEffectTextField"
+                app:layout_constraintTop_toBottomOf="@+id/medicine_details_usage_dir"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="132dp"
+                android:layout_marginTop="28dp"
+                android:scrollbars="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_constraintTop_toBottomOf="@+id/MedicineSideEffectTextField"
+                tools:layout_editor_absoluteX="0dp">
+
+            </androidx.recyclerview.widget.RecyclerView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 </layout>

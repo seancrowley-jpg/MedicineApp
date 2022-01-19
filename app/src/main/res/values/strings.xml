@@ -36,6 +36,7 @@
     <string name="hint_medicine_usageDir">Medicine Usage Directions</string>
     <string name="hint_medicine_reminderLimit">Medicine Reminder Limit</string>
     <string name="hint_medicine_dosage">Medicine Dosage</string>
+    <string name="hint_medicine_sideEffects">Enter Side Effects</string>
     <string name="enter_quantity_text">Enter Quantity:</string>
     <string name="enter_reminder_limit">Enter Reminder Limit:</string>
     <string name="enter_dosage">Enter Dosage:</string>

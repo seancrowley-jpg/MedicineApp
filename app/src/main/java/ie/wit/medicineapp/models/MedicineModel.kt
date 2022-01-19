@@ -11,6 +11,7 @@ data class MedicineModel(
     var usageDir: String? = "",
     var reminderLimit: Int = 0,
     var dosage: String? = "",
+    var sideEffects: MutableList<String?> = ArrayList()
 ):Parcelable{
     @Exclude
     fun toMap(): Map<String, Any?> {
@@ -21,6 +22,7 @@ data class MedicineModel(
             "usageDir" to usageDir,
             "reminderLimit" to reminderLimit,
             "dosage" to dosage,
+            "sideEffects" to sideEffects,
             )
     }
 }
