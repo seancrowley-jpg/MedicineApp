@@ -6,16 +6,10 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/groupFragment"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:title="@string/menu_group" />
         <item
             android:id="@+id/groupListFragment"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
-        <item
-            android:id="@+id/medicineFragment"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:title="@string/menu_group_list" />
 
         <item android:title="Access Control">
             <menu>

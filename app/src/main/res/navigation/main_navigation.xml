@@ -8,26 +8,26 @@
     <fragment
         android:id="@+id/groupFragment"
         android:name="ie.wit.medicineapp.ui.group.GroupFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_group" >
+        android:label="@string/menu_group"
+        tools:layout="@layout/fragment_group">
         <action
             android:id="@+id/action_groupFragment_to_groupListFragment"
             app:destination="@id/groupListFragment" />
         <argument
             android:name="edit"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
         <argument
             android:name="uid"
-            app:argType="string"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="string" />
     </fragment>
 
     <fragment
         android:id="@+id/groupListFragment"
         android:name="ie.wit.medicineapp.ui.groupList.GroupListFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_group_list" >
+        android:label="@string/menu_group_list"
+        tools:layout="@layout/fragment_group_list">
         <action
             android:id="@+id/action_groupListFragment_to_groupFragment"
             app:destination="@id/groupFragment" />
@@ -39,33 +39,33 @@
     <fragment
         android:id="@+id/medicineFragment"
         android:name="ie.wit.medicineapp.ui.medicine.MedicineFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_medicine" >
+        android:label="@string/menu_medicine"
+        tools:layout="@layout/fragment_medicine">
         <argument
             android:name="groupId"
-            app:argType="string"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="string" />
         <argument
             android:name="medicineId"
-            app:argType="string"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="string" />
         <argument
             android:name="edit"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/medicineListFragment"
         android:name="ie.wit.medicineapp.ui.medicineList.MedicineListFragment"
-        android:label="fragment_medicine_list"
-        tools:layout="@layout/fragment_medicine_list" >
+        android:label="@string/menu_medicine_list"
+        tools:layout="@layout/fragment_medicine_list">
         <action
             android:id="@+id/action_medicineListFragment_to_medicineFragment"
             app:destination="@id/medicineFragment" />
         <argument
             android:name="groupId"
-            app:argType="string"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="string" />
         <action
             android:id="@+id/action_medicineListFragment_to_medicineDetails"
             app:destination="@id/medicineDetails" />
@@ -73,14 +73,14 @@
     <fragment
         android:id="@+id/medicineDetails"
         android:name="ie.wit.medicineapp.ui.medicineDetails.MedicineDetailsFragment"
-        android:label="MedicineDetails" >
+        android:label="@string/menu_medicine_details">
         <argument
             android:name="groupId"
-            app:argType="string"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="string" />
         <argument
             android:name="medicineId"
-            app:argType="string"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="string" />
     </fragment>
 </navigation>
