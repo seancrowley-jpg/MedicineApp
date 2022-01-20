@@ -12,6 +12,8 @@
     <string name="menu_medicine">Add Medicine</string>
     <string name="menu_medicine_list">Medicine List</string>
     <string name="menu_medicine_details">Medicine Details</string>
+    <string name="menu_scheduler">Scheduler</string>
+    <string name="menu_reminder">Add Reminder</string>
 
     <string name="group_header">Create a Group</string>
     <string name="hint_group">Group Name</string>
