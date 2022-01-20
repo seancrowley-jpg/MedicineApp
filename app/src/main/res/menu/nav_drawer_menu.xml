@@ -11,6 +11,10 @@
             android:id="@+id/groupListFragment"
             android:title="@string/menu_group_list" />
 
+        <item
+            android:id="@+id/schedulerFragment"
+            android:title="Scheduler" />
+
         <item android:title="Access Control">
             <menu>
                 <item
