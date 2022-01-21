@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.get
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import ie.wit.medicineapp.databinding.FragmentSchedulerBinding
 
@@ -29,6 +30,9 @@ class SchedulerFragment : Fragment() {
         _fragBinding = FragmentSchedulerBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         createCalendar()
+        schedulerViewModel.observableDate.observe(viewLifecycleOwner, Observer { date ->
+            date?.let { render() }
+        })
         fragBinding.btnAddReminder.setOnClickListener(){
             if(fragBinding.selectedDate.text != ""){
                 val action = SchedulerFragmentDirections.actionSchedulerFragmentToReminderFragment(fragBinding.selectedDate.text.toString())
@@ -40,11 +44,16 @@ class SchedulerFragment : Fragment() {
         return root
     }
 
+    private fun render() {
+        fragBinding.schedulerVM = schedulerViewModel
+    }
+
     private fun createCalendar(){
         fragBinding.calendarView.setOnDateChangeListener{
                 _, year, month, dayOfMonth ->
             val date = "" + dayOfMonth + "/" + (month + 1) + "/" + year
             fragBinding.selectedDate.text = date
+            schedulerViewModel.setReminderDate(fragBinding.selectedDate.text.toString())
         }
     }
 

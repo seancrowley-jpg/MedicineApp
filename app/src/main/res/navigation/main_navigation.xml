@@ -34,6 +34,10 @@
         <action
             android:id="@+id/action_groupListFragment_to_medicineListFragment"
             app:destination="@id/medicineListFragment" />
+        <argument
+            android:name="reminder"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
 
     <fragment
@@ -69,6 +73,13 @@
         <action
             android:id="@+id/action_medicineListFragment_to_medicineDetails"
             app:destination="@id/medicineDetails" />
+        <action
+            android:id="@+id/action_medicineListFragment_to_reminderFragment"
+            app:destination="@id/reminderFragment" />
+        <argument
+            android:name="reminder"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/medicineDetails"
@@ -97,9 +108,19 @@
         android:name="ie.wit.medicineapp.ui.reminder.ReminderFragment"
         android:label="@string/menu_reminder"
         tools:layout="@layout/fragment_reminder">
+        <action
+            android:id="@+id/action_reminderFragment_to_groupListFragment"
+            app:destination="@id/groupListFragment" />
         <argument
-            android:name="date"
-            android:defaultValue="0/0/0"
-            app:argType="string" />
+            android:name="medicineId"
+            app:argType="string"
+            android:defaultValue="0" />
+        <argument
+            android:name="groupId"
+            app:argType="string"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_reminderFragment_to_schedulerFragment"
+            app:destination="@id/schedulerFragment" />
     </fragment>
 </navigation>

@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,6 +36,7 @@ class GroupListFragment : Fragment(), GroupListener {
     private val loggedInViewModel: LoggedInViewModel by activityViewModels()
     private lateinit var adapter: GroupAdapter
     lateinit var loader : AlertDialog
+    private val args by navArgs<GroupListFragmentArgs>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
@@ -127,8 +129,14 @@ class GroupListFragment : Fragment(), GroupListener {
     }
 
     override fun onGroupClick(group: GroupModel) {
-        val action = GroupListFragmentDirections.actionGroupListFragmentToMedicineListFragment(group.uid!!)
-        findNavController().navigate(action)
+        if (args.reminder){
+            val action = GroupListFragmentDirections.actionGroupListFragmentToMedicineListFragment(group.uid!!, reminder = true)
+            findNavController().navigate(action)
+        }
+        else {
+            val action = GroupListFragmentDirections.actionGroupListFragmentToMedicineListFragment(group.uid!!)
+            findNavController().navigate(action)
+        }
     }
 
     override fun onDeleteGroupClick(group: GroupModel) {

@@ -29,7 +29,7 @@ class MedicineViewModel : ViewModel() {
     fun getMedicine(userid:String, groupId: String, medicineId: String) {
         try {
             FirebaseDBManager.findMedicineById(userid, groupId, medicineId, medicine)
-            Timber.i("Success got recipe info : ${medicine.value.toString()}")
+            Timber.i("Success got medicine info : ${medicine.value.toString()}")
         } catch (e: Exception) {
             Timber.i("Error : $e.message")
         }
