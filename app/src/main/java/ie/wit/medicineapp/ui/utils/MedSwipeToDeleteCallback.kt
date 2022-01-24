@@ -10,13 +10,13 @@ import ie.wit.medicineapp.R
 import ie.wit.medicineapp.adapters.GroupAdapter
 import ie.wit.medicineapp.adapters.MedicineAdapter
 
-abstract class SwipeToEditCallback(context: Context) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+abstract class MedSwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
-    private val editIcon = ContextCompat.getDrawable(context, R.drawable.ic_edit_icon)
-    private val intrinsicWidth = editIcon?.intrinsicWidth
-    private val intrinsicHeight = editIcon?.intrinsicHeight
+    private val deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_delete_icon)
+    private val intrinsicWidth = deleteIcon?.intrinsicWidth
+    private val intrinsicHeight = deleteIcon?.intrinsicHeight
     private val background = ColorDrawable()
-    private val backgroundColor = Color.parseColor("#2196F3")
+    private val backgroundColor = Color.parseColor("#f44336")
     private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
 
     override fun getMovementFlags(
@@ -29,8 +29,8 @@ abstract class SwipeToEditCallback(context: Context) : ItemTouchHelper.SimpleCal
          * if (viewHolder?.itemViewType == YourAdapter.SOME_TYPE) return 0
          * if (viewHolder?.adapterPosition == 0) return 0
          */
-        if((viewHolder as GroupAdapter.MainHolder).reminderRow) return 0
-        //if((viewHolder as MedicineAdapter.MainHolder).reminderRow) return 0
+        //if((viewHolder as GroupAdapter.MainHolder).reminderRow) return 0
+        if((viewHolder as MedicineAdapter.MainHolder).reminderRow) return 0
         return super.getMovementFlags(recyclerView, viewHolder)
     }
 
@@ -54,35 +54,36 @@ abstract class SwipeToEditCallback(context: Context) : ItemTouchHelper.SimpleCal
         if (isCanceled) {
             clearCanvas(
                 c,
-                itemView.left + dX,
+                itemView.right + dX,
                 itemView.top.toFloat(),
-                itemView.left.toFloat(),
+                itemView.right.toFloat(),
                 itemView.bottom.toFloat()
             )
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
             return
         }
 
-        // Draw the blue edit background
+        // Draw the red delete background
         background.color = backgroundColor
         background.setBounds(
-            itemView.left + dX.toInt(),
+            itemView.right + dX.toInt(),
             itemView.top,
-            itemView.left,
+            itemView.right,
             itemView.bottom
         )
         background.draw(c)
 
-        // Calculate position of Edit icon
-        val editIconTop = itemView.top + (itemHeight - intrinsicHeight!!) / 2
-        val editIconMargin = (itemHeight - intrinsicHeight) / 2
-        val editIconLeft = itemView.right - editIconMargin - intrinsicWidth!! - 810
-        val editIconRight = itemView.right - editIconMargin - 810
-        val editIconBottom = editIconTop + intrinsicHeight
+        // Calculate position of delete icon
+        val deleteIconTop = itemView.top + (itemHeight - intrinsicHeight!!) / 2
+        val deleteIconMargin = (itemHeight - intrinsicHeight) / 2
+        val deleteIconLeft = itemView.right - deleteIconMargin - intrinsicWidth!!
+        val deleteIconRight = itemView.right - deleteIconMargin
+        val deleteIconBottom = deleteIconTop + intrinsicHeight
 
-        // Draw the edit icon
-        editIcon?.setBounds(editIconLeft, editIconTop, editIconRight, editIconBottom)
-        editIcon?.draw(c)
+
+        // Draw the delete icon
+        deleteIcon?.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom)
+        deleteIcon?.draw(c)
 
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
     }

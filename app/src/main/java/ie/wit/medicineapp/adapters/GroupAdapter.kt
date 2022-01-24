@@ -12,7 +12,7 @@ interface GroupListener{
     fun onEditGroupClick(group: GroupModel)
 }
 
-class GroupAdapter constructor(private var groups: ArrayList<GroupModel>, private val listener: GroupListener) :
+class GroupAdapter constructor(private var groups: ArrayList<GroupModel>, private val listener: GroupListener, private val reminder: Boolean) :
     RecyclerView.Adapter<GroupAdapter.MainHolder>(){
 
 
@@ -20,7 +20,7 @@ class GroupAdapter constructor(private var groups: ArrayList<GroupModel>, privat
         val binding = CardGroupBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
 
-        return MainHolder(binding)
+        return MainHolder(binding, reminder)
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
@@ -35,8 +35,9 @@ class GroupAdapter constructor(private var groups: ArrayList<GroupModel>, privat
         notifyItemRemoved(position)
     }
 
-    class MainHolder(private val binding : CardGroupBinding) :
+    class MainHolder(private val binding : CardGroupBinding, private val reminder: Boolean) :
         RecyclerView.ViewHolder(binding.root) {
+        val reminderRow = reminder
         fun bind(group: GroupModel, listener: GroupListener) {
             binding.group = group
             binding.root.tag = group

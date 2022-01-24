@@ -7,6 +7,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import ie.wit.medicineapp.R
+import ie.wit.medicineapp.adapters.GroupAdapter
+import ie.wit.medicineapp.adapters.MedicineAdapter
 
 abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
@@ -27,6 +29,8 @@ abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleC
          * if (viewHolder?.itemViewType == YourAdapter.SOME_TYPE) return 0
          * if (viewHolder?.adapterPosition == 0) return 0
          */
+        if((viewHolder as GroupAdapter.MainHolder).reminderRow) return 0
+        //if((viewHolder as MedicineAdapter.MainHolder).reminderRow) return 0
         return super.getMovementFlags(recyclerView, viewHolder)
     }
 

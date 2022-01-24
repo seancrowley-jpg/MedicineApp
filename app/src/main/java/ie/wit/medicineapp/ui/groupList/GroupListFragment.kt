@@ -62,6 +62,9 @@ class GroupListFragment : Fragment(), GroupListener {
                 }
         })
         setSwipeRefresh()
+        if(args.reminder) {
+            fragBinding.fab.visibility = View.GONE
+        }
         val fab: FloatingActionButton = fragBinding.fab
         fab.setOnClickListener {
             val action = GroupListFragmentDirections.actionGroupListFragmentToGroupFragment()
@@ -88,7 +91,7 @@ class GroupListFragment : Fragment(), GroupListener {
     }
 
     private fun render(groupList: ArrayList<GroupModel>) {
-        fragBinding.recyclerView.adapter = GroupAdapter(groupList, this)
+        fragBinding.recyclerView.adapter = GroupAdapter(groupList, this, args.reminder)
         adapter = fragBinding.recyclerView.adapter as GroupAdapter
         if (groupList.isEmpty()) {
             fragBinding.recyclerView.visibility = View.GONE

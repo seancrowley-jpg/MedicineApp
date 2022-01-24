@@ -14,7 +14,7 @@ interface MedicineListener{
     fun onEditMedicineClick(medicine: MedicineModel)
 }
 
-class MedicineAdapter constructor(private var medicine: ArrayList<MedicineModel>, private val listener: MedicineListener) :
+class MedicineAdapter constructor(private var medicine: ArrayList<MedicineModel>, private val listener: MedicineListener, private val reminder: Boolean) :
     RecyclerView.Adapter<MedicineAdapter.MainHolder>(){
 
 
@@ -22,7 +22,7 @@ class MedicineAdapter constructor(private var medicine: ArrayList<MedicineModel>
         val binding = CardMedicineBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
 
-        return MainHolder(binding)
+        return MainHolder(binding, reminder)
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
@@ -37,8 +37,9 @@ class MedicineAdapter constructor(private var medicine: ArrayList<MedicineModel>
         notifyItemRemoved(position)
     }
 
-    class MainHolder(private val binding : CardMedicineBinding) :
+    class MainHolder(private val binding : CardMedicineBinding,private val reminder: Boolean) :
         RecyclerView.ViewHolder(binding.root) {
+        val reminderRow = reminder
         fun bind(medicine: MedicineModel, listener: MedicineListener) {
             binding.medicine = medicine
             binding.root.tag = medicine

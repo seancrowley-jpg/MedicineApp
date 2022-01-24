@@ -10,7 +10,7 @@ import ie.wit.medicineapp.R
 import ie.wit.medicineapp.adapters.GroupAdapter
 import ie.wit.medicineapp.adapters.MedicineAdapter
 
-abstract class SwipeToEditCallback(context: Context) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+abstract class MedSwipeToEditCallback(context: Context) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
 
     private val editIcon = ContextCompat.getDrawable(context, R.drawable.ic_edit_icon)
     private val intrinsicWidth = editIcon?.intrinsicWidth
@@ -29,8 +29,8 @@ abstract class SwipeToEditCallback(context: Context) : ItemTouchHelper.SimpleCal
          * if (viewHolder?.itemViewType == YourAdapter.SOME_TYPE) return 0
          * if (viewHolder?.adapterPosition == 0) return 0
          */
-        if((viewHolder as GroupAdapter.MainHolder).reminderRow) return 0
-        //if((viewHolder as MedicineAdapter.MainHolder).reminderRow) return 0
+        //if((viewHolder as GroupAdapter.MainHolder).reminderRow) return 0
+        if((viewHolder as MedicineAdapter.MainHolder).reminderRow) return 0
         return super.getMovementFlags(recyclerView, viewHolder)
     }
 
