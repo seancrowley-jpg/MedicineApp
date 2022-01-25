@@ -11,6 +11,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import ie.wit.medicineapp.databinding.FragmentSchedulerBinding
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class SchedulerFragment : Fragment() {
 
@@ -51,9 +54,12 @@ class SchedulerFragment : Fragment() {
     private fun createCalendar(){
         fragBinding.calendarView.setOnDateChangeListener{
                 _, year, month, dayOfMonth ->
-            val date = "" + dayOfMonth + "/" + (month + 1) + "/" + year
-            fragBinding.selectedDate.text = date
-            schedulerViewModel.setReminderDate(fragBinding.selectedDate.text.toString())
+            //val date = "" + dayOfMonth + "-" + (month + 1) + "-" + year
+            //val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+            val selectedDate = LocalDate.of(year, (month + 1), dayOfMonth)
+            //val formattedDate = selectedDate.format(formatter)
+            fragBinding.selectedDate.text = selectedDate.toString()
+            schedulerViewModel.setReminderDate(selectedDate)
         }
     }
 
