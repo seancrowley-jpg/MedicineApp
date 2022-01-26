@@ -4,14 +4,12 @@ import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Message
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.addCallback
-import androidx.core.view.get
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -36,7 +34,6 @@ class ReminderFragment : Fragment() {
     private val args by navArgs<ReminderFragmentArgs>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        createNotificationChannel()
         super.onCreate(savedInstanceState)
     }
 
@@ -104,18 +101,28 @@ class ReminderFragment : Fragment() {
     }
 
     private fun scheduleNotification(){
-        val intent  = Intent(context, NotificationService::class.java)
+        val intent = Intent(context, NotificationService::class.java)
         intent.putExtra(NotificationService.titleExtra, "Medicine Due!")
-        intent.putExtra(NotificationService.messageExtra, medicineDetailsViewModel.observableMedicine.value!!.name+ " " + medicineDetailsViewModel.observableMedicine.value!!.dosage)
-        val pendingIntent = PendingIntent.getBroadcast(context, NotificationService.notificationID, intent,
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        intent.putExtra(
+            NotificationService.messageExtra,
+            medicineDetailsViewModel.observableMedicine.value!!.name + " " + medicineDetailsViewModel.observableMedicine.value!!.dosage
+        )
+        intent.putExtra(NotificationService.group, groupViewModel.observableGroup.value!!.name)
+        if(groupViewModel.observableGroup.value!!.priorityLevel == 2)
+            intent.putExtra(NotificationService.channelID, "highChannelID")
+        else
+            intent.putExtra(NotificationService.channelID, NotificationService.channelID)
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            context, NotificationService.notificationID , intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
         val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val time = getTime()
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
             time,
-            pendingIntent
-        )
+            pendingIntent)
         showAlert(time)
     }
 
@@ -125,7 +132,8 @@ class ReminderFragment : Fragment() {
         val timeFormat = android.text.format.DateFormat.getTimeFormat(context)
         AlertDialog.Builder(context)
             .setTitle("Reminder Set")
-            .setMessage("Reminder Set For:" + dateFormat.format(date) +"\nAt: "+ timeFormat.format(date))
+            .setMessage("Reminder Set For:" + dateFormat.format(date) +"\nAt: "+ timeFormat.format(date)
+            + "\nPriority: " + groupViewModel.observableGroup.value!!.priorityLevel)
             .setPositiveButton("Okay"){_,_ ->}
             .show()
     }
@@ -141,17 +149,6 @@ class ReminderFragment : Fragment() {
         val calendar = Calendar.getInstance()
         calendar.set(year!!, month!! ,day!!,hour,minute)
         return calendar.timeInMillis
-    }
-
-    private fun createNotificationChannel()
-    {
-        val name = "Reminder Channel"
-        val description = "Channel for Reminder Notifications"
-        val importance = NotificationManager.IMPORTANCE_HIGH
-        val channel = NotificationChannel(NotificationService.channelID,name, importance)
-        channel.description = description
-        val notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(channel)
     }
 
 }

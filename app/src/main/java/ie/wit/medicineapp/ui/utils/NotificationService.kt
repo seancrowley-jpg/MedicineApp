@@ -14,6 +14,8 @@ class NotificationService : BroadcastReceiver() {
         val notificationID = 1
         val titleExtra = "Reminder Notification"
         val messageExtra = "A Reminder"
+        val group = "Group Name"
+        val highChannelId ="highChannelID"
     }
 
 
@@ -23,6 +25,8 @@ class NotificationService : BroadcastReceiver() {
             .setContentTitle(intent?.getStringExtra(titleExtra))
             .setContentText(intent?.getStringExtra(messageExtra))
             .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setChannelId(intent?.getStringExtra(channelID)!!)
+            .setGroup(intent?.getStringExtra(group))
             .build()
 
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

@@ -1,6 +1,10 @@
 package ie.wit.medicineapp.ui.home
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import com.google.android.material.navigation.NavigationView
@@ -22,6 +26,7 @@ import ie.wit.medicineapp.databinding.NavHeaderBinding
 import ie.wit.medicineapp.helpers.customTransformation
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
 import ie.wit.medicineapp.ui.auth.LoginActivity
+import ie.wit.medicineapp.ui.utils.NotificationService
 
 class Home : AppCompatActivity() {
 
@@ -51,6 +56,8 @@ class Home : AppCompatActivity() {
                 R.id.groupListFragment, R.id.groupFragment, R.id.schedulerFragment
             ), drawerLayout
         )
+        createNotificationChannel()
+        createHighPriorityNotificationChannel()
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
@@ -97,5 +104,27 @@ class Home : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    private fun createHighPriorityNotificationChannel() {
+        val name = "High Priority Reminder Channel"
+        val description = "Channel for Reminder High Priority Notifications"
+        val importance = NotificationManager.IMPORTANCE_HIGH
+        val channel = NotificationChannel(NotificationService.highChannelId, name, importance)
+        channel.description = description
+        val notificationManager =
+            this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+
+    private fun createNotificationChannel() {
+        val name = "Default Reminder Channel"
+        val description = "Channel for Reminder Default Notifications"
+        val importance = NotificationManager.IMPORTANCE_LOW
+        val channel = NotificationChannel(NotificationService.channelID, name, importance)
+        channel.description = description
+        val notificationManager =
+            this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 }
