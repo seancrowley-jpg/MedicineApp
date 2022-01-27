@@ -6,12 +6,13 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import ie.wit.medicineapp.R
+import java.util.*
 
 class NotificationService : BroadcastReceiver() {
 
     companion object{
         val channelID = "channelID"
-        val notificationID = 1
+        var notificationID = 1
         val titleExtra = "Reminder Notification"
         val messageExtra = "A Reminder"
         val group = "Group Name"
@@ -29,8 +30,14 @@ class NotificationService : BroadcastReceiver() {
             .setGroup(intent?.getStringExtra(group))
             .build()
 
+        notificationID = generateRandomInt()
+
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         manager.notify(notificationID, notification)
+    }
+
+    private fun generateRandomInt() : Int {
+        return Random().nextInt()
     }
 
 }
