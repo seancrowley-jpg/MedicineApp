@@ -1,9 +1,10 @@
 package ie.wit.medicineapp.models
 
+import android.app.PendingIntent
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
 
-interface GroupStore {
+interface MedicineAppStore {
     fun findAllGroups(userid:String,
                 groupsList:
                 MutableLiveData<List<GroupModel>>
@@ -18,4 +19,7 @@ interface GroupStore {
     fun createMedicine(firebaseUser: MutableLiveData<FirebaseUser>, medicine: MedicineModel, groupId: String)
     fun updateMedicine(userid: String, groupId: String, medicineId: String, medicine: MedicineModel)
     fun deleteMedicine(userid:String, groupId: String, medicineId: String)
+    fun createReminder(firebaseUser: MutableLiveData<FirebaseUser>, reminder: ReminderModel)
+    fun findReminders(userid:String, reminderList: MutableLiveData<List<ReminderModel>>)
+    fun deleteReminder(userid:String, reminderId: String)
 }

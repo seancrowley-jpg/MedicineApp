@@ -52,6 +52,10 @@
     <string name="medicine_details_reminder_limit">Reminder limit:</string>
     <string name="medicine_details_usage_directions">Usage Directions:</string>
 
+    <string name="formatDate">%1$td/%1$tm/%1$tY</string>
+    <string name="formatTime">%1$tI:%1$tM%1$tp</string>
+    <string name="reminder_header">Reminders:</string>
+
 
 
 </resources>

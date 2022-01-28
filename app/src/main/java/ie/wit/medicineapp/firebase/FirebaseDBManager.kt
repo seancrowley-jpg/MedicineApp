@@ -4,11 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import ie.wit.medicineapp.models.GroupModel
-import ie.wit.medicineapp.models.GroupStore
+import ie.wit.medicineapp.models.MedicineAppStore
 import ie.wit.medicineapp.models.MedicineModel
+import ie.wit.medicineapp.models.ReminderModel
 import timber.log.Timber
 
-object FirebaseDBManager : GroupStore {
+object FirebaseDBManager : MedicineAppStore {
 
     var database: DatabaseReference = FirebaseDatabase.getInstance().reference
 
@@ -150,6 +151,49 @@ object FirebaseDBManager : GroupStore {
     override fun deleteMedicine(userid: String, groupId: String, medicineId: String) {
         val childDelete : MutableMap<String, Any?> = HashMap()
         childDelete["/user-medication/$userid/$groupId/$medicineId"] = null
+        database.updateChildren(childDelete)
+    }
+
+    override fun createReminder(firebaseUser: MutableLiveData<FirebaseUser>, reminder: ReminderModel) {
+        Timber.i("Firebase DB Reference : $database")
+        val uid = firebaseUser.value!!.uid
+        val key = database.child("reminders").push().key
+        if (key == null) {
+            Timber.i("Firebase Error : Key Empty")
+            return
+        }
+        reminder.uid = key
+        val reminderValues = reminder.toMap()
+        val childAdd = HashMap<String, Any>()
+        childAdd["/user-reminders/$uid/$key"] = reminderValues
+        database.updateChildren(childAdd)
+    }
+
+    override fun findReminders(userid: String, reminderList: MutableLiveData<List<ReminderModel>>) {
+        database.child("user-reminders").child(userid)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val localList = ArrayList<ReminderModel>()
+                    val children = snapshot.children
+                    children.forEach {
+                        val reminder = it.getValue(ReminderModel::class.java)
+                        localList.add(reminder!!)
+                    }
+                    database.child("user-reminders").child(userid)
+                        .removeEventListener(this)
+
+                    reminderList.value = localList
+                }
+            })
+    }
+
+    override fun deleteReminder(userid: String, reminderId: String) {
+        val childDelete : MutableMap<String, Any?> = HashMap()
+        childDelete["/user-reminders/$userid/$reminderId"] = null
         database.updateChildren(childDelete)
     }
 }

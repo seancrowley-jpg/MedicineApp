@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ie.wit.medicineapp.databinding.FragmentReminderBinding
+import ie.wit.medicineapp.models.ReminderModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
 import ie.wit.medicineapp.ui.group.GroupViewModel
 import ie.wit.medicineapp.ui.medicineDetails.MedicineDetailsViewModel
@@ -123,6 +124,11 @@ class ReminderFragment : Fragment() {
             AlarmManager.RTC_WAKEUP,
             time,
             pendingIntent)
+        val reminder = ReminderModel(uid = loggedInViewModel.liveFirebaseUser.value!!.uid,
+            medicineID = medicineDetailsViewModel.observableMedicine.value!!.uid!!,
+            groupID = groupViewModel.observableGroup.value!!.uid!!,
+            time = time, requestCode = NotificationService.notificationID)
+        reminderViewModel.addReminder(loggedInViewModel.liveFirebaseUser,reminder)
         showAlert(time)
     }
 
