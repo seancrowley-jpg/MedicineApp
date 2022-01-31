@@ -8,6 +8,7 @@ import ie.wit.medicineapp.firebase.FirebaseDBManager
 import ie.wit.medicineapp.models.MedicineModel
 import ie.wit.medicineapp.models.ReminderModel
 import timber.log.Timber
+import java.time.LocalDate
 
 class ReminderViewModel : ViewModel() {
 

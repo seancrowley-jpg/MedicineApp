@@ -13,20 +13,11 @@ import java.time.LocalDate
 import java.util.*
 
 class SchedulerViewModel : ViewModel() {
-    private var date = MutableLiveData<LocalDate>()
     private val reminderList = MutableLiveData<List<ReminderModel>>()
     var liveFirebaseUser = MutableLiveData<FirebaseUser>()
 
-    var observableDate: LiveData<LocalDate>
-        get() = date
-        set(value) {date.value = value.value}
-
     val observableRemindersList: LiveData<List<ReminderModel>>
         get() = reminderList
-
-    fun setReminderDate(reminderDate:LocalDate){
-        date.value = reminderDate
-    }
 
     init {
         load()

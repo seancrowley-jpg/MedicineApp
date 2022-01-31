@@ -14,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import ie.wit.medicineapp.adapters.MedicineAdapter
 import ie.wit.medicineapp.adapters.ReminderAdapter
 import ie.wit.medicineapp.adapters.ReminderListener
 import ie.wit.medicineapp.databinding.FragmentSchedulerBinding
@@ -30,6 +31,7 @@ class SchedulerFragment : Fragment(), ReminderListener {
     private val fragBinding get() = _fragBinding!!
     private val schedulerViewModel : SchedulerViewModel by activityViewModels()
     private val loggedInViewModel : LoggedInViewModel by activityViewModels()
+    private lateinit var adapter: ReminderAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,45 +45,31 @@ class SchedulerFragment : Fragment(), ReminderListener {
         _fragBinding = FragmentSchedulerBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         fragBinding.recyclerView.layoutManager = LinearLayoutManager(activity)
-        createCalendar()
-        schedulerViewModel.observableDate.observe(viewLifecycleOwner, Observer { date ->
-            date?.let { render() }
-        })
         schedulerViewModel.observableRemindersList.observe(viewLifecycleOwner, Observer {
                 reminders -> reminders?.let {
             renderReminders(reminders as ArrayList<ReminderModel>)
         }
         })
-        fragBinding.btnAddReminder.setOnClickListener(){
-            if(fragBinding.selectedDate.text != ""){
-                val action = SchedulerFragmentDirections.actionSchedulerFragmentToReminderFragment(fragBinding.selectedDate.text.toString())
-                findNavController().navigate(action)
-            }else{
-                Toast.makeText(context, "Please Select a Date", Toast.LENGTH_SHORT).show()
-            }
+        fragBinding.fab.setOnClickListener() {
+            val action = SchedulerFragmentDirections.actionSchedulerFragmentToReminderFragment()
+            findNavController().navigate(action)
         }
+
         return root
     }
 
     private fun renderReminders(reminders: ArrayList<ReminderModel>) {
         fragBinding.recyclerView.adapter = ReminderAdapter(reminders, this)
-    }
-
-    private fun render() {
-        fragBinding.schedulerVM = schedulerViewModel
-    }
-
-    private fun createCalendar(){
-        fragBinding.calendarView.setOnDateChangeListener{
-                _, year, month, dayOfMonth ->
-            //val date = "" + dayOfMonth + "-" + (month + 1) + "-" + year
-            //val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-            val selectedDate = LocalDate.of(year, (month + 1), dayOfMonth)
-            //val formattedDate = selectedDate.format(formatter)
-            fragBinding.selectedDate.text = selectedDate.toString()
-            schedulerViewModel.setReminderDate(selectedDate)
+        adapter = fragBinding.recyclerView.adapter as ReminderAdapter
+        if (reminders.isEmpty()) {
+            fragBinding.recyclerView.visibility = View.GONE
+            fragBinding.remindersNotFound.visibility = View.VISIBLE
+        } else {
+            fragBinding.recyclerView.visibility = View.VISIBLE
+            fragBinding.remindersNotFound.visibility = View.GONE
         }
     }
+
 
     override fun onResume() {
         super.onResume()
