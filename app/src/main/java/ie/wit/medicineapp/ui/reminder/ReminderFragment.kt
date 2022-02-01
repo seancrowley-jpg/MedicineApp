@@ -33,6 +33,7 @@ class ReminderFragment : Fragment() {
     private val args by navArgs<ReminderFragmentArgs>()
     private var alarmManager: AlarmManager? = null
     private lateinit var pendingIntent: PendingIntent
+    var reminder = ReminderModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,13 +45,12 @@ class ReminderFragment : Fragment() {
     ): View? {
         _fragBinding = FragmentReminderBinding.inflate(inflater, container, false)
         val root = fragBinding.root
-        reminderViewModel.observableReminder.observe(
-            viewLifecycleOwner,
-            Observer { reminder -> reminder?.let { render() } })
+
         groupViewModel.getGroup(loggedInViewModel.liveFirebaseUser.value?.uid!!, args.groupId)
         groupViewModel.observableGroup.observe(viewLifecycleOwner, Observer { group ->
             group?.let { renderGroup() }
         })
+
         medicineDetailsViewModel.getMedicine(
             loggedInViewModel.liveFirebaseUser.value?.uid!!,
             args.groupId,
@@ -61,19 +61,28 @@ class ReminderFragment : Fragment() {
             Observer { medicine ->
                 medicine?.let { renderMedicine() }
             })
+
         fragBinding.btnAddMed.setOnClickListener() {
             val action = ReminderFragmentDirections.actionReminderFragmentToGroupListFragment(
                 reminder = true
             )
             findNavController().navigate(action)
         }
+
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             val action = ReminderFragmentDirections.actionReminderFragmentToSchedulerFragment()
             findNavController().navigate(action)
         }
+
         val timePicker = fragBinding.timePicker
         timePicker.setOnTimeChangedListener { _, hour, min ->
             Toast.makeText(context, "Time: $hour:$min", Toast.LENGTH_SHORT).show()
+        }
+        if (args.edit){
+            reminderViewModel.getReminder(loggedInViewModel.liveFirebaseUser.value!!.uid, args.reminderId)
+            reminderViewModel.observableReminder.observe(
+                viewLifecycleOwner,
+                Observer { reminder -> reminder?.let { render() } })
         }
         setButtonListener(fragBinding)
         return root
@@ -121,17 +130,23 @@ class ReminderFragment : Fragment() {
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
             )
             alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            val time = getTime()
+            val minute = fragBinding.timePicker.minute
+            val hour = fragBinding.timePicker.hour
+            val day = fragBinding.datePicker.dayOfMonth
+            val month = fragBinding.datePicker.month
+            val year = fragBinding.datePicker.year
+            val time = getTime(year, month, day, hour, minute)
             alarmManager!!.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 time,
                 pendingIntent
             )
-            val reminder = ReminderModel(
+            reminder = ReminderModel(
                 uid = loggedInViewModel.liveFirebaseUser.value!!.uid,
                 medicineID = medicineDetailsViewModel.observableMedicine.value!!.uid!!,
                 groupID = groupViewModel.observableGroup.value!!.uid!!,
-                time = time, requestCode = NotificationService.notificationID
+                time = time, requestCode = NotificationService.notificationID,
+                minute = minute, hour = hour, day = day, month = month, year = year
             )
             reminderViewModel.addReminder(loggedInViewModel.liveFirebaseUser, reminder)
             showAlert(time)
@@ -153,12 +168,7 @@ class ReminderFragment : Fragment() {
                 .show()
         }
 
-        private fun getTime(): Long {
-            val minute = fragBinding.timePicker.minute
-            val hour = fragBinding.timePicker.hour
-            val day = fragBinding.datePicker.dayOfMonth
-            val month = fragBinding.datePicker.month
-            val year = fragBinding.datePicker.year
+        private fun getTime(year: Int, month: Int, day: Int, hour: Int, minute: Int): Long {
             val calendar = Calendar.getInstance()
             calendar.set(year, month, day, hour, minute)
             return calendar.timeInMillis

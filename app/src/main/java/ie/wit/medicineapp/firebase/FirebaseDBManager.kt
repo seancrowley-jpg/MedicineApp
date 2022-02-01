@@ -196,4 +196,17 @@ object FirebaseDBManager : MedicineAppStore {
         childDelete["/user-reminders/$userid/$reminderId"] = null
         database.updateChildren(childDelete)
     }
+
+    override fun findReminderById(
+        userid: String,
+        reminderId: String,
+        reminder: MutableLiveData<ReminderModel>
+    ) {
+        database.child("user-reminders").child(userid)
+            .child(reminderId).get().addOnSuccessListener {
+                reminder.value = it.getValue(ReminderModel::class.java)
+                Timber.i("firebase Got value ${it.value}")
+            }.addOnFailureListener{
+                Timber.e("firebase Error getting data $it")
+            }    }
 }

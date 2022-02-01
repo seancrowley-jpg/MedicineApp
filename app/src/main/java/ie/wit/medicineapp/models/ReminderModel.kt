@@ -12,7 +12,12 @@ data class ReminderModel(
     var groupID: String = "",
     var time: Long = 0,
     var requestCode: Int = 0,
-): Parcelable {
+    var year: Int = 0,
+    var month: Int = 0,
+    var day: Int = 0,
+    var hour: Int = 0,
+    var minute: Int = 0,
+    ): Parcelable {
     @Exclude
     fun toMap(): Map<String, Any?> {
         return mapOf(
@@ -21,6 +26,11 @@ data class ReminderModel(
             "groupID" to groupID,
             "time" to time,
             "requestCode" to requestCode,
+            "year" to year,
+            "month" to month,
+            "day" to day,
+            "hour" to hour,
+            "minute" to minute,
             )
     }
 }

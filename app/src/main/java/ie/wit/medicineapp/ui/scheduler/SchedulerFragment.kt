@@ -81,7 +81,7 @@ class SchedulerFragment : Fragment(), ReminderListener {
         })
     }
 
-    override fun onReminderBtnClick(reminder: ReminderModel) {
+    override fun onReminderDeleteClick(reminder: ReminderModel) {
         val intent = Intent(context, NotificationService::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
             context, reminder.requestCode , intent,
@@ -97,6 +97,11 @@ class SchedulerFragment : Fragment(), ReminderListener {
         }
         schedulerViewModel.deleteReminder(reminder)
         schedulerViewModel.load()
+    }
+
+    override fun onReminderClick(reminder: ReminderModel) {
+        val action = SchedulerFragmentDirections.actionSchedulerFragmentToReminderFragment(reminder.medicineID, reminder.groupID, edit = true, reminder.uid)
+        findNavController().navigate(action)
     }
 
 }

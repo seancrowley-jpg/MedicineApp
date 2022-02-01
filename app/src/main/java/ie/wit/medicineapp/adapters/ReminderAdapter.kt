@@ -7,7 +7,8 @@ import ie.wit.medicineapp.databinding.CardReminderBinding
 import ie.wit.medicineapp.models.ReminderModel
 
 interface ReminderListener{
-    fun onReminderBtnClick(reminder: ReminderModel)
+    fun onReminderDeleteClick(reminder: ReminderModel)
+    fun onReminderClick(reminder: ReminderModel)
 }
 
 class ReminderAdapter constructor(private var reminders: ArrayList<ReminderModel>, private val listener: ReminderListener) :
@@ -38,7 +39,8 @@ class ReminderAdapter constructor(private var reminders: ArrayList<ReminderModel
         fun bind(reminder: ReminderModel, listener: ReminderListener) {
             binding.reminder = reminder
             binding.root.tag = reminder
-            binding.btnDeleteReminder.setOnClickListener{ listener.onReminderBtnClick(reminder)}
+            binding.btnDeleteReminder.setOnClickListener{ listener.onReminderDeleteClick(reminder)}
+            binding.root.setOnClickListener{ listener.onReminderClick(reminder)}
             binding.executePendingBindings()
         }
     }

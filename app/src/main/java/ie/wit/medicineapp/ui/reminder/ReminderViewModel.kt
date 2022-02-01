@@ -26,4 +26,13 @@ class ReminderViewModel : ViewModel() {
             false
         }
     }
+
+    fun getReminder(userid:String, id: String) {
+        try {
+            FirebaseDBManager.findReminderById(userid, id, reminder)
+            Timber.i("Success got group info : ${reminder.value.toString()}")
+        } catch (e: Exception) {
+            Timber.i("Error : $e.message")
+        }
+    }
 }
