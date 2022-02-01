@@ -38,6 +38,14 @@
             android:name="reminder"
             app:argType="boolean"
             android:defaultValue="false" />
+        <argument
+            android:name="reminderId"
+            app:argType="string"
+            android:defaultValue="0" />
+        <argument
+            android:name="edit"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
 
     <fragment
@@ -78,6 +86,14 @@
             app:destination="@id/reminderFragment" />
         <argument
             android:name="reminder"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="reminderId"
+            app:argType="string"
+            android:defaultValue="0" />
+        <argument
+            android:name="edit"
             app:argType="boolean"
             android:defaultValue="false" />
     </fragment>

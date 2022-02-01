@@ -209,4 +209,11 @@ object FirebaseDBManager : MedicineAppStore {
             }.addOnFailureListener{
                 Timber.e("firebase Error getting data $it")
             }    }
+
+    override fun updateReminder(userid: String, reminderId: String, reminder: ReminderModel) {
+        val reminderValues = reminder.toMap()
+        val childUpdate : MutableMap<String, Any?> = HashMap()
+        childUpdate["user-reminders/$userid/$reminderId"] = reminderValues
+        database.updateChildren(childUpdate)
+    }
 }

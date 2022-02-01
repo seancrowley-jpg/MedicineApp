@@ -14,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import ie.wit.medicineapp.R
 import ie.wit.medicineapp.databinding.FragmentReminderBinding
 import ie.wit.medicineapp.models.ReminderModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
@@ -83,6 +84,14 @@ class ReminderFragment : Fragment() {
             reminderViewModel.observableReminder.observe(
                 viewLifecycleOwner,
                 Observer { reminder -> reminder?.let { render() } })
+
+            fragBinding.btnAddMed.text = getString(R.string.btn_change_medication)
+            fragBinding.btnAddMed.setOnClickListener() {
+                val action = ReminderFragmentDirections.actionReminderFragmentToGroupListFragment(
+                    reminder = true, reminderId = args.reminderId, edit = true
+                )
+                findNavController().navigate(action)
+            }
         }
         setButtonListener(fragBinding)
         return root
@@ -90,11 +99,25 @@ class ReminderFragment : Fragment() {
 
 
         private fun setButtonListener(layout: FragmentReminderBinding) {
-            layout.btnSetReminder.setOnClickListener() {
-                if (layout.medicineId.text != "") {
-                    scheduleNotification()
-                } else {
-                    Toast.makeText(context, "Please Select a Medication", Toast.LENGTH_SHORT).show()
+            if (args.edit) {
+                layout.btnSetReminder.text = getString(R.string.btn_edit_reminder)
+                layout.btnSetReminder.setOnClickListener() {
+                    if (layout.medicineId.text != "") {
+                        updateReminder()
+                        Toast.makeText(context, "Reminder Updated", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "Please Select a Medication", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }else {
+                layout.btnSetReminder.setOnClickListener() {
+                    if (layout.medicineId.text != "") {
+                        scheduleReminder()
+                        Toast.makeText(context, "Reminder Created", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "Please Select a Medication", Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }
             }
         }
@@ -112,7 +135,7 @@ class ReminderFragment : Fragment() {
             fragBinding.medicineVM = medicineDetailsViewModel
         }
 
-        private fun scheduleNotification() {
+        private fun scheduleReminder() {
             val intent = Intent(context, NotificationService::class.java)
             intent.putExtra(NotificationService.titleExtra, "Medicine Due!")
             intent.putExtra(
@@ -151,6 +174,46 @@ class ReminderFragment : Fragment() {
             reminderViewModel.addReminder(loggedInViewModel.liveFirebaseUser, reminder)
             showAlert(time)
         }
+
+    private fun updateReminder() {
+        val intent = Intent(context, NotificationService::class.java)
+        intent.putExtra(NotificationService.titleExtra, "Medicine Due!")
+        intent.putExtra(
+            NotificationService.messageExtra,
+            medicineDetailsViewModel.observableMedicine.value!!.name + " " + medicineDetailsViewModel.observableMedicine.value!!.dosage
+        )
+        intent.putExtra(NotificationService.group, groupViewModel.observableGroup.value!!.name)
+        if (groupViewModel.observableGroup.value!!.priorityLevel == 2)
+            intent.putExtra(NotificationService.channelID, "highChannelID")
+        else
+            intent.putExtra(NotificationService.channelID, NotificationService.channelID)
+
+        pendingIntent = PendingIntent.getBroadcast(
+            context, reminderViewModel.observableReminder.value!!.requestCode, intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val minute = fragBinding.timePicker.minute
+        val hour = fragBinding.timePicker.hour
+        val day = fragBinding.datePicker.dayOfMonth
+        val month = fragBinding.datePicker.month
+        val year = fragBinding.datePicker.year
+        val time = getTime(year, month, day, hour, minute)
+        alarmManager!!.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            time,
+            pendingIntent
+        )
+        reminder = ReminderModel(
+            uid = args.reminderId,
+            medicineID = medicineDetailsViewModel.observableMedicine.value!!.uid!!,
+            groupID = groupViewModel.observableGroup.value!!.uid!!,
+            time = time, requestCode = reminderViewModel.observableReminder.value!!.requestCode,
+            minute = minute, hour = hour, day = day, month = month, year = year
+        )
+        reminderViewModel.updateReminder(reminder,loggedInViewModel.liveFirebaseUser.value!!.uid, args.reminderId)
+        showAlert(time)
+    }
 
         private fun showAlert(time: Long) {
             val date = Date(time)

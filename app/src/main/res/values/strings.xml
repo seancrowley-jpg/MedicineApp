@@ -57,6 +57,8 @@
     <string name="formatDate">%1$td/%1$tm/%1$tY</string>
     <string name="formatTime">%1$tI:%1$tM%1$tp</string>
     <string name="reminder_header">Reminders:</string>
+    <string name="btn_edit_reminder">Edit Reminder</string>
+    <string name="btn_change_medication">Change Medicine</string>
 
 
 

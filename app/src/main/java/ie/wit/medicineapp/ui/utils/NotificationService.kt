@@ -12,13 +12,12 @@ class NotificationService : BroadcastReceiver() {
 
     companion object{
         val channelID = "channelID"
-        var notificationID = 1
+        var notificationID = Random().nextInt()
         val titleExtra = "Reminder Notification"
         val messageExtra = "A Reminder"
         val group = "Group Name"
         val highChannelId ="highChannelID"
     }
-
 
     override fun onReceive(context: Context, intent: Intent?) {
 
@@ -30,14 +29,10 @@ class NotificationService : BroadcastReceiver() {
             .setGroup(intent?.getStringExtra(group))
             .build()
 
-        notificationID = generateRandomInt()
+
 
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         manager.notify(notificationID, notification)
-    }
-
-    private fun generateRandomInt() : Int {
-        return Random().nextInt()
     }
 
 }

@@ -127,7 +127,7 @@ class MedicineListFragment : Fragment(), MedicineListener {
 
     override fun onMedicineClick(medicine: MedicineModel) {
         if (args.reminder) {
-            val actionReminder = MedicineListFragmentDirections.actionMedicineListFragmentToReminderFragment(medicineId = medicine.uid!!, groupId = args.groupId)
+            val actionReminder = MedicineListFragmentDirections.actionMedicineListFragmentToReminderFragment(medicineId = medicine.uid!!, groupId = args.groupId, reminderId = args.reminderId, edit = args.edit)
             findNavController().navigate(actionReminder)
         }
         else {

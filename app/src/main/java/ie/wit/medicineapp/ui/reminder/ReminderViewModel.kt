@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
 import ie.wit.medicineapp.firebase.FirebaseDBManager
+import ie.wit.medicineapp.models.GroupModel
 import ie.wit.medicineapp.models.MedicineModel
 import ie.wit.medicineapp.models.ReminderModel
 import timber.log.Timber
@@ -31,6 +32,15 @@ class ReminderViewModel : ViewModel() {
         try {
             FirebaseDBManager.findReminderById(userid, id, reminder)
             Timber.i("Success got group info : ${reminder.value.toString()}")
+        } catch (e: Exception) {
+            Timber.i("Error : $e.message")
+        }
+    }
+
+    fun updateReminder(reminder: ReminderModel, userid:String, id: String) {
+        try {
+            FirebaseDBManager.updateReminder(userid, id, reminder)
+            Timber.i("Success updated Group : $reminder")
         } catch (e: Exception) {
             Timber.i("Error : $e.message")
         }

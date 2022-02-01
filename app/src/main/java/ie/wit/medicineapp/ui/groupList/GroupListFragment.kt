@@ -133,7 +133,7 @@ class GroupListFragment : Fragment(), GroupListener {
 
     override fun onGroupClick(group: GroupModel) {
         if (args.reminder){
-            val action = GroupListFragmentDirections.actionGroupListFragmentToMedicineListFragment(group.uid!!, reminder = true)
+            val action = GroupListFragmentDirections.actionGroupListFragmentToMedicineListFragment(group.uid!!, reminder = true, reminderId = args.reminderId, edit = args.edit)
             findNavController().navigate(action)
         }
         else {

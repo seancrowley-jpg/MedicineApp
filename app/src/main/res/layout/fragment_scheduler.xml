@@ -46,7 +46,7 @@
                 android:id="@+id/remindersNotFound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/empty_medication"
+                android:text="@string/empty_reminders"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/black"
