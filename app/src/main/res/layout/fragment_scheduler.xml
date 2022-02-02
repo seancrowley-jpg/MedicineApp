@@ -6,6 +6,15 @@
         <variable
             name="schedulerVM"
             type="ie.wit.medicineapp.ui.scheduler.SchedulerViewModel" />
+        <variable
+            name="medicineVM"
+            type="ie.wit.medicineapp.ui.medicineDetails.MedicineDetailsViewModel" />
+        <variable
+            name="groupVM"
+            type="ie.wit.medicineapp.ui.group.GroupViewModel" />
+        <variable
+            name="reminderVM"
+            type="ie.wit.medicineapp.ui.reminder.ReminderViewModel" />
     </data>
 
     <ScrollView

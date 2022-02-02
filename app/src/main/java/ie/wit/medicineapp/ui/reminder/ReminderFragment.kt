@@ -48,9 +48,6 @@ class ReminderFragment : Fragment() {
         val root = fragBinding.root
 
         groupViewModel.getGroup(loggedInViewModel.liveFirebaseUser.value?.uid!!, args.groupId)
-        groupViewModel.observableGroup.observe(viewLifecycleOwner, Observer { group ->
-            group?.let { renderGroup() }
-        })
 
         medicineDetailsViewModel.getMedicine(
             loggedInViewModel.liveFirebaseUser.value?.uid!!,
@@ -136,39 +133,17 @@ class ReminderFragment : Fragment() {
         }
 
         private fun scheduleReminder() {
-            val intent = Intent(context, NotificationService::class.java)
-            intent.putExtra(NotificationService.titleExtra, "Medicine Due!")
-            intent.putExtra(
-                NotificationService.messageExtra,
-                medicineDetailsViewModel.observableMedicine.value!!.name + " " + medicineDetailsViewModel.observableMedicine.value!!.dosage
-            )
-            intent.putExtra(NotificationService.group, groupViewModel.observableGroup.value!!.name)
-            if (groupViewModel.observableGroup.value!!.priorityLevel == 2)
-                intent.putExtra(NotificationService.channelID, "highChannelID")
-            else
-                intent.putExtra(NotificationService.channelID, NotificationService.channelID)
-
-            pendingIntent = PendingIntent.getBroadcast(
-                context, NotificationService.notificationID, intent,
-                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-            )
-            alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val minute = fragBinding.timePicker.minute
             val hour = fragBinding.timePicker.hour
             val day = fragBinding.datePicker.dayOfMonth
             val month = fragBinding.datePicker.month
             val year = fragBinding.datePicker.year
             val time = getTime(year, month, day, hour, minute)
-            alarmManager!!.setExactAndAllowWhileIdle(
-                AlarmManager.RTC_WAKEUP,
-                time,
-                pendingIntent
-            )
             reminder = ReminderModel(
                 uid = loggedInViewModel.liveFirebaseUser.value!!.uid,
                 medicineID = medicineDetailsViewModel.observableMedicine.value!!.uid!!,
                 groupID = groupViewModel.observableGroup.value!!.uid!!,
-                time = time, requestCode = NotificationService.notificationID,
+                time = time, requestCode = Random().nextInt(),
                 minute = minute, hour = hour, day = day, month = month, year = year
             )
             reminderViewModel.addReminder(loggedInViewModel.liveFirebaseUser, reminder)
@@ -176,34 +151,12 @@ class ReminderFragment : Fragment() {
         }
 
     private fun updateReminder() {
-        val intent = Intent(context, NotificationService::class.java)
-        intent.putExtra(NotificationService.titleExtra, "Medicine Due!")
-        intent.putExtra(
-            NotificationService.messageExtra,
-            medicineDetailsViewModel.observableMedicine.value!!.name + " " + medicineDetailsViewModel.observableMedicine.value!!.dosage
-        )
-        intent.putExtra(NotificationService.group, groupViewModel.observableGroup.value!!.name)
-        if (groupViewModel.observableGroup.value!!.priorityLevel == 2)
-            intent.putExtra(NotificationService.channelID, "highChannelID")
-        else
-            intent.putExtra(NotificationService.channelID, NotificationService.channelID)
-
-        pendingIntent = PendingIntent.getBroadcast(
-            context, reminderViewModel.observableReminder.value!!.requestCode, intent,
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
-        alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val minute = fragBinding.timePicker.minute
         val hour = fragBinding.timePicker.hour
         val day = fragBinding.datePicker.dayOfMonth
         val month = fragBinding.datePicker.month
         val year = fragBinding.datePicker.year
         val time = getTime(year, month, day, hour, minute)
-        alarmManager!!.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            time,
-            pendingIntent
-        )
         reminder = ReminderModel(
             uid = args.reminderId,
             medicineID = medicineDetailsViewModel.observableMedicine.value!!.uid!!,

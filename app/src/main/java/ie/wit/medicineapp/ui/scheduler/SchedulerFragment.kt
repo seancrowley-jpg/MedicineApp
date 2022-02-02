@@ -20,6 +20,8 @@ import ie.wit.medicineapp.adapters.ReminderListener
 import ie.wit.medicineapp.databinding.FragmentSchedulerBinding
 import ie.wit.medicineapp.models.ReminderModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
+import ie.wit.medicineapp.ui.group.GroupViewModel
+import ie.wit.medicineapp.ui.medicineDetails.MedicineDetailsViewModel
 import ie.wit.medicineapp.ui.utils.NotificationService
 import timber.log.Timber
 import java.time.LocalDate
@@ -32,6 +34,11 @@ class SchedulerFragment : Fragment(), ReminderListener {
     private val schedulerViewModel : SchedulerViewModel by activityViewModels()
     private val loggedInViewModel : LoggedInViewModel by activityViewModels()
     private lateinit var adapter: ReminderAdapter
+    private var alarmManager: AlarmManager? = null
+    private lateinit var pendingIntent: PendingIntent
+    private val medicineDetailsViewModel: MedicineDetailsViewModel by activityViewModels()
+    private val groupViewModel: GroupViewModel by activityViewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +89,16 @@ class SchedulerFragment : Fragment(), ReminderListener {
     }
 
     override fun onReminderDeleteClick(reminder: ReminderModel) {
+        schedulerViewModel.deleteReminder(reminder)
+        schedulerViewModel.load()
+    }
+
+    override fun onReminderClick(reminder: ReminderModel) {
+        val action = SchedulerFragmentDirections.actionSchedulerFragmentToReminderFragment(reminder.medicineID, reminder.groupID, edit = true, reminder.uid)
+        findNavController().navigate(action)
+    }
+
+    override fun onReminderToggleBtnOff(reminder: ReminderModel) {
         val intent = Intent(context, NotificationService::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
             context, reminder.requestCode , intent,
@@ -95,13 +112,40 @@ class SchedulerFragment : Fragment(), ReminderListener {
         else {
             Toast.makeText(context, "ALARM Not Found", Toast.LENGTH_SHORT).show()
         }
-        schedulerViewModel.deleteReminder(reminder)
-        schedulerViewModel.load()
     }
 
-    override fun onReminderClick(reminder: ReminderModel) {
-        val action = SchedulerFragmentDirections.actionSchedulerFragmentToReminderFragment(reminder.medicineID, reminder.groupID, edit = true, reminder.uid)
-        findNavController().navigate(action)
+    override fun onReminderToggleBtnOn(reminder: ReminderModel) {
+        groupViewModel.getGroup(loggedInViewModel.liveFirebaseUser.value?.uid!!, reminder.groupID)
+        medicineDetailsViewModel.getMedicine(
+            loggedInViewModel.liveFirebaseUser.value?.uid!!,
+            reminder.groupID,
+            reminder.medicineID
+        )
+        val intent = Intent(context, NotificationService::class.java)
+        intent.putExtra(NotificationService.titleExtra, "Medicine Due!")
+        intent.putExtra(
+            NotificationService.messageExtra,
+            medicineDetailsViewModel.observableMedicine.value!!.name + " " + medicineDetailsViewModel.observableMedicine.value!!.dosage +
+                    " " + reminder.requestCode
+
+        )
+        intent.putExtra(NotificationService.group, groupViewModel.observableGroup.value!!.name)
+        if (groupViewModel.observableGroup.value!!.priorityLevel == 2)
+            intent.putExtra(NotificationService.channelID, "highChannelID")
+        else
+            intent.putExtra(NotificationService.channelID, NotificationService.channelID)
+        NotificationService.notificationID = reminder.requestCode
+        pendingIntent = PendingIntent.getBroadcast(
+            context, NotificationService.notificationID, intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager!!.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            reminder.time,
+            pendingIntent
+        )
+        Toast.makeText(context, "ALARM ON", Toast.LENGTH_SHORT).show()
     }
 
 }
