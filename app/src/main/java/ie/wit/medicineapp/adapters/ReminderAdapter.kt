@@ -7,7 +7,6 @@ import ie.wit.medicineapp.databinding.CardReminderBinding
 import ie.wit.medicineapp.models.ReminderModel
 
 interface ReminderListener{
-    fun onReminderDeleteClick(reminder: ReminderModel)
     fun onReminderClick(reminder: ReminderModel)
     fun onReminderToggleBtnOff(reminder: ReminderModel)
     fun onReminderToggleBtnOn(reminder: ReminderModel)
@@ -42,7 +41,6 @@ class ReminderAdapter constructor(private var reminders: ArrayList<ReminderModel
         fun bind(reminder: ReminderModel, listener: ReminderListener) {
             binding.reminder = reminder
             binding.root.tag = reminder
-            binding.btnDeleteReminder.setOnClickListener{ listener.onReminderDeleteClick(reminder)}
             binding.root.setOnClickListener{ listener.onReminderClick(reminder)}
             toggleButton.setOnCheckedChangeListener {_, isChecked ->
                 if(isChecked) listener.onReminderToggleBtnOn(reminder)

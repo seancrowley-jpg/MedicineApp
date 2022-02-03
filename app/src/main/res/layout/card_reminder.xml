@@ -52,27 +52,15 @@
                 app:layout_constraintVertical_bias="0.984"
                 tools:text="02:09pm" />
 
-            <Button
-                android:id="@+id/btnDeleteReminder"
-                android:layout_width="57dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="3dp"
-                android:layout_marginBottom="5dp"
-                android:background="@android:drawable/ic_delete"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <include
                 android:id="@+id/toggleButton"
                 layout="@layout/togglebutton_layout"
-                android:layout_width="50dp"
+                android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="281dp"
-                android:layout_marginEnd="64dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.955"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

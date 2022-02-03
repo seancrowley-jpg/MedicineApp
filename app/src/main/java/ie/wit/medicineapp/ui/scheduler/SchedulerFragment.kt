@@ -1,28 +1,38 @@
 package ie.wit.medicineapp.ui.scheduler
 
 import android.app.AlarmManager
+import android.app.AlertDialog
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import ie.wit.medicineapp.R
 import ie.wit.medicineapp.adapters.MedicineAdapter
 import ie.wit.medicineapp.adapters.ReminderAdapter
 import ie.wit.medicineapp.adapters.ReminderListener
 import ie.wit.medicineapp.databinding.FragmentSchedulerBinding
+import ie.wit.medicineapp.helpers.createLoader
+import ie.wit.medicineapp.helpers.hideLoader
+import ie.wit.medicineapp.helpers.showLoader
+import ie.wit.medicineapp.models.GroupModel
 import ie.wit.medicineapp.models.ReminderModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
 import ie.wit.medicineapp.ui.group.GroupViewModel
 import ie.wit.medicineapp.ui.medicineDetails.MedicineDetailsViewModel
 import ie.wit.medicineapp.ui.utils.NotificationService
+import ie.wit.medicineapp.ui.utils.ReminderSwipeToDeleteCallback
+import ie.wit.medicineapp.ui.utils.SwipeToDeleteCallback
 import timber.log.Timber
 import java.time.LocalDate
 import java.util.*
@@ -38,6 +48,7 @@ class SchedulerFragment : Fragment(), ReminderListener {
     private lateinit var pendingIntent: PendingIntent
     private val medicineDetailsViewModel: MedicineDetailsViewModel by activityViewModels()
     private val groupViewModel: GroupViewModel by activityViewModels()
+    lateinit var loader : AlertDialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,16 +62,45 @@ class SchedulerFragment : Fragment(), ReminderListener {
     ): View? {
         _fragBinding = FragmentSchedulerBinding.inflate(inflater, container, false)
         val root = fragBinding.root
+        loader = createLoader(requireActivity())
         fragBinding.recyclerView.layoutManager = LinearLayoutManager(activity)
+        showLoader(loader,"Loading Reminders")
         schedulerViewModel.observableRemindersList.observe(viewLifecycleOwner, Observer {
                 reminders -> reminders?.let {
             renderReminders(reminders as ArrayList<ReminderModel>)
+            hideLoader(loader)
+            checkSwipeRefresh()
         }
         })
+        setSwipeRefresh()
         fragBinding.fab.setOnClickListener() {
             val action = SchedulerFragmentDirections.actionSchedulerFragmentToReminderFragment()
             findNavController().navigate(action)
         }
+
+        val swipeDeleteHandler = object : ReminderSwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                adapter.removeAt(viewHolder.adapterPosition)
+                val reminder = viewHolder.itemView.tag as ReminderModel
+                schedulerViewModel.deleteReminder(reminder)
+                val intent = Intent(context, NotificationService::class.java)
+                val pendingIntent = PendingIntent.getBroadcast(
+                    context, reminder.requestCode, intent,
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                )
+                val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                if (pendingIntent != null){
+                    alarmManager.cancel(pendingIntent)
+                    Toast.makeText(context,"ALARM CANCELLED", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    Toast.makeText(context, "ALARM Not Found", Toast.LENGTH_SHORT).show()
+                }
+                hideLoader(loader)
+            }
+        }
+        val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
+        itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerView)
 
         return root
     }
@@ -80,6 +120,7 @@ class SchedulerFragment : Fragment(), ReminderListener {
 
     override fun onResume() {
         super.onResume()
+        showLoader(loader,"Loading...")
         loggedInViewModel.liveFirebaseUser.observe(viewLifecycleOwner, Observer { firebaseUser ->
             if (firebaseUser != null) {
                 schedulerViewModel.liveFirebaseUser.value = firebaseUser
@@ -88,9 +129,17 @@ class SchedulerFragment : Fragment(), ReminderListener {
         })
     }
 
-    override fun onReminderDeleteClick(reminder: ReminderModel) {
-        schedulerViewModel.deleteReminder(reminder)
-        schedulerViewModel.load()
+    private fun setSwipeRefresh() {
+        fragBinding.swiperefresh.setOnRefreshListener {
+            fragBinding.swiperefresh.isRefreshing = true
+            showLoader(loader, "Loading..")
+            schedulerViewModel.load()
+        }
+    }
+
+    private fun checkSwipeRefresh() {
+        if (fragBinding.swiperefresh.isRefreshing)
+            fragBinding.swiperefresh.isRefreshing = false
     }
 
     override fun onReminderClick(reminder: ReminderModel) {
