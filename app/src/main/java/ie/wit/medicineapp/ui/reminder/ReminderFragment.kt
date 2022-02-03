@@ -177,7 +177,10 @@ class ReminderFragment : Fragment() {
             medicineID = medicineDetailsViewModel.observableMedicine.value!!.uid!!,
             groupID = groupViewModel.observableGroup.value!!.uid!!,
             time = time, requestCode = Random().nextInt(),
-            minute = minute, hour = hour, day = day, month = month, year = year
+            minute = minute, hour = hour, day = day, month = month, year = year,
+            medName = medicineDetailsViewModel.observableMedicine.value!!.name,
+            medDosage = medicineDetailsViewModel.observableMedicine.value!!.dosage!!,
+            groupPriorityLevel = groupViewModel.observableGroup.value!!.priorityLevel
         )
         reminderViewModel.addReminder(loggedInViewModel.liveFirebaseUser, reminder)
         showAlert(time)
@@ -195,7 +198,10 @@ class ReminderFragment : Fragment() {
             medicineID = medicineDetailsViewModel.observableMedicine.value!!.uid!!,
             groupID = groupViewModel.observableGroup.value!!.uid!!,
             time = time, requestCode = reminderViewModel.observableReminder.value!!.requestCode,
-            minute = minute, hour = hour, day = day, month = month, year = year
+            minute = minute, hour = hour, day = day, month = month, year = year,
+            medName = medicineDetailsViewModel.observableMedicine.value!!.name,
+            medDosage = medicineDetailsViewModel.observableMedicine.value!!.dosage!!,
+            groupPriorityLevel = groupViewModel.observableGroup.value!!.priorityLevel
         )
         reminderViewModel.updateReminder(
             reminder,

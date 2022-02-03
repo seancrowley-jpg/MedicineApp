@@ -164,22 +164,14 @@ class SchedulerFragment : Fragment(), ReminderListener {
     }
 
     override fun onReminderToggleBtnOn(reminder: ReminderModel) {
-        groupViewModel.getGroup(loggedInViewModel.liveFirebaseUser.value?.uid!!, reminder.groupID)
-        medicineDetailsViewModel.getMedicine(
-            loggedInViewModel.liveFirebaseUser.value?.uid!!,
-            reminder.groupID,
-            reminder.medicineID
-        )
         val intent = Intent(context, NotificationService::class.java)
         intent.putExtra(NotificationService.titleExtra, "Medicine Due!")
         intent.putExtra(
             NotificationService.messageExtra,
-            medicineDetailsViewModel.observableMedicine.value!!.name + " " + medicineDetailsViewModel.observableMedicine.value!!.dosage +
-                    " " + reminder.requestCode
-
+            reminder.medName + " " + reminder.medDosage
         )
-        intent.putExtra(NotificationService.group, groupViewModel.observableGroup.value!!.name)
-        if (groupViewModel.observableGroup.value!!.priorityLevel == 2)
+        //intent.putExtra(NotificationService.group, groupViewModel.observableGroup.value!!.name)
+        if (reminder.groupPriorityLevel == 2)
             intent.putExtra(NotificationService.channelID, "highChannelID")
         else
             intent.putExtra(NotificationService.channelID, NotificationService.channelID)

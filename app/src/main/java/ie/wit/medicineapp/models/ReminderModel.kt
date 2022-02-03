@@ -17,6 +17,9 @@ data class ReminderModel(
     var day: Int = 0,
     var hour: Int = 0,
     var minute: Int = 0,
+    var medName: String = "",
+    var medDosage: String = "",
+    var groupPriorityLevel: Int = 0,
     ): Parcelable {
     @Exclude
     fun toMap(): Map<String, Any?> {
@@ -31,6 +34,9 @@ data class ReminderModel(
             "day" to day,
             "hour" to hour,
             "minute" to minute,
+            "medName" to medName,
+            "medDosage" to medDosage,
+            "groupPriorityLevel" to groupPriorityLevel,
             )
     }
 }
