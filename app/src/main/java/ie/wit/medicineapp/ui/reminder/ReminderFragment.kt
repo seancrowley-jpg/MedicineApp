@@ -2,6 +2,7 @@ package ie.wit.medicineapp.ui.reminder
 
 import android.app.*
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
@@ -74,7 +75,6 @@ class ReminderFragment : Fragment() {
             val action = ReminderFragmentDirections.actionReminderFragmentToSchedulerFragment()
             findNavController().navigate(action)
         }
-
         if (args.edit) {
             reminderViewModel.getReminder(
                 loggedInViewModel.liveFirebaseUser.value!!.uid,
@@ -83,16 +83,7 @@ class ReminderFragment : Fragment() {
             reminderViewModel.observableReminder.observe(
                 viewLifecycleOwner,
                 Observer { reminder -> reminder?.let { render() } })
-
-            fragBinding.btnAddMed.text = getString(R.string.btn_change_medication)
-            fragBinding.btnAddMed.setOnClickListener() {
-                val action = ReminderFragmentDirections.actionReminderFragmentToGroupListFragment(
-                    reminder = true, reminderId = args.reminderId, edit = true
-                )
-                findNavController().navigate(action)
-            }
         }
-
         setButtonListener(fragBinding)
         return root
     }
@@ -139,6 +130,13 @@ class ReminderFragment : Fragment() {
                     Toast.makeText(context, "Please Select a Medication", Toast.LENGTH_SHORT).show()
                 }
             }
+            layout.btnAddMed.text = getString(R.string.btn_change_medication)
+            layout.btnAddMed.setOnClickListener() {
+                val action = ReminderFragmentDirections.actionReminderFragmentToGroupListFragment(
+                    reminder = true, reminderId = args.reminderId, edit = true
+                )
+                findNavController().navigate(action)
+            }
         } else {
             layout.btnSetReminder.setOnClickListener() {
                 if (layout.medicineId.text != "") {
@@ -149,6 +147,9 @@ class ReminderFragment : Fragment() {
                         .show()
                 }
             }
+        }
+        layout.btnRepeat.setOnClickListener() {
+            showRepeatDialog()
         }
     }
 
@@ -172,16 +173,21 @@ class ReminderFragment : Fragment() {
         val month = fragBinding.datePicker.month
         val year = fragBinding.datePicker.year
         val time = getTime(year, month, day, hour, minute)
-        reminder = ReminderModel(
-            uid = loggedInViewModel.liveFirebaseUser.value!!.uid,
-            medicineID = medicineDetailsViewModel.observableMedicine.value!!.uid!!,
-            groupID = groupViewModel.observableGroup.value!!.uid!!,
-            time = time, requestCode = Random().nextInt(),
-            minute = minute, hour = hour, day = day, month = month, year = year,
-            medName = medicineDetailsViewModel.observableMedicine.value!!.name,
-            medDosage = medicineDetailsViewModel.observableMedicine.value!!.dosage!!,
-            groupPriorityLevel = groupViewModel.observableGroup.value!!.priorityLevel
-        )
+
+        reminder.uid = loggedInViewModel.liveFirebaseUser.value!!.uid
+        reminder.medicineID = medicineDetailsViewModel.observableMedicine.value!!.uid!!
+        reminder.groupID = groupViewModel.observableGroup.value!!.uid!!
+        reminder.time = time
+        reminder.requestCode = Random().nextInt()
+        reminder.minute = minute
+        reminder.hour = hour
+        reminder.day = day;
+        reminder.month = month
+        reminder.year = year
+        reminder.medName = medicineDetailsViewModel.observableMedicine.value!!.name
+        reminder.medDosage = medicineDetailsViewModel.observableMedicine.value!!.dosage!!
+        reminder.groupPriorityLevel = groupViewModel.observableGroup.value!!.priorityLevel
+
         reminderViewModel.addReminder(loggedInViewModel.liveFirebaseUser, reminder)
         showAlert(time)
     }
@@ -193,16 +199,22 @@ class ReminderFragment : Fragment() {
         val month = fragBinding.datePicker.month
         val year = fragBinding.datePicker.year
         val time = getTime(year, month, day, hour, minute)
-        reminder = ReminderModel(
-            uid = args.reminderId,
-            medicineID = medicineDetailsViewModel.observableMedicine.value!!.uid!!,
-            groupID = groupViewModel.observableGroup.value!!.uid!!,
-            time = time, requestCode = reminderViewModel.observableReminder.value!!.requestCode,
-            minute = minute, hour = hour, day = day, month = month, year = year,
-            medName = medicineDetailsViewModel.observableMedicine.value!!.name,
-            medDosage = medicineDetailsViewModel.observableMedicine.value!!.dosage!!,
-            groupPriorityLevel = groupViewModel.observableGroup.value!!.priorityLevel
-        )
+
+        reminder.uid = reminderViewModel.observableReminder.value!!.uid
+        reminder.medicineID = medicineDetailsViewModel.observableMedicine.value!!.uid!!
+        reminder.groupID = groupViewModel.observableGroup.value!!.uid!!
+        reminder.time = time
+        reminder.requestCode = reminderViewModel.observableReminder.value!!.requestCode
+        reminder.minute = minute
+        reminder.hour = hour
+        reminder.day = day
+        reminder.month = month
+        reminder.year = year
+        reminder.medName = medicineDetailsViewModel.observableMedicine.value!!.name
+        reminder.medDosage = medicineDetailsViewModel.observableMedicine.value!!.dosage!!
+        reminder.groupPriorityLevel = groupViewModel.observableGroup.value!!.priorityLevel
+        reminder.repeatDays = reminderViewModel.observableReminder.value!!.repeatDays
+
         reminderViewModel.updateReminder(
             reminder,
             loggedInViewModel.liveFirebaseUser.value!!.uid,
@@ -228,8 +240,43 @@ class ReminderFragment : Fragment() {
     }
 
     private fun getTime(year: Int, month: Int, day: Int, hour: Int, minute: Int): Long {
-        val calendar = Calendar.getInstance()
-        calendar.set(year, month, day, hour, minute)
+        val calendar = Calendar.getInstance().apply {
+            set(year, month, day, hour, minute)
+        }
         return calendar.timeInMillis
     }
+
+    private fun showRepeatDialog(){
+        val selectedItems = ArrayList<Int>()
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Repeat")
+            .setMultiChoiceItems(R.array.days_of_week,null,
+                DialogInterface.OnMultiChoiceClickListener { _, which, isChecked ->
+                    if (isChecked) {
+                        selectedItems.add(which)
+                    } else if (selectedItems.contains(which)) {
+                        selectedItems.remove(which)
+                    }
+                })
+            .setPositiveButton("OK",
+                DialogInterface.OnClickListener { _, _ ->
+                    if(args.edit) {
+                        reminderViewModel.observableReminder.value!!.repeatDays?.clear()
+                        reminderViewModel.observableReminder.value!!.repeatDays?.addAll(
+                            selectedItems
+                        )
+                    }
+                    else {
+                        reminder.repeatDays?.clear()
+                        reminder.repeatDays?.addAll(selectedItems)
+                    }
+                })
+            .setNegativeButton("Cancel",
+                DialogInterface.OnClickListener { _, _ ->
+
+                })
+        builder.create()
+        builder.show()
+    }
+
 }

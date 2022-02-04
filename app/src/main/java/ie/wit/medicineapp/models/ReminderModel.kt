@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.os.Parcelable
 import com.google.firebase.database.Exclude
 import kotlinx.parcelize.Parcelize
+import java.util.ArrayList
 
 @Parcelize
 data class ReminderModel(
@@ -20,6 +21,8 @@ data class ReminderModel(
     var medName: String = "",
     var medDosage: String = "",
     var groupPriorityLevel: Int = 0,
+    var active: Boolean = false,
+    var repeatDays: MutableList<Int>? = ArrayList()
     ): Parcelable {
     @Exclude
     fun toMap(): Map<String, Any?> {
@@ -37,6 +40,8 @@ data class ReminderModel(
             "medName" to medName,
             "medDosage" to medDosage,
             "groupPriorityLevel" to groupPriorityLevel,
+            "active" to active,
+            "repeatDays" to repeatDays,
             )
     }
 }

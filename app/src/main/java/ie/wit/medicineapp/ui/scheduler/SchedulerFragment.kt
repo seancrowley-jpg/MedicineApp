@@ -30,6 +30,7 @@ import ie.wit.medicineapp.models.ReminderModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
 import ie.wit.medicineapp.ui.group.GroupViewModel
 import ie.wit.medicineapp.ui.medicineDetails.MedicineDetailsViewModel
+import ie.wit.medicineapp.ui.reminder.ReminderViewModel
 import ie.wit.medicineapp.ui.utils.NotificationService
 import ie.wit.medicineapp.ui.utils.ReminderSwipeToDeleteCallback
 import ie.wit.medicineapp.ui.utils.SwipeToDeleteCallback
@@ -48,6 +49,7 @@ class SchedulerFragment : Fragment(), ReminderListener {
     private lateinit var pendingIntent: PendingIntent
     private val medicineDetailsViewModel: MedicineDetailsViewModel by activityViewModels()
     private val groupViewModel: GroupViewModel by activityViewModels()
+    private val reminderViewModel: ReminderViewModel by activityViewModels()
     lateinit var loader : AlertDialog
 
 
@@ -157,6 +159,8 @@ class SchedulerFragment : Fragment(), ReminderListener {
         if (pendingIntent != null){
             alarmManager.cancel(pendingIntent)
             Toast.makeText(context,"ALARM CANCELLED", Toast.LENGTH_SHORT).show()
+            reminder.active = false
+            reminderViewModel.updateReminder(reminder, loggedInViewModel.liveFirebaseUser.value!!.uid, reminder.uid)
         }
         else {
             Toast.makeText(context, "ALARM Not Found", Toast.LENGTH_SHORT).show()
@@ -168,9 +172,8 @@ class SchedulerFragment : Fragment(), ReminderListener {
         intent.putExtra(NotificationService.titleExtra, "Medicine Due!")
         intent.putExtra(
             NotificationService.messageExtra,
-            reminder.medName + " " + reminder.medDosage
+            reminder.medName + " " + reminder.medDosage + " " + reminder.requestCode
         )
-        //intent.putExtra(NotificationService.group, groupViewModel.observableGroup.value!!.name)
         if (reminder.groupPriorityLevel == 2)
             intent.putExtra(NotificationService.channelID, "highChannelID")
         else
@@ -186,6 +189,8 @@ class SchedulerFragment : Fragment(), ReminderListener {
             reminder.time,
             pendingIntent
         )
+        reminder.active = true
+        reminderViewModel.updateReminder(reminder, loggedInViewModel.liveFirebaseUser.value!!.uid, reminder.uid)
         Toast.makeText(context, "ALARM ON", Toast.LENGTH_SHORT).show()
     }
 
