@@ -150,6 +150,20 @@ class SchedulerFragment : Fragment(), ReminderListener {
     }
 
     override fun onReminderToggleBtnOff(reminder: ReminderModel) {
+        NotificationService.cancelAlarm(context!!, reminder)
+        Toast.makeText(context,"ALARM CANCELLED", Toast.LENGTH_SHORT).show()
+        reminder.active = false
+        reminderViewModel.updateReminder(reminder, loggedInViewModel.liveFirebaseUser.value!!.uid, reminder.uid)
+    }
+
+    override fun onReminderToggleBtnOn(reminder: ReminderModel) {
+        NotificationService.startOnceOffAlarm(context!!, reminder)
+        reminder.active = true
+        reminderViewModel.updateReminder(reminder, loggedInViewModel.liveFirebaseUser.value!!.uid, reminder.uid)
+        Toast.makeText(context, "ALARM ON", Toast.LENGTH_SHORT).show()
+    }
+
+    /*override fun onReminderToggleBtnOff(reminder: ReminderModel) {
         val intent = Intent(context, NotificationService::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
             context, reminder.requestCode , intent,
@@ -165,9 +179,9 @@ class SchedulerFragment : Fragment(), ReminderListener {
         else {
             Toast.makeText(context, "ALARM Not Found", Toast.LENGTH_SHORT).show()
         }
-    }
+    }*/
 
-    override fun onReminderToggleBtnOn(reminder: ReminderModel) {
+    /*override fun onReminderToggleBtnOn(reminder: ReminderModel) {
         val intent = Intent(context, NotificationService::class.java)
         intent.putExtra(NotificationService.titleExtra, "Medicine Due!")
         intent.putExtra(
@@ -192,6 +206,6 @@ class SchedulerFragment : Fragment(), ReminderListener {
         reminder.active = true
         reminderViewModel.updateReminder(reminder, loggedInViewModel.liveFirebaseUser.value!!.uid, reminder.uid)
         Toast.makeText(context, "ALARM ON", Toast.LENGTH_SHORT).show()
-    }
+    }*/
 
 }
