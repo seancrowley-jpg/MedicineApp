@@ -42,6 +42,7 @@ class ReminderAdapter constructor(private var reminders: ArrayList<ReminderModel
             binding.reminder = reminder
             binding.root.tag = reminder
             binding.root.setOnClickListener{ listener.onReminderClick(reminder)}
+            toggleButton.isChecked = reminder.active
             toggleButton.setOnCheckedChangeListener {_, isChecked ->
                 if(isChecked) listener.onReminderToggleBtnOn(reminder)
                 else listener.onReminderToggleBtnOff(reminder)

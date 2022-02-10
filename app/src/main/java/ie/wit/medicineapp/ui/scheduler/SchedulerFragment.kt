@@ -157,10 +157,17 @@ class SchedulerFragment : Fragment(), ReminderListener {
     }
 
     override fun onReminderToggleBtnOn(reminder: ReminderModel) {
-        NotificationService.startOnceOffAlarm(context!!, reminder)
+        if (reminder.repeatDays!!.size == 0) {
+            NotificationService.setOnceOffAlarm(context!!, reminder)
+            Toast.makeText(context, "ALARM ON ${Date(reminder.time)}", Toast.LENGTH_SHORT).show()
+        }
+        else
+        {
+            NotificationService.setRepeatingAlarm(context!!, reminder)
+            Toast.makeText(context, "Repeating ALARM ON", Toast.LENGTH_SHORT).show()
+        }
         reminder.active = true
         reminderViewModel.updateReminder(reminder, loggedInViewModel.liveFirebaseUser.value!!.uid, reminder.uid)
-        Toast.makeText(context, "ALARM ON", Toast.LENGTH_SHORT).show()
     }
 
     /*override fun onReminderToggleBtnOff(reminder: ReminderModel) {

@@ -224,14 +224,13 @@ class ReminderFragment : Fragment() {
     }
 
     private fun showAlert(time: Long) {
-        val date = Date(time)
         val dateFormat = android.text.format.DateFormat.getLongDateFormat(context)
         val timeFormat = android.text.format.DateFormat.getTimeFormat(context)
         AlertDialog.Builder(context)
             .setTitle("Reminder Set")
             .setMessage(
-                "Reminder Set For:" + dateFormat.format(date) + "\nAt: " + timeFormat.format(
-                    date
+                "Reminder Set For:" + dateFormat.format(time) + "\nAt: " + timeFormat.format(
+                    time
                 )
                         + "\nPriority: " + groupViewModel.observableGroup.value!!.priorityLevel
             )
@@ -241,7 +240,12 @@ class ReminderFragment : Fragment() {
 
     private fun getTime(year: Int, month: Int, day: Int, hour: Int, minute: Int): Long {
         val calendar = Calendar.getInstance().apply {
-            set(year, month, day, hour, minute)
+            set(Calendar.MINUTE, minute)
+            set(Calendar.HOUR_OF_DAY, hour)
+            set(Calendar.SECOND,0)
+        }
+        if(calendar.timeInMillis < System.currentTimeMillis()) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
         }
         return calendar.timeInMillis
     }
@@ -253,7 +257,7 @@ class ReminderFragment : Fragment() {
             .setMultiChoiceItems(R.array.days_of_week,null,
                 DialogInterface.OnMultiChoiceClickListener { _, which, isChecked ->
                     if (isChecked) {
-                        selectedItems.add(which)
+                        selectedItems.add(which + 1)
                     } else if (selectedItems.contains(which)) {
                         selectedItems.remove(which)
                     }
