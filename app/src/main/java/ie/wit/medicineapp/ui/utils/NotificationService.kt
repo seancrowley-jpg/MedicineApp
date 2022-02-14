@@ -57,12 +57,27 @@ class NotificationService : BroadcastReceiver() {
         fun setOnceOffAlarm(context: Context, reminder: ReminderModel) {
             val pendingIntent = getIntent(context, reminder)
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            alarmManager.setExactAndAllowWhileIdle(
-                AlarmManager.RTC_WAKEUP,
-                reminder.time,
-                pendingIntent
-            )
-            Toast.makeText(context,"Alarm set for ${Date(reminder.time)}",Toast.LENGTH_SHORT).show()
+            if(reminder.time < System.currentTimeMillis()) {
+                val calendar = Calendar.getInstance().apply {
+                    timeInMillis = reminder.time
+                    add(Calendar.DAY_OF_YEAR, 1);
+                }
+                alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar.timeInMillis,
+                    pendingIntent
+                )
+                Toast.makeText(context,"Alarm set for ${Date(calendar.timeInMillis)}",Toast.LENGTH_SHORT).show()
+            }
+            else {
+                alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP,
+                    reminder.time,
+                    pendingIntent
+                )
+                Toast.makeText(context, "Alarm set for ${Date(reminder.time)}", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
 
         fun setRepeatingAlarm(context: Context, reminder: ReminderModel) {

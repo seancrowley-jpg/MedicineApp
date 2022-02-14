@@ -169,10 +169,10 @@ class ReminderFragment : Fragment() {
     private fun scheduleReminder() {
         val minute = fragBinding.timePicker.minute
         val hour = fragBinding.timePicker.hour
-        val day = fragBinding.datePicker.dayOfMonth
+        /*val day = fragBinding.datePicker.dayOfMonth
         val month = fragBinding.datePicker.month
-        val year = fragBinding.datePicker.year
-        val time = getTime(year, month, day, hour, minute)
+        val year = fragBinding.datePicker.year*/
+        val time = getTime(hour, minute)
 
         reminder.uid = loggedInViewModel.liveFirebaseUser.value!!.uid
         reminder.medicineID = medicineDetailsViewModel.observableMedicine.value!!.uid!!
@@ -181,9 +181,6 @@ class ReminderFragment : Fragment() {
         reminder.requestCode = Random().nextInt()
         reminder.minute = minute
         reminder.hour = hour
-        reminder.day = day;
-        reminder.month = month
-        reminder.year = year
         reminder.medName = medicineDetailsViewModel.observableMedicine.value!!.name
         reminder.medDosage = medicineDetailsViewModel.observableMedicine.value!!.dosage!!
         reminder.groupPriorityLevel = groupViewModel.observableGroup.value!!.priorityLevel
@@ -195,10 +192,10 @@ class ReminderFragment : Fragment() {
     private fun updateReminder() {
         val minute = fragBinding.timePicker.minute
         val hour = fragBinding.timePicker.hour
-        val day = fragBinding.datePicker.dayOfMonth
+        /*val day = fragBinding.datePicker.dayOfMonth
         val month = fragBinding.datePicker.month
-        val year = fragBinding.datePicker.year
-        val time = getTime(year, month, day, hour, minute)
+        val year = fragBinding.datePicker.year*/
+        val time = getTime(hour, minute)
 
         reminder.uid = reminderViewModel.observableReminder.value!!.uid
         reminder.medicineID = medicineDetailsViewModel.observableMedicine.value!!.uid!!
@@ -207,9 +204,6 @@ class ReminderFragment : Fragment() {
         reminder.requestCode = reminderViewModel.observableReminder.value!!.requestCode
         reminder.minute = minute
         reminder.hour = hour
-        reminder.day = day
-        reminder.month = month
-        reminder.year = year
         reminder.medName = medicineDetailsViewModel.observableMedicine.value!!.name
         reminder.medDosage = medicineDetailsViewModel.observableMedicine.value!!.dosage!!
         reminder.groupPriorityLevel = groupViewModel.observableGroup.value!!.priorityLevel
@@ -238,7 +232,7 @@ class ReminderFragment : Fragment() {
             .show()
     }
 
-    private fun getTime(year: Int, month: Int, day: Int, hour: Int, minute: Int): Long {
+    private fun getTime(hour: Int, minute: Int): Long {
         val calendar = Calendar.getInstance().apply {
             set(Calendar.MINUTE, minute)
             set(Calendar.HOUR_OF_DAY, hour)

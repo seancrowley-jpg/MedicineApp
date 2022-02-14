@@ -159,7 +159,7 @@ class SchedulerFragment : Fragment(), ReminderListener {
     override fun onReminderToggleBtnOn(reminder: ReminderModel) {
         if (reminder.repeatDays!!.size == 0) {
             NotificationService.setOnceOffAlarm(context!!, reminder)
-            Toast.makeText(context, "ALARM ON ${Date(reminder.time)}", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context, "ALARM ON ${Date(reminder.time)}", Toast.LENGTH_SHORT).show()
         }
         else
         {
