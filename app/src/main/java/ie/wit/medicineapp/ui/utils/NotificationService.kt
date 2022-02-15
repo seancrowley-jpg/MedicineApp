@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.navigation.NavDeepLinkBuilder
 import ie.wit.medicineapp.R
+import ie.wit.medicineapp.firebase.FirebaseDBManager
 import ie.wit.medicineapp.models.ReminderModel
 import ie.wit.medicineapp.ui.home.Home
 import java.util.*
@@ -25,9 +26,8 @@ class NotificationService : BroadcastReceiver() {
         val group = "Group Name"
         val highChannelId = "highChannelID"
         val time = "time"
-        val snooze = "ACTION_SNOOZE"
 
-        private fun getIntent(context: Context, reminder: ReminderModel): PendingIntent? {
+        private fun getIntent(context: Context, reminder: ReminderModel, userId: String): PendingIntent? {
             val intent = Intent(context, NotificationService::class.java)
             intent.putExtra(titleExtra, "Medicine Due!")
             intent.putExtra(
@@ -35,7 +35,11 @@ class NotificationService : BroadcastReceiver() {
                 reminder.medName + " " + reminder.medDosage + " " + reminder.requestCode
             )
             intent.putExtra(time, reminder.time)
-            intent.putExtra("snooze", snooze)
+            intent.putExtra("reminderID", reminder.uid)
+            intent.putExtra("userID", userId)
+            if(reminder.repeatDays!!.size != 0){
+                intent.putExtra("repeat", true)
+            }
             if (reminder.groupPriorityLevel == 2)
                 intent.putExtra(channelID, "highChannelID")
             else
@@ -48,8 +52,8 @@ class NotificationService : BroadcastReceiver() {
             )
         }
 
-        fun setOnceOffAlarm(context: Context, reminder: ReminderModel) {
-            val pendingIntent = getIntent(context, reminder)
+        fun setOnceOffAlarm(context: Context, reminder: ReminderModel, userId: String) {
+            val pendingIntent = getIntent(context, reminder, userId)
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             if(reminder.time < System.currentTimeMillis()) {
                 val calendar = Calendar.getInstance().apply {
@@ -74,8 +78,8 @@ class NotificationService : BroadcastReceiver() {
             }
         }
 
-        fun setRepeatingAlarm(context: Context, reminder: ReminderModel) {
-            val pendingIntent = getIntent(context, reminder)
+        fun setRepeatingAlarm(context: Context, reminder: ReminderModel, userId: String) {
+            val pendingIntent = getIntent(context, reminder,userId)
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             if (reminder.repeatDays!!.size == 7) {
                 alarmManager.setRepeating(
@@ -90,8 +94,8 @@ class NotificationService : BroadcastReceiver() {
             }
         }
 
-        fun cancelAlarm(context: Context, reminder: ReminderModel) {
-            val pendingIntent = getIntent(context, reminder)
+        fun cancelAlarm(context: Context, reminder: ReminderModel, userId: String) {
+            val pendingIntent = getIntent(context, reminder,userId)
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             alarmManager.cancel(pendingIntent)
         }
@@ -125,11 +129,27 @@ class NotificationService : BroadcastReceiver() {
             .createPendingIntent()
 
         val snoozeIntent = Intent(context, ButtonReceiver::class.java)
+        snoozeIntent.putExtra("snooze", "ACTION_SNOOZE")
         snoozeIntent.putExtras(intent!!)
         val snoozePendingIntent = PendingIntent.getBroadcast(
             context, notificationID, snoozeIntent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
+
+        val skipIntent = Intent(context, ButtonReceiver::class.java)
+        skipIntent.putExtra("skip", "ACTION_SKIP")
+        skipIntent.putExtras(intent!!)
+        val skipPendingIntent = PendingIntent.getBroadcast(
+            context, notificationID, skipIntent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val repeat = intent.getBooleanExtra("repeat",false)
+        val userID = intent.getStringExtra("userID")
+        val reminderID = intent.getStringExtra("reminderID")
+        if(!repeat) {
+            FirebaseDBManager.skipReminder(userID!!, reminderID!!)
+        }
 
         val notification = NotificationCompat.Builder(context, channelID)
             .setContentTitle(intent?.getStringExtra(titleExtra))
@@ -139,6 +159,7 @@ class NotificationService : BroadcastReceiver() {
             .setGroup(intent.getStringExtra(group))
             .setContentIntent(tapIntent)
             .addAction(R.drawable.ic_launcher_foreground,"Snooze", snoozePendingIntent)
+            .addAction(R.drawable.ic_launcher_foreground,"Skip", skipPendingIntent)
             .build()
 
 

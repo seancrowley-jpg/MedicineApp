@@ -216,4 +216,9 @@ object FirebaseDBManager : MedicineAppStore {
         childUpdate["user-reminders/$userid/$reminderId"] = reminderValues
         database.updateChildren(childUpdate)
     }
+
+    override fun skipReminder(userid: String, reminderId: String) {
+        database.child("user-reminders")
+            .child(userid).child(reminderId).child("active").setValue(false)
+    }
 }

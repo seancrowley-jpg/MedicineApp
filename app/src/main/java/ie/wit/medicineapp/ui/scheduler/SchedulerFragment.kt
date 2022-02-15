@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
@@ -144,13 +145,18 @@ class SchedulerFragment : Fragment(), ReminderListener {
             fragBinding.swiperefresh.isRefreshing = false
     }
 
+    fun reminderButtonChange(isChecked: Boolean, reminder: ReminderModel) {
+        if(isChecked) onReminderToggleBtnOn(reminder)
+        else onReminderToggleBtnOff(reminder)
+    }
+
     override fun onReminderClick(reminder: ReminderModel) {
         val action = SchedulerFragmentDirections.actionSchedulerFragmentToReminderFragment(reminder.medicineID, reminder.groupID, edit = true, reminder.uid)
         findNavController().navigate(action)
     }
 
     override fun onReminderToggleBtnOff(reminder: ReminderModel) {
-        NotificationService.cancelAlarm(context!!, reminder)
+        NotificationService.cancelAlarm(context!!, reminder,loggedInViewModel.liveFirebaseUser.value!!.uid)
         Toast.makeText(context,"ALARM CANCELLED", Toast.LENGTH_SHORT).show()
         reminder.active = false
         reminderViewModel.updateReminder(reminder, loggedInViewModel.liveFirebaseUser.value!!.uid, reminder.uid)
@@ -158,12 +164,12 @@ class SchedulerFragment : Fragment(), ReminderListener {
 
     override fun onReminderToggleBtnOn(reminder: ReminderModel) {
         if (reminder.repeatDays!!.size == 0) {
-            NotificationService.setOnceOffAlarm(context!!, reminder)
+            NotificationService.setOnceOffAlarm(context!!, reminder,loggedInViewModel.liveFirebaseUser.value!!.uid)
             //Toast.makeText(context, "ALARM ON ${Date(reminder.time)}", Toast.LENGTH_SHORT).show()
         }
         else
         {
-            NotificationService.setRepeatingAlarm(context!!, reminder)
+            NotificationService.setRepeatingAlarm(context!!, reminder,loggedInViewModel.liveFirebaseUser.value!!.uid)
             Toast.makeText(context, "Repeating ALARM ON", Toast.LENGTH_SHORT).show()
         }
         reminder.active = true

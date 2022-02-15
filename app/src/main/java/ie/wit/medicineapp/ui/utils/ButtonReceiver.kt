@@ -7,6 +7,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import ie.wit.medicineapp.firebase.FirebaseDBManager
 import java.util.*
 
 class ButtonReceiver : BroadcastReceiver(){
@@ -17,11 +20,18 @@ class ButtonReceiver : BroadcastReceiver(){
 
 
     override fun onReceive(context: Context, intent: Intent) {
-        val action = intent.getStringExtra("snooze")
+        val actionSnooze = intent.getStringExtra("snooze")
+        val actionSkip = intent.getStringExtra("skip")
+        val repeat = intent.getBooleanExtra("repeat",false)
 
-        if (action.equals(NotificationService.snooze)){
+        if (actionSnooze.equals("ACTION_SNOOZE")){
             snoozeAlarm(context, intent)
             Toast.makeText(context,"SNOOZE Button Pressed", Toast.LENGTH_SHORT).show()
+            val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            manager.cancel(NotificationService.notificationID)
+        }
+        if(actionSkip.equals("ACTION_SKIP")){
+            Toast.makeText(context,"Skip Button Pressed", Toast.LENGTH_SHORT).show()
             val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             manager.cancel(NotificationService.notificationID)
         }
