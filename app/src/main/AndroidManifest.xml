@@ -12,6 +12,8 @@
         android:theme="@style/Theme.MedicineApp">
         <receiver android:name=".ui.utils.NotificationService"
             android:enabled="true"/>
+        <receiver android:name=".ui.utils.ButtonReceiver"
+            android:enabled="true"/>
         <activity
             android:name=".ui.auth.LoginActivity"
             android:exported="true">

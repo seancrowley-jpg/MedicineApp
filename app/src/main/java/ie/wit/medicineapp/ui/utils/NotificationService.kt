@@ -6,24 +6,13 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDeepLinkBuilder
-import com.google.firebase.auth.FirebaseUser
 import ie.wit.medicineapp.R
-import ie.wit.medicineapp.firebase.FirebaseAuthManager
 import ie.wit.medicineapp.models.ReminderModel
-import ie.wit.medicineapp.ui.auth.LoggedInViewModel
-import ie.wit.medicineapp.ui.auth.LoginActivity
 import ie.wit.medicineapp.ui.home.Home
 import java.util.*
-import androidx.core.content.ContextCompat.getSystemService
-
-
 
 
 class NotificationService : BroadcastReceiver() {
@@ -35,6 +24,8 @@ class NotificationService : BroadcastReceiver() {
         val messageExtra = "A Reminder"
         val group = "Group Name"
         val highChannelId = "highChannelID"
+        val time = "time"
+        val snooze = "ACTION_SNOOZE"
 
         private fun getIntent(context: Context, reminder: ReminderModel): PendingIntent? {
             val intent = Intent(context, NotificationService::class.java)
@@ -43,11 +34,14 @@ class NotificationService : BroadcastReceiver() {
                 messageExtra,
                 reminder.medName + " " + reminder.medDosage + " " + reminder.requestCode
             )
+            intent.putExtra(time, reminder.time)
+            intent.putExtra("snooze", snooze)
             if (reminder.groupPriorityLevel == 2)
                 intent.putExtra(channelID, "highChannelID")
             else
                 intent.putExtra(channelID, channelID)
             notificationID = reminder.requestCode
+            intent.putExtra("notificationID", notificationID)
             return PendingIntent.getBroadcast(
                 context, reminder.requestCode, intent,
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
@@ -124,11 +118,18 @@ class NotificationService : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent?) {
-        val pendingIntent = NavDeepLinkBuilder(context)
+        val tapIntent = NavDeepLinkBuilder(context)
             .setComponentName(Home::class.java)
             .setGraph(R.navigation.main_navigation)
             .setDestination(R.id.schedulerFragment)
             .createPendingIntent()
+
+        val snoozeIntent = Intent(context, ButtonReceiver::class.java)
+        snoozeIntent.putExtras(intent!!)
+        val snoozePendingIntent = PendingIntent.getBroadcast(
+            context, notificationID, snoozeIntent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
 
         val notification = NotificationCompat.Builder(context, channelID)
             .setContentTitle(intent?.getStringExtra(titleExtra))
@@ -136,7 +137,8 @@ class NotificationService : BroadcastReceiver() {
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setChannelId(intent?.getStringExtra(channelID)!!)
             .setGroup(intent.getStringExtra(group))
-            .setContentIntent(pendingIntent)
+            .setContentIntent(tapIntent)
+            .addAction(R.drawable.ic_launcher_foreground,"Snooze", snoozePendingIntent)
             .build()
 
 
