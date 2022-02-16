@@ -221,4 +221,25 @@ object FirebaseDBManager : MedicineAppStore {
         database.child("user-reminders")
             .child(userid).child(reminderId).child("active").setValue(false)
     }
+
+    override fun confirmMedTaken(userid: String, groupId: String, medicineId: String) {
+        val path = database.child("user-medication").child(userid).child(groupId).child(medicineId)
+
+        database.child("user-medication").child(userid).child(groupId).child(medicineId)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val quantity = snapshot.child("quantity").value.toString()
+                    val newQuantity = quantity.toInt() - 1
+                    Timber.i("NEW QUANTITY: $newQuantity")
+                    if (quantity.toInt() != 0) {
+                        path.child("quantity").setValue(newQuantity)
+                    }
+                }
+            })
+
+    }
 }

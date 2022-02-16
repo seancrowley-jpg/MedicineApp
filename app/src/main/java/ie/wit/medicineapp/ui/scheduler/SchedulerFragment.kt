@@ -145,10 +145,6 @@ class SchedulerFragment : Fragment(), ReminderListener {
             fragBinding.swiperefresh.isRefreshing = false
     }
 
-    fun reminderButtonChange(isChecked: Boolean, reminder: ReminderModel) {
-        if(isChecked) onReminderToggleBtnOn(reminder)
-        else onReminderToggleBtnOff(reminder)
-    }
 
     override fun onReminderClick(reminder: ReminderModel) {
         val action = SchedulerFragmentDirections.actionSchedulerFragmentToReminderFragment(reminder.medicineID, reminder.groupID, edit = true, reminder.uid)

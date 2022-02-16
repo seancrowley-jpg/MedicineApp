@@ -37,6 +37,8 @@ class NotificationService : BroadcastReceiver() {
             intent.putExtra(time, reminder.time)
             intent.putExtra("reminderID", reminder.uid)
             intent.putExtra("userID", userId)
+            intent.putExtra("groupID", reminder.groupID)
+            intent.putExtra("medicineID", reminder.medicineID)
             if(reminder.repeatDays!!.size != 0){
                 intent.putExtra("repeat", true)
             }
@@ -151,6 +153,14 @@ class NotificationService : BroadcastReceiver() {
             FirebaseDBManager.skipReminder(userID!!, reminderID!!)
         }
 
+        val confirmIntent = Intent(context, ButtonReceiver::class.java)
+        confirmIntent.putExtra("confirm", "ACTION_CONFIRM")
+        confirmIntent.putExtras(intent!!)
+        val confirmPendingIntent = PendingIntent.getBroadcast(
+            context, notificationID, confirmIntent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
         val notification = NotificationCompat.Builder(context, channelID)
             .setContentTitle(intent?.getStringExtra(titleExtra))
             .setContentText(intent?.getStringExtra(messageExtra))
@@ -160,6 +170,7 @@ class NotificationService : BroadcastReceiver() {
             .setContentIntent(tapIntent)
             .addAction(R.drawable.ic_launcher_foreground,"Snooze", snoozePendingIntent)
             .addAction(R.drawable.ic_launcher_foreground,"Skip", skipPendingIntent)
+            .addAction(R.drawable.ic_launcher_foreground,"Confirm",confirmPendingIntent)
             .build()
 
 

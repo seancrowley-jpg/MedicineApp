@@ -25,4 +25,5 @@ interface MedicineAppStore {
     fun findReminderById(userid:String, reminderId: String, reminder: MutableLiveData<ReminderModel>)
     fun updateReminder(userid:String, reminderId: String, reminder: ReminderModel)
     fun skipReminder(userid: String, reminderId: String)
+    fun confirmMedTaken(userid: String,groupId: String,medicineId: String)
 }

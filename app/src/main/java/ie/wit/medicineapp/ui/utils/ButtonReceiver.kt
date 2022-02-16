@@ -22,7 +22,7 @@ class ButtonReceiver : BroadcastReceiver(){
     override fun onReceive(context: Context, intent: Intent) {
         val actionSnooze = intent.getStringExtra("snooze")
         val actionSkip = intent.getStringExtra("skip")
-        val repeat = intent.getBooleanExtra("repeat",false)
+        val actionConfirm = intent.getStringExtra("confirm")
 
         if (actionSnooze.equals("ACTION_SNOOZE")){
             snoozeAlarm(context, intent)
@@ -32,6 +32,12 @@ class ButtonReceiver : BroadcastReceiver(){
         }
         if(actionSkip.equals("ACTION_SKIP")){
             Toast.makeText(context,"Skip Button Pressed", Toast.LENGTH_SHORT).show()
+            val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            manager.cancel(NotificationService.notificationID)
+        }
+        if(actionConfirm.equals("ACTION_CONFIRM")){
+            confirmMedTaken(intent,context)
+            Toast.makeText(context,"Confirm Button Pressed", Toast.LENGTH_SHORT).show()
             val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             manager.cancel(NotificationService.notificationID)
         }
@@ -59,5 +65,12 @@ class ButtonReceiver : BroadcastReceiver(){
             calendar.timeInMillis,
             snoozePendingIntent
         )
+    }
+
+    private fun confirmMedTaken(intent: Intent , context: Context){
+        val userID = intent.getStringExtra("userID")
+        val groupId = intent.getStringExtra("groupID")
+        val medicineID = intent.getStringExtra("medicineID")
+        FirebaseDBManager.confirmMedTaken(userID!!,groupId!!,medicineID!!)
     }
 }
