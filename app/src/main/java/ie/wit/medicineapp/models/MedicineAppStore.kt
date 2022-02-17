@@ -1,6 +1,7 @@
 package ie.wit.medicineapp.models
 
-import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
 
@@ -25,5 +26,5 @@ interface MedicineAppStore {
     fun findReminderById(userid:String, reminderId: String, reminder: MutableLiveData<ReminderModel>)
     fun updateReminder(userid:String, reminderId: String, reminder: ReminderModel)
     fun skipReminder(userid: String, reminderId: String)
-    fun confirmMedTaken(userid: String,groupId: String,medicineId: String)
+    fun confirmMedTaken(userid: String,groupId: String,medicineId: String, context: Context)
 }

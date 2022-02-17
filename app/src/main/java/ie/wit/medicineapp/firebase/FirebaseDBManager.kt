@@ -1,12 +1,19 @@
 package ie.wit.medicineapp.firebase
 
+import android.app.NotificationManager
+import android.content.Context
+import android.content.Intent
+import android.widget.Toast
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import ie.wit.medicineapp.R
 import ie.wit.medicineapp.models.GroupModel
 import ie.wit.medicineapp.models.MedicineAppStore
 import ie.wit.medicineapp.models.MedicineModel
 import ie.wit.medicineapp.models.ReminderModel
+import ie.wit.medicineapp.ui.utils.NotificationService
 import timber.log.Timber
 
 object FirebaseDBManager : MedicineAppStore {
@@ -222,9 +229,8 @@ object FirebaseDBManager : MedicineAppStore {
             .child(userid).child(reminderId).child("active").setValue(false)
     }
 
-    override fun confirmMedTaken(userid: String, groupId: String, medicineId: String) {
+    override fun confirmMedTaken(userid: String, groupId: String, medicineId: String, context: Context) {
         val path = database.child("user-medication").child(userid).child(groupId).child(medicineId)
-
         database.child("user-medication").child(userid).child(groupId).child(medicineId)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
@@ -233,10 +239,26 @@ object FirebaseDBManager : MedicineAppStore {
 
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val quantity = snapshot.child("quantity").value.toString()
-                    val newQuantity = quantity.toInt() - 1
-                    Timber.i("NEW QUANTITY: $newQuantity")
+                    val reminderLimit = snapshot.child("reminderLimit").value.toString()
+                    var newQuantity = quantity.toInt() - 1
+                    val name = snapshot.child("name").value.toString()
                     if (quantity.toInt() != 0) {
                         path.child("quantity").setValue(newQuantity)
+                    }
+                    else
+                        newQuantity = 0
+                    if(newQuantity <= reminderLimit.toInt()) {
+                        val notification = NotificationCompat.Builder(context,
+                            NotificationService.channelID
+                        )
+                            .setContentTitle("Limit Reached")
+                            .setContentText("Limit for $name has been reached. " +
+                                    "Remaining: $newQuantity")
+                            .setSmallIcon(R.drawable.ic_launcher_foreground)
+                            .setChannelId("highChannelID")
+                            .build()
+                        val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                        manager.notify(NotificationService.notificationID, notification)
                     }
                 }
             })

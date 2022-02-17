@@ -7,8 +7,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import ie.wit.medicineapp.firebase.FirebaseDBManager
 import java.util.*
 
@@ -71,6 +69,6 @@ class ButtonReceiver : BroadcastReceiver(){
         val userID = intent.getStringExtra("userID")
         val groupId = intent.getStringExtra("groupID")
         val medicineID = intent.getStringExtra("medicineID")
-        FirebaseDBManager.confirmMedTaken(userID!!,groupId!!,medicineID!!)
+        FirebaseDBManager.confirmMedTaken(userID!!,groupId!!,medicineID!!, context)
     }
 }
