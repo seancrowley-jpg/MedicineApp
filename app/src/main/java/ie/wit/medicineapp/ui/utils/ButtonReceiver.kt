@@ -18,26 +18,26 @@ class ButtonReceiver : BroadcastReceiver(){
 
 
     override fun onReceive(context: Context, intent: Intent) {
-        val actionSnooze = intent.getStringExtra("snooze")
-        val actionSkip = intent.getStringExtra("skip")
-        val actionConfirm = intent.getStringExtra("confirm")
+        val action = intent.getStringExtra("action")
 
-        if (actionSnooze.equals("ACTION_SNOOZE")){
-            snoozeAlarm(context, intent)
-            Toast.makeText(context,"SNOOZE Button Pressed", Toast.LENGTH_SHORT).show()
-            val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            manager.cancel(NotificationService.notificationID)
-        }
-        if(actionSkip.equals("ACTION_SKIP")){
-            Toast.makeText(context,"Skip Button Pressed", Toast.LENGTH_SHORT).show()
-            val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            manager.cancel(NotificationService.notificationID)
-        }
-        if(actionConfirm.equals("ACTION_CONFIRM")){
-            confirmMedTaken(intent,context)
-            Toast.makeText(context,"Confirm Button Pressed", Toast.LENGTH_SHORT).show()
-            val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            manager.cancel(NotificationService.notificationID)
+        when {
+            action.equals("ACTION_SNOOZE") -> {
+                snoozeAlarm(context, intent)
+                Toast.makeText(context,"SNOOZE Button Pressed", Toast.LENGTH_SHORT).show()
+                val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                manager.cancel(NotificationService.notificationID)
+            }
+            action.equals("ACTION_SKIP") -> {
+                Toast.makeText(context,"Skip Button Pressed", Toast.LENGTH_SHORT).show()
+                val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                manager.cancel(NotificationService.notificationID)
+            }
+            action.equals("ACTION_CONFIRM") -> {
+                confirmMedTaken(intent,context)
+                Toast.makeText(context,"Confirm Button Pressed", Toast.LENGTH_SHORT).show()
+                val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                manager.cancel(NotificationService.notificationID)
+            }
         }
     }
 
@@ -45,9 +45,10 @@ class ButtonReceiver : BroadcastReceiver(){
 
         val notificationIntent = Intent(context, NotificationService::class.java)
         notificationIntent.putExtras(intent!!)
+        notificationIntent.removeExtra("action")
 
         val snoozePendingIntent =  PendingIntent.getBroadcast(
-            context, NotificationService.notificationID, notificationIntent,
+            context, 0, notificationIntent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
