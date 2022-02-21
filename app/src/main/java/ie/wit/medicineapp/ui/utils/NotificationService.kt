@@ -26,7 +26,6 @@ class NotificationService : BroadcastReceiver() {
         val group = "Group Name"
         val highChannelId = "highChannelID"
         val time = "time"
-        //var repeatRequestCodes : MutableList<Int>? = ArrayList()
 
         private fun getIntent(context: Context, reminder: ReminderModel, userId: String): PendingIntent? {
             val intent = Intent(context, NotificationService::class.java)
@@ -55,7 +54,7 @@ class NotificationService : BroadcastReceiver() {
             )
         }
 
-        private fun getRepeatIntent(context: Context, reminder: ReminderModel, userId: String , requestCode: Int): PendingIntent? {
+        private fun getIntent(context: Context, reminder: ReminderModel, userId: String , requestCode: Int): PendingIntent? {
             val intent = Intent(context, NotificationService::class.java)
             intent.putExtra(titleExtra, "Medicine Due!")
             intent.putExtra(
@@ -76,7 +75,7 @@ class NotificationService : BroadcastReceiver() {
                 intent.putExtra(channelID, channelID)
             intent.putExtra("notificationID", notificationID)
             return PendingIntent.getBroadcast(
-                context, Random().nextInt(), intent,
+                context, requestCode, intent,
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
             )
         }
@@ -110,6 +109,7 @@ class NotificationService : BroadcastReceiver() {
         fun setRepeatingAlarm(context: Context, reminder: ReminderModel, userId: String) {
             val pendingIntent = getIntent(context, reminder,userId)
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            var requestCode = reminder.requestCode
             if (reminder.repeatDays!!.size == 7) {
                 alarmManager.setRepeating(
                     AlarmManager.RTC_WAKEUP, reminder.time,
@@ -118,7 +118,9 @@ class NotificationService : BroadcastReceiver() {
             }
             if(reminder.repeatDays!!.size in 1..6){
                 for (i in reminder.repeatDays!!.indices){
-                    scheduleRepeatAlarm(reminder.repeatDays!![i],alarmManager,context,reminder, userId)
+                    Toast.makeText(context, "$requestCode", Toast.LENGTH_SHORT).show()
+                    scheduleRepeatAlarm(reminder.repeatDays!![i],alarmManager,context,reminder, userId, requestCode)
+                    requestCode++
                 }
             }
         }
@@ -127,20 +129,19 @@ class NotificationService : BroadcastReceiver() {
             val pendingIntent = getIntent(context, reminder,userId)
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             alarmManager.cancel(pendingIntent)
-            /*if (reminder.repeatDays!!.size > 0) {
-                for (i in repeatRequestCodes!!.indices){
-                    var repeatPendingIntent = getRepeatIntent(context, reminder, userId, repeatRequestCodes!![i])
+            if (reminder.repeatDays!!.size != 0) {
+                var requestCode = reminder.requestCode
+                for (i in reminder.repeatDays!!.indices){
+                    val repeatPendingIntent = getIntent(context, reminder, userId, requestCode)
                     alarmManager.cancel(repeatPendingIntent)
-                    Toast.makeText(context,"Repeat alarms cancelled",Toast.LENGTH_SHORT).show()
+                    requestCode++
+                    Toast.makeText(context, "Canceled", Toast.LENGTH_SHORT).show()
                 }
-                repeatRequestCodes!!.clear()
-            }*/
+            }
         }
 
-        private fun scheduleRepeatAlarm(day: Int, alarmManager: AlarmManager,context: Context, reminder: ReminderModel, userId: String){
-            var requestCode = Random().nextInt()
-            //repeatRequestCodes!!.add(requestCode)
-            val repeatIntent = getRepeatIntent(context, reminder, userId, requestCode)
+        private fun scheduleRepeatAlarm(day: Int, alarmManager: AlarmManager,context: Context, reminder: ReminderModel, userId: String, requestCode: Int){
+            val repeatIntent = getIntent(context, reminder, userId, requestCode)
             val calendar = Calendar.getInstance()
             val d = day +1
             calendar.timeInMillis = reminder.time

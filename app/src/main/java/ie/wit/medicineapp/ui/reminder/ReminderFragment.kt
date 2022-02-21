@@ -214,6 +214,8 @@ class ReminderFragment : Fragment() {
             loggedInViewModel.liveFirebaseUser.value!!.uid,
             args.reminderId
         )
+        if(reminderViewModel.observableReminder.value!!.active)
+            NotificationService.cancelAlarm(context!!, reminder, loggedInViewModel.liveFirebaseUser.value!!.uid)
         showAlert(time)
     }
 
