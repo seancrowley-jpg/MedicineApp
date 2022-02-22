@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.navigation.NavDeepLinkBuilder
@@ -163,10 +164,23 @@ class NotificationService : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent?) {
+        val bundle = Bundle()
+        val repeat = intent!!.getBooleanExtra("repeat",false)
+        val userID = intent.getStringExtra("userID")
+        val reminderID = intent.getStringExtra("reminderID")
+        val groupID = intent.getStringExtra("groupID")
+        val medicineID = intent.getStringExtra("medicineID")
+        bundle.putString("reminderId", reminderID)
+        bundle.putString("groupId", groupID)
+        bundle.putString("medicineId", medicineID)
+        bundle.putString("userId", userID)
+
+
         val tapIntent = NavDeepLinkBuilder(context)
             .setComponentName(Home::class.java)
             .setGraph(R.navigation.main_navigation)
-            .setDestination(R.id.schedulerFragment)
+            .setDestination(R.id.confirmationFragment)
+            .setArguments(bundle)
             .createPendingIntent()
 
         val snoozeIntent = Intent(context, ButtonReceiver::class.java)
@@ -185,9 +199,6 @@ class NotificationService : BroadcastReceiver() {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        val repeat = intent.getBooleanExtra("repeat",false)
-        val userID = intent.getStringExtra("userID")
-        val reminderID = intent.getStringExtra("reminderID")
         if(!repeat) {
             FirebaseDBManager.skipReminder(userID!!, reminderID!!)
         }

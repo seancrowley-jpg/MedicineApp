@@ -147,4 +147,39 @@
             app:argType="string"
             android:defaultValue="0" />
     </fragment>
+    <fragment
+        android:id="@+id/confirmationFragment"
+        android:name="ie.wit.medicineapp.ui.confirmation.ConfirmationFragment"
+        android:label="Medication Due"
+        tools:layout="@layout/fragment_confirmation">
+        <argument
+            android:name="groupId"
+            android:defaultValue="0"
+            app:argType="string" />
+        <argument
+            android:name="medicineId"
+            android:defaultValue="0"
+            app:argType="string" />
+        <argument
+            android:name="reminderId"
+            android:defaultValue="0"
+            app:argType="string" />
+        <argument
+            android:name="userId"
+            android:defaultValue="0"
+            app:argType="string" />
+        <deepLink app:uri="App://confirmationFragment/{groupId}" />
+        <deepLink app:uri="App://confirmationFragment/{medicineId}" />
+        <deepLink app:uri="App://confirmationFragment/{reminderId}" />
+        <deepLink app:uri="App://confirmationFragment/{userId}" />
+        <action
+            android:id="@+id/action_confirmationFragment_to_loginActivity"
+            app:destination="@id/loginActivity" />
+
+    </fragment>
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="ie.wit.medicineapp.ui.auth.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
 </navigation>
