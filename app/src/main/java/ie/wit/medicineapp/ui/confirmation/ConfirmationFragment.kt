@@ -1,8 +1,13 @@
 package ie.wit.medicineapp.ui.confirmation
 
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.ActionBar
@@ -42,9 +47,7 @@ class ConfirmationFragment : Fragment() {
     ): View? {
         _fragBinding = FragmentConfirmationBinding.inflate(inflater, container, false)
         val root = fragBinding.root
-
-
-
+        
         groupViewModel.getGroup(args.userId, args.groupId)
         medicineDetailsViewModel.getMedicine(args.userId, args.groupId, args.medicineId)
         reminderViewModel.getReminder(args.userId,args.reminderId)
@@ -81,11 +84,25 @@ class ConfirmationFragment : Fragment() {
     }
 
     private fun setButtonListener(layout: FragmentConfirmationBinding){
+        val manager = context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val bundle = arguments
+        val requestCode = bundle!!.getInt("notificationID")
         layout.btnConfirm.setOnClickListener(){
             confirmationViewModel.confirmMed(args.userId,args.groupId,args.medicineId,context!!)
+            manager.cancel(requestCode)
+            Toast.makeText(context, "Confirmed", Toast.LENGTH_SHORT).show()
+            val action = ConfirmationFragmentDirections.actionConfirmationFragmentToLoginActivity()
+            findNavController().navigate(action)
         }
         layout.btnSnooze.setOnClickListener(){
-
+            val snoozeIntent = Intent(context, ButtonReceiver::class.java)
+            snoozeIntent.putExtras(arguments!!)
+            snoozeIntent.putExtra("action", "ACTION_SNOOZE")
+            ButtonReceiver.snoozeAlarm(context!!,snoozeIntent)
+            manager.cancel(requestCode)
+            Toast.makeText(context, "Snoozing", Toast.LENGTH_SHORT).show()
+            val action = ConfirmationFragmentDirections.actionConfirmationFragmentToLoginActivity()
+            findNavController().navigate(action)
         }
     }
 

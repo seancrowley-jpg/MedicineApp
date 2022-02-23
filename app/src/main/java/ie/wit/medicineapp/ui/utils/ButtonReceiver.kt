@@ -14,6 +14,31 @@ class ButtonReceiver : BroadcastReceiver(){
 
     companion object {
 
+        fun snoozeAlarm(context: Context, intent: Intent?) {
+
+            val notificationIntent = Intent(context, NotificationService::class.java)
+            notificationIntent.putExtras(intent!!)
+            notificationIntent.removeExtra("action")
+
+            val snoozePendingIntent = PendingIntent.getBroadcast(
+                context, 0, notificationIntent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
+
+            val calendar = Calendar.getInstance().apply {
+                timeInMillis = System.currentTimeMillis()
+                add(Calendar.MINUTE, 5)
+            }
+
+
+            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                snoozePendingIntent
+            )
+        }
+
     }
 
 
@@ -41,30 +66,6 @@ class ButtonReceiver : BroadcastReceiver(){
         }
     }
 
-    private fun snoozeAlarm(context: Context, intent: Intent?){
-
-        val notificationIntent = Intent(context, NotificationService::class.java)
-        notificationIntent.putExtras(intent!!)
-        notificationIntent.removeExtra("action")
-
-        val snoozePendingIntent =  PendingIntent.getBroadcast(
-            context, 0, notificationIntent,
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
-
-        val calendar = Calendar.getInstance().apply {
-            timeInMillis = System.currentTimeMillis()
-            add(Calendar.MINUTE, 5)
-        }
-
-
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            snoozePendingIntent
-        )
-    }
 
     private fun confirmMedTaken(intent: Intent , context: Context){
         val userID = intent.getStringExtra("userID")

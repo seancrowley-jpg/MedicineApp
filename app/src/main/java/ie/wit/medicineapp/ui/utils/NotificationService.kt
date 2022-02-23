@@ -48,7 +48,7 @@ class NotificationService : BroadcastReceiver() {
             else
                 intent.putExtra(channelID, channelID)
             notificationID = reminder.requestCode
-            intent.putExtra("notificationID", notificationID)
+            intent.putExtra("notificationID", reminder.requestCode)
             return PendingIntent.getBroadcast(
                 context, reminder.requestCode, intent,
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
@@ -74,7 +74,7 @@ class NotificationService : BroadcastReceiver() {
                 intent.putExtra(channelID, "highChannelID")
             else
                 intent.putExtra(channelID, channelID)
-            intent.putExtra("notificationID", notificationID)
+            intent.putExtra("notificationID", requestCode)
             return PendingIntent.getBroadcast(
                 context, requestCode, intent,
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
@@ -164,17 +164,16 @@ class NotificationService : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent?) {
-        val bundle = Bundle()
-        val repeat = intent!!.getBooleanExtra("repeat",false)
+        val bundle = intent!!.extras
+        val repeat = intent.getBooleanExtra("repeat",false)
         val userID = intent.getStringExtra("userID")
         val reminderID = intent.getStringExtra("reminderID")
         val groupID = intent.getStringExtra("groupID")
         val medicineID = intent.getStringExtra("medicineID")
-        bundle.putString("reminderId", reminderID)
+        bundle!!.putString("reminderId", reminderID)
         bundle.putString("groupId", groupID)
         bundle.putString("medicineId", medicineID)
         bundle.putString("userId", userID)
-
 
         val tapIntent = NavDeepLinkBuilder(context)
             .setComponentName(Home::class.java)
