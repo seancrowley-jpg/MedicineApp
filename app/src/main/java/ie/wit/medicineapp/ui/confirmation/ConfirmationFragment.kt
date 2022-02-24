@@ -47,7 +47,7 @@ class ConfirmationFragment : Fragment() {
     ): View? {
         _fragBinding = FragmentConfirmationBinding.inflate(inflater, container, false)
         val root = fragBinding.root
-        
+
         groupViewModel.getGroup(args.userId, args.groupId)
         medicineDetailsViewModel.getMedicine(args.userId, args.groupId, args.medicineId)
         reminderViewModel.getReminder(args.userId,args.reminderId)

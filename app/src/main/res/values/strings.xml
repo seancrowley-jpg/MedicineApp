@@ -70,6 +70,10 @@
         <item>Sunday</item>
     </string-array>
 
+    <string name="once_off">Once Off</string>
+    <string name="repeat">Repeating</string>
+
+
 
 
 </resources>
