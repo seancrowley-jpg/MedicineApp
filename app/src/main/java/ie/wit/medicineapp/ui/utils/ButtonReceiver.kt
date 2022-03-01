@@ -44,23 +44,21 @@ class ButtonReceiver : BroadcastReceiver(){
 
     override fun onReceive(context: Context, intent: Intent) {
         val action = intent.getStringExtra("action")
+        val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         when {
             action.equals("ACTION_SNOOZE") -> {
                 snoozeAlarm(context, intent)
                 Toast.makeText(context,"SNOOZE Button Pressed", Toast.LENGTH_SHORT).show()
-                val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 manager.cancel(NotificationService.notificationID)
             }
             action.equals("ACTION_SKIP") -> {
                 Toast.makeText(context,"Skip Button Pressed", Toast.LENGTH_SHORT).show()
-                val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 manager.cancel(NotificationService.notificationID)
             }
             action.equals("ACTION_CONFIRM") -> {
                 confirmMedTaken(intent,context)
                 Toast.makeText(context,"Confirm Button Pressed", Toast.LENGTH_SHORT).show()
-                val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 manager.cancel(NotificationService.notificationID)
             }
         }
