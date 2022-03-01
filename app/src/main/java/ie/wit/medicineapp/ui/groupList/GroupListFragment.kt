@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,6 +36,7 @@ class GroupListFragment : Fragment(), GroupListener {
     private val loggedInViewModel: LoggedInViewModel by activityViewModels()
     private lateinit var adapter: GroupAdapter
     lateinit var loader : AlertDialog
+    private val args by navArgs<GroupListFragmentArgs>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
@@ -60,6 +62,9 @@ class GroupListFragment : Fragment(), GroupListener {
                 }
         })
         setSwipeRefresh()
+        if(args.reminder) {
+            fragBinding.fab.visibility = View.GONE
+        }
         val fab: FloatingActionButton = fragBinding.fab
         fab.setOnClickListener {
             val action = GroupListFragmentDirections.actionGroupListFragmentToGroupFragment()
@@ -86,7 +91,7 @@ class GroupListFragment : Fragment(), GroupListener {
     }
 
     private fun render(groupList: ArrayList<GroupModel>) {
-        fragBinding.recyclerView.adapter = GroupAdapter(groupList, this)
+        fragBinding.recyclerView.adapter = GroupAdapter(groupList, this, args.reminder)
         adapter = fragBinding.recyclerView.adapter as GroupAdapter
         if (groupList.isEmpty()) {
             fragBinding.recyclerView.visibility = View.GONE
@@ -127,8 +132,14 @@ class GroupListFragment : Fragment(), GroupListener {
     }
 
     override fun onGroupClick(group: GroupModel) {
-        val action = GroupListFragmentDirections.actionGroupListFragmentToMedicineListFragment(group.uid!!)
-        findNavController().navigate(action)
+        if (args.reminder){
+            val action = GroupListFragmentDirections.actionGroupListFragmentToMedicineListFragment(group.uid!!, reminder = true, reminderId = args.reminderId, edit = args.edit)
+            findNavController().navigate(action)
+        }
+        else {
+            val action = GroupListFragmentDirections.actionGroupListFragmentToMedicineListFragment(group.uid!!)
+            findNavController().navigate(action)
+        }
     }
 
     override fun onDeleteGroupClick(group: GroupModel) {

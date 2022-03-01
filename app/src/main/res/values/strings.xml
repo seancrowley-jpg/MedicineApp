@@ -12,6 +12,8 @@
     <string name="menu_medicine">Add Medicine</string>
     <string name="menu_medicine_list">Medicine List</string>
     <string name="menu_medicine_details">Medicine Details</string>
+    <string name="menu_scheduler">Scheduler</string>
+    <string name="menu_reminder">Add Reminder</string>
 
     <string name="group_header">Create a Group</string>
     <string name="hint_group">Group Name</string>
@@ -31,6 +33,8 @@
     <string name="message_loading">Loading…</string>
     <string name="empty_groups">No Groups found. Add some with the button below</string>
     <string name="empty_medication">No Medication Found For this Group. Add some with the button below</string>
+    <string name="empty_reminders">No Reminders found</string>
+
 
     <string name="medicine_header">Enter the info of your Medication</string>
     <string name="hint_medicine_name">Medicine Name</string>
@@ -49,6 +53,26 @@
     <string name="medicine_details_dosage">Dosage:</string>
     <string name="medicine_details_reminder_limit">Reminder limit:</string>
     <string name="medicine_details_usage_directions">Usage Directions:</string>
+
+    <string name="formatDate">%1$td/%1$tm/%1$tY</string>
+    <string name="formatTime">%1$tI:%1$tM%1$tp</string>
+    <string name="reminder_header">Reminders:</string>
+    <string name="btn_edit_reminder">Edit Reminder</string>
+    <string name="btn_change_medication">Change Medicine</string>
+
+    <string-array name="days_of_week">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+
+    <string name="once_off">Once Off</string>
+    <string name="repeat">Repeating</string>
+
 
 
 

@@ -33,7 +33,7 @@ class GroupViewModel : ViewModel() {
     fun getGroup(userid:String, id: String) {
         try {
             FirebaseDBManager.findGroupById(userid, id, group)
-            Timber.i("Success got recipe info : ${group.value.toString()}")
+            Timber.i("Success got group info : ${group.value.toString()}")
         } catch (e: Exception) {
             Timber.i("Error : $e.message")
         }

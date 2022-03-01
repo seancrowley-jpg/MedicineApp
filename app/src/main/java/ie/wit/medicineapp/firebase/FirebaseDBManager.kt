@@ -1,14 +1,22 @@
 package ie.wit.medicineapp.firebase
 
+import android.app.NotificationManager
+import android.content.Context
+import android.content.Intent
+import android.widget.Toast
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import ie.wit.medicineapp.R
 import ie.wit.medicineapp.models.GroupModel
-import ie.wit.medicineapp.models.GroupStore
+import ie.wit.medicineapp.models.MedicineAppStore
 import ie.wit.medicineapp.models.MedicineModel
+import ie.wit.medicineapp.models.ReminderModel
+import ie.wit.medicineapp.ui.utils.NotificationService
 import timber.log.Timber
 
-object FirebaseDBManager : GroupStore {
+object FirebaseDBManager : MedicineAppStore {
 
     var database: DatabaseReference = FirebaseDatabase.getInstance().reference
 
@@ -151,5 +159,109 @@ object FirebaseDBManager : GroupStore {
         val childDelete : MutableMap<String, Any?> = HashMap()
         childDelete["/user-medication/$userid/$groupId/$medicineId"] = null
         database.updateChildren(childDelete)
+    }
+
+    override fun createReminder(firebaseUser: MutableLiveData<FirebaseUser>, reminder: ReminderModel) {
+        Timber.i("Firebase DB Reference : $database")
+        val uid = firebaseUser.value!!.uid
+        val key = database.child("reminders").push().key
+        if (key == null) {
+            Timber.i("Firebase Error : Key Empty")
+            return
+        }
+        reminder.uid = key
+        val reminderValues = reminder.toMap()
+        val childAdd = HashMap<String, Any>()
+        childAdd["/user-reminders/$uid/$key"] = reminderValues
+        database.updateChildren(childAdd)
+    }
+
+    override fun findReminders(userid: String, reminderList: MutableLiveData<List<ReminderModel>>) {
+        database.child("user-reminders").child(userid)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val localList = ArrayList<ReminderModel>()
+                    val children = snapshot.children
+                    children.forEach {
+                        val reminder = it.getValue(ReminderModel::class.java)
+                        localList.add(reminder!!)
+                    }
+                    database.child("user-reminders").child(userid)
+                        .removeEventListener(this)
+
+                    reminderList.value = localList
+                }
+            })
+    }
+
+    override fun deleteReminder(userid: String, reminderId: String) {
+        val childDelete : MutableMap<String, Any?> = HashMap()
+        childDelete["/user-reminders/$userid/$reminderId"] = null
+        database.updateChildren(childDelete)
+    }
+
+    override fun findReminderById(
+        userid: String,
+        reminderId: String,
+        reminder: MutableLiveData<ReminderModel>
+    ) {
+        database.child("user-reminders").child(userid)
+            .child(reminderId).get().addOnSuccessListener {
+                reminder.value = it.getValue(ReminderModel::class.java)
+                Timber.i("firebase Got value ${it.value}")
+            }.addOnFailureListener{
+                Timber.e("firebase Error getting data $it")
+            }    }
+
+    override fun updateReminder(userid: String, reminderId: String, reminder: ReminderModel) {
+        val reminderValues = reminder.toMap()
+        val childUpdate : MutableMap<String, Any?> = HashMap()
+        childUpdate["user-reminders/$userid/$reminderId"] = reminderValues
+        database.updateChildren(childUpdate)
+    }
+
+    override fun skipReminder(userid: String, reminderId: String) {
+        database.child("user-reminders")
+            .child(userid).child(reminderId).child("active").setValue(false)
+    }
+
+    override fun confirmMedTaken(userid: String, groupId: String, medicineId: String, context: Context) {
+        val path = database.child("user-medication").child(userid).child(groupId).child(medicineId)
+        database.child("user-medication").child(userid).child(groupId).child(medicineId)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val quantity = snapshot.child("quantity").value.toString()
+                    val reminderLimit = snapshot.child("reminderLimit").value.toString()
+                    var newQuantity = quantity.toInt() - 1
+                    val name = snapshot.child("name").value.toString()
+                    if (quantity.toInt() != 0) {
+                        path.child("quantity").setValue(newQuantity)
+                    }
+                    else
+                        newQuantity = 0
+                    if(newQuantity <= reminderLimit.toInt()) {
+                        val notification = NotificationCompat.Builder(context,
+                            NotificationService.channelID
+                        )
+                            .setContentTitle("Limit Reached")
+                            .setContentText("Limit for $name has been reached. " +
+                                    "Remaining: $newQuantity")
+                            .setSmallIcon(R.drawable.ic_launcher_foreground)
+                            .setChannelId("highChannelID")
+                            .build()
+                        val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                        manager.notify(NotificationService.notificationID, notification)
+                    }
+                }
+            })
+
     }
 }

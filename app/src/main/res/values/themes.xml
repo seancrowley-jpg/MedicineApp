@@ -22,4 +22,9 @@
     <style name="Theme.MedicineApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.MedicineApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="toggleStyle">
+        <item name="colorControlActivated">@color/white</item>
+        <item name="colorControlHighlight">@color/black</item>
+    </style>
 </resources>

@@ -24,6 +24,8 @@ import ie.wit.medicineapp.models.GroupModel
 import ie.wit.medicineapp.models.MedicineModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
 import ie.wit.medicineapp.ui.groupList.GroupListFragmentDirections
+import ie.wit.medicineapp.ui.utils.MedSwipeToDeleteCallback
+import ie.wit.medicineapp.ui.utils.MedSwipeToEditCallback
 import ie.wit.medicineapp.ui.utils.SwipeToDeleteCallback
 import ie.wit.medicineapp.ui.utils.SwipeToEditCallback
 
@@ -59,19 +61,23 @@ class MedicineListFragment : Fragment(), MedicineListener {
         }
         })
         setSwipeRefresh()
+        if(args.reminder) {
+            fragBinding.fab.visibility = View.GONE
+        }
         val fab: FloatingActionButton = fragBinding.fab
         fab.setOnClickListener {
-            val action = MedicineListFragmentDirections.actionMedicineListFragmentToMedicineFragment(args.groupId)
+            val action =
+                MedicineListFragmentDirections.actionMedicineListFragmentToMedicineFragment(args.groupId)
             findNavController().navigate(action)
         }
-        val swipeEditHandler = object : SwipeToEditCallback(requireContext()) {
+        val swipeEditHandler = object : MedSwipeToEditCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 onEditMedicineClick(viewHolder.itemView.tag as MedicineModel)
             }
         }
         val itemTouchEditHelper = ItemTouchHelper(swipeEditHandler)
         itemTouchEditHelper.attachToRecyclerView(fragBinding.recyclerView)
-        val swipeDeleteHandler = object : SwipeToDeleteCallback(requireContext()) {
+        val swipeDeleteHandler = object : MedSwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 adapter.removeAt(viewHolder.adapterPosition)
                 medicineListViewModel.deleteMedicine(viewHolder.itemView.tag as MedicineModel, args.groupId)
@@ -95,7 +101,7 @@ class MedicineListFragment : Fragment(), MedicineListener {
     }
 
     private fun render(medicineList: ArrayList<MedicineModel>) {
-        fragBinding.recyclerView.adapter = MedicineAdapter(medicineList, this)
+        fragBinding.recyclerView.adapter = MedicineAdapter(medicineList, this, args.reminder)
         adapter = fragBinding.recyclerView.adapter as MedicineAdapter
         if (medicineList.isEmpty()) {
             fragBinding.recyclerView.visibility = View.GONE
@@ -120,9 +126,18 @@ class MedicineListFragment : Fragment(), MedicineListener {
     }
 
     override fun onMedicineClick(medicine: MedicineModel) {
-        val action = MedicineListFragmentDirections.actionMedicineListFragmentToMedicineDetails(medicineId = medicine.uid!!, groupId = args.groupId
-        )
-        findNavController().navigate(action)
+        if (args.reminder) {
+            val actionReminder = MedicineListFragmentDirections.actionMedicineListFragmentToReminderFragment(
+                medicineId = medicine.uid!!, groupId = args.groupId,
+                reminderId = args.reminderId, edit = args.edit)
+            findNavController().navigate(actionReminder)
+        }
+        else {
+            val action = MedicineListFragmentDirections.actionMedicineListFragmentToMedicineDetails(
+                medicineId = medicine.uid!!, groupId = args.groupId
+            )
+            findNavController().navigate(action)
+        }
     }
 
     override fun onDeleteMedicineClick(medicine: MedicineModel) {

@@ -34,6 +34,18 @@
         <action
             android:id="@+id/action_groupListFragment_to_medicineListFragment"
             app:destination="@id/medicineListFragment" />
+        <argument
+            android:name="reminder"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="reminderId"
+            app:argType="string"
+            android:defaultValue="0" />
+        <argument
+            android:name="edit"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
 
     <fragment
@@ -69,6 +81,21 @@
         <action
             android:id="@+id/action_medicineListFragment_to_medicineDetails"
             app:destination="@id/medicineDetails" />
+        <action
+            android:id="@+id/action_medicineListFragment_to_reminderFragment"
+            app:destination="@id/reminderFragment" />
+        <argument
+            android:name="reminder"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="reminderId"
+            app:argType="string"
+            android:defaultValue="0" />
+        <argument
+            android:name="edit"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/medicineDetails"
@@ -83,4 +110,76 @@
             android:defaultValue="0"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/schedulerFragment"
+        android:name="ie.wit.medicineapp.ui.scheduler.SchedulerFragment"
+        android:label="@string/menu_scheduler"
+        tools:layout="@layout/fragment_scheduler">
+        <action
+            android:id="@+id/action_schedulerFragment_to_reminderFragment"
+            app:destination="@id/reminderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reminderFragment"
+        android:name="ie.wit.medicineapp.ui.reminder.ReminderFragment"
+        android:label="@string/menu_reminder"
+        tools:layout="@layout/fragment_reminder">
+        <action
+            android:id="@+id/action_reminderFragment_to_groupListFragment"
+            app:destination="@id/groupListFragment" />
+        <argument
+            android:name="medicineId"
+            app:argType="string"
+            android:defaultValue="0" />
+        <argument
+            android:name="groupId"
+            app:argType="string"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_reminderFragment_to_schedulerFragment"
+            app:destination="@id/schedulerFragment" />
+        <argument
+            android:name="edit"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="reminderId"
+            app:argType="string"
+            android:defaultValue="0" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmationFragment"
+        android:name="ie.wit.medicineapp.ui.confirmation.ConfirmationFragment"
+        android:label="Medication Due"
+        tools:layout="@layout/fragment_confirmation">
+        <argument
+            android:name="groupId"
+            android:defaultValue="0"
+            app:argType="string" />
+        <argument
+            android:name="medicineId"
+            android:defaultValue="0"
+            app:argType="string" />
+        <argument
+            android:name="reminderId"
+            android:defaultValue="0"
+            app:argType="string" />
+        <argument
+            android:name="userId"
+            android:defaultValue="0"
+            app:argType="string" />
+        <deepLink app:uri="App://confirmationFragment/{groupId}" />
+        <deepLink app:uri="App://confirmationFragment/{medicineId}" />
+        <deepLink app:uri="App://confirmationFragment/{reminderId}" />
+        <deepLink app:uri="App://confirmationFragment/{userId}" />
+        <action
+            android:id="@+id/action_confirmationFragment_to_loginActivity"
+            app:destination="@id/loginActivity" />
+
+    </fragment>
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="ie.wit.medicineapp.ui.auth.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
 </navigation>
