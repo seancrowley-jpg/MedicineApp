@@ -20,6 +20,7 @@ import ie.wit.medicineapp.R
 import ie.wit.medicineapp.adapters.SideEffectAdapter
 import ie.wit.medicineapp.adapters.SideEffectListener
 import ie.wit.medicineapp.databinding.FragmentMedicineDetailsBinding
+import ie.wit.medicineapp.helpers.saveAsPdf
 import ie.wit.medicineapp.models.MedicineModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
 import timber.log.Timber
@@ -84,7 +85,18 @@ class MedicineDetailsFragment : Fragment(), SideEffectListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.saveAsPdf) {
-            saveAsPdf(medicineDetailsViewModel.observableMedicine.value!!)
+            if (loggedInViewModel.liveFirebaseUser.value!!.displayName != null) {
+                saveAsPdf(
+                    medicineDetailsViewModel.observableMedicine.value!!, context!!,
+                    loggedInViewModel.liveFirebaseUser.value!!.displayName!!
+                )
+            }
+            else{
+                saveAsPdf(
+                    medicineDetailsViewModel.observableMedicine.value!!, context!!,
+                    loggedInViewModel.liveFirebaseUser.value!!.email!!
+                )
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -97,25 +109,5 @@ class MedicineDetailsFragment : Fragment(), SideEffectListener {
             args.groupId, args.medicineId, medicine)
     }
 
-    private fun saveAsPdf(medicine: MedicineModel){
-        val doc = Document()
-        val fileName = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis())
-        val filePath = getFile(fileName)
-        try{
-            PdfWriter.getInstance(doc,FileOutputStream(filePath))
-            doc.open()
-            doc.add(Paragraph(medicine.name))
-            doc.close()
-            Toast.makeText(context,"PDF Saved to $filePath",Toast.LENGTH_LONG).show()
-        }
-        catch (e: Exception){
-            Toast.makeText(context,e.message,Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun getFile(fileName: String): File {
-        val documentsDirectory = context?.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
-        return File.createTempFile(fileName, ".pdf", documentsDirectory)
-    }
 
 }

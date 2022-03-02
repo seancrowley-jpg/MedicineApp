@@ -2,10 +2,8 @@ package ie.wit.medicineapp.ui.medicineList
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -14,12 +12,11 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import ie.wit.medicineapp.R
 import ie.wit.medicineapp.adapters.MedicineAdapter
 import ie.wit.medicineapp.adapters.MedicineListener
 import ie.wit.medicineapp.databinding.FragmentMedicineListBinding
-import ie.wit.medicineapp.helpers.createLoader
-import ie.wit.medicineapp.helpers.hideLoader
-import ie.wit.medicineapp.helpers.showLoader
+import ie.wit.medicineapp.helpers.*
 import ie.wit.medicineapp.models.GroupModel
 import ie.wit.medicineapp.models.MedicineModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
@@ -98,6 +95,29 @@ class MedicineListFragment : Fragment(), MedicineListener {
                 medicineListViewModel.load(args.groupId)
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_medicine_list,menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.saveAsPdf) {
+            if (loggedInViewModel.liveFirebaseUser.value!!.displayName != null) {
+                saveListAsPdf(
+                    medicineListViewModel.observableMedicationList.value!! as ArrayList<MedicineModel>,
+                    context!!, loggedInViewModel.liveFirebaseUser.value!!.displayName!!
+                )
+            }
+            else{
+                saveListAsPdf(
+                    medicineListViewModel.observableMedicationList.value!! as ArrayList<MedicineModel>,
+                    context!!, loggedInViewModel.liveFirebaseUser.value!!.email!!
+                )
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun render(medicineList: ArrayList<MedicineModel>) {

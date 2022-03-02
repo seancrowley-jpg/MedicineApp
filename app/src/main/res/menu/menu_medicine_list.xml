@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/saveAsPdf"
-        android:title="@string/save_pdf"
+        android:title="@string/save_list_pdf"
         app:showAsAction="collapseActionView"/>
 
 </menu>
