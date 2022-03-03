@@ -1,7 +1,11 @@
 package ie.wit.medicineapp.ui.medicineList
 
+import PrintAdapter
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
+import android.print.PrintAttributes
+import android.print.PrintManager
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -25,6 +29,7 @@ import ie.wit.medicineapp.ui.utils.MedSwipeToDeleteCallback
 import ie.wit.medicineapp.ui.utils.MedSwipeToEditCallback
 import ie.wit.medicineapp.ui.utils.SwipeToDeleteCallback
 import ie.wit.medicineapp.ui.utils.SwipeToEditCallback
+import timber.log.Timber
 
 class MedicineListFragment : Fragment(), MedicineListener {
 
@@ -115,6 +120,21 @@ class MedicineListFragment : Fragment(), MedicineListener {
                     medicineListViewModel.observableMedicationList.value!! as ArrayList<MedicineModel>,
                     context!!, loggedInViewModel.liveFirebaseUser.value!!.email!!
                 )
+            }
+        }
+        if (item.itemId == R.id.print) {
+            val printManager: PrintManager =
+                requireContext().getSystemService(Context.PRINT_SERVICE) as PrintManager
+            try {
+                val file = createListPdf(
+                    medicineListViewModel.observableMedicationList.value!! as ArrayList<MedicineModel>,
+                    context!!,
+                    "userName"
+                )
+                val printAdapter = PrintAdapter(file.absolutePath)
+                printManager.print("Document", printAdapter, PrintAttributes.Builder().build())
+            } catch (e: Exception) {
+                Timber.e(e)
             }
         }
         return super.onOptionsItemSelected(item)

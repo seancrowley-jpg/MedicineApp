@@ -1,10 +1,14 @@
 package ie.wit.medicineapp.ui.medicineDetails
 
+import PrintAdapter
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.print.PrintAttributes
+import android.print.PrintManager
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
@@ -20,6 +24,7 @@ import ie.wit.medicineapp.R
 import ie.wit.medicineapp.adapters.SideEffectAdapter
 import ie.wit.medicineapp.adapters.SideEffectListener
 import ie.wit.medicineapp.databinding.FragmentMedicineDetailsBinding
+import ie.wit.medicineapp.helpers.createPdf
 import ie.wit.medicineapp.helpers.saveAsPdf
 import ie.wit.medicineapp.models.MedicineModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
@@ -90,13 +95,25 @@ class MedicineDetailsFragment : Fragment(), SideEffectListener {
                     medicineDetailsViewModel.observableMedicine.value!!, context!!,
                     loggedInViewModel.liveFirebaseUser.value!!.displayName!!
                 )
-            }
-            else{
+            } else {
                 saveAsPdf(
                     medicineDetailsViewModel.observableMedicine.value!!, context!!,
                     loggedInViewModel.liveFirebaseUser.value!!.email!!
                 )
             }
+        }
+        if (item.itemId == R.id.print) {
+            val printManager : PrintManager = requireContext().getSystemService(Context.PRINT_SERVICE) as PrintManager
+            try {
+                val file = createPdf(medicineDetailsViewModel.observableMedicine.value!!, context!!, "userName")
+                val printAdapter = PrintAdapter(file.absolutePath)
+                printManager.print("Document", printAdapter, PrintAttributes.Builder().build())
+            } catch (e : Exception) {
+                Timber.e(e)
+            }
+
+
+
         }
         return super.onOptionsItemSelected(item)
     }

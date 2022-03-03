@@ -7,4 +7,9 @@
         android:title="@string/save_pdf"
         app:showAsAction="collapseActionView"/>
 
+    <item
+        android:id="@+id/print"
+        android:title="Print"
+        app:showAsAction="collapseActionView"/>
+
 </menu>
