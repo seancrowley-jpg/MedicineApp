@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import androidx.preference.PreferenceManager
 import ie.wit.medicineapp.firebase.FirebaseDBManager
 import java.util.*
 
@@ -15,6 +16,9 @@ class ButtonReceiver : BroadcastReceiver(){
     companion object {
 
         fun snoozeAlarm(context: Context, intent: Intent?) {
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+            val snoozeTime = sharedPreferences.getString("snooze_limit", "")
+            var minute = snoozeTime?.toInt()
 
             val notificationIntent = Intent(context, NotificationService::class.java)
             notificationIntent.putExtras(intent!!)
@@ -25,9 +29,14 @@ class ButtonReceiver : BroadcastReceiver(){
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
             )
 
+            if(minute == 0)
+            {
+                minute = 1
+            }
+
             val calendar = Calendar.getInstance().apply {
                 timeInMillis = System.currentTimeMillis()
-                add(Calendar.MINUTE, 5)
+                add(Calendar.MINUTE, minute!!)
             }
 
 
