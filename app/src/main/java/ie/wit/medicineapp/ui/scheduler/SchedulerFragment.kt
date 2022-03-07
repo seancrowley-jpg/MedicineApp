@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -83,23 +84,56 @@ class SchedulerFragment : Fragment(), ReminderListener {
 
         val swipeDeleteHandler = object : ReminderSwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                adapter.removeAt(viewHolder.adapterPosition)
-                val reminder = viewHolder.itemView.tag as ReminderModel
-                schedulerViewModel.deleteReminder(reminder)
-                val intent = Intent(context, NotificationService::class.java)
-                val pendingIntent = PendingIntent.getBroadcast(
-                    context, reminder.requestCode, intent,
-                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-                )
-                val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                if (pendingIntent != null){
-                    alarmManager.cancel(pendingIntent)
-                    Toast.makeText(context,"ALARM CANCELLED", Toast.LENGTH_SHORT).show()
+                val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context!!)
+                val confirmBool = sharedPreferences.getBoolean("confirm_delete", true)
+                if (confirmBool) {
+                    val alertDialog = AlertDialog.Builder(context)
+                    alertDialog.setTitle("Delete Reminder?")
+                    alertDialog.setMessage("Are you sure you want to delete this Reminder? ")
+                    alertDialog.setNegativeButton("No") { _, _ ->
+                        schedulerViewModel.load()
+                    }
+                    alertDialog.setPositiveButton("Yes") { _, _ ->
+                        adapter.removeAt(viewHolder.adapterPosition)
+                        val reminder = viewHolder.itemView.tag as ReminderModel
+                        schedulerViewModel.deleteReminder(reminder)
+                        val intent = Intent(context, NotificationService::class.java)
+                        val pendingIntent = PendingIntent.getBroadcast(
+                            context, reminder.requestCode, intent,
+                            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                        )
+                        val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                        if (pendingIntent != null){
+                            alarmManager.cancel(pendingIntent)
+                            Toast.makeText(context,"ALARM CANCELLED", Toast.LENGTH_SHORT).show()
+                        }
+                        else {
+                            Toast.makeText(context, "ALARM Not Found", Toast.LENGTH_SHORT).show()
+                        }
+                        hideLoader(loader)
+                    }
+                    alertDialog.setOnDismissListener {schedulerViewModel.load()}
+                    alertDialog.show()
                 }
-                else {
-                    Toast.makeText(context, "ALARM Not Found", Toast.LENGTH_SHORT).show()
+                else{
+                    adapter.removeAt(viewHolder.adapterPosition)
+                    val reminder = viewHolder.itemView.tag as ReminderModel
+                    schedulerViewModel.deleteReminder(reminder)
+                    val intent = Intent(context, NotificationService::class.java)
+                    val pendingIntent = PendingIntent.getBroadcast(
+                        context, reminder.requestCode, intent,
+                        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                    )
+                    val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                    if (pendingIntent != null){
+                        alarmManager.cancel(pendingIntent)
+                        Toast.makeText(context,"ALARM CANCELLED", Toast.LENGTH_SHORT).show()
+                    }
+                    else {
+                        Toast.makeText(context, "ALARM Not Found", Toast.LENGTH_SHORT).show()
+                    }
+                    hideLoader(loader)
                 }
-                hideLoader(loader)
             }
         }
         val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)

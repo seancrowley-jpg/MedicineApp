@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -81,9 +82,34 @@ class MedicineListFragment : Fragment(), MedicineListener {
         itemTouchEditHelper.attachToRecyclerView(fragBinding.recyclerView)
         val swipeDeleteHandler = object : MedSwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                adapter.removeAt(viewHolder.adapterPosition)
-                medicineListViewModel.deleteMedicine(viewHolder.itemView.tag as MedicineModel, args.groupId)
-                hideLoader(loader)
+                val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context!!)
+                val confirmBool = sharedPreferences.getBoolean("confirm_delete", true)
+                if (confirmBool) {
+                    val alertDialog = AlertDialog.Builder(context)
+                    alertDialog.setTitle("Delete Medicine?")
+                    alertDialog.setMessage("Are you sure you want to delete this Medication?")
+                    alertDialog.setPositiveButton("Yes") { _, _ ->
+                        adapter.removeAt(viewHolder.adapterPosition)
+                        medicineListViewModel.deleteMedicine(
+                            viewHolder.itemView.tag as MedicineModel,
+                            args.groupId
+                        )
+                        hideLoader(loader)
+                    }
+                    alertDialog.setNegativeButton("No") { _, _ ->
+                        medicineListViewModel.load(args.groupId)
+                    }
+                    alertDialog.setOnDismissListener {medicineListViewModel.load(args.groupId)}
+                    alertDialog.show()
+                }
+                else{
+                    adapter.removeAt(viewHolder.adapterPosition)
+                    medicineListViewModel.deleteMedicine(
+                        viewHolder.itemView.tag as MedicineModel,
+                        args.groupId
+                    )
+                    hideLoader(loader)
+                }
             }
         }
         val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)

@@ -43,4 +43,15 @@
         android:icon="@drawable/ic_notifications_icon"/>
     </PreferenceCategory>
 
+    <PreferenceCategory
+        app:key="confirm_category"
+        app:title="Action Confirmations">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:icon="@drawable/ic_delete_icon"
+            android:key="confirm_delete"
+            android:title="Confirm before deleting" />
+    </PreferenceCategory>
+
 </PreferenceScreen>
