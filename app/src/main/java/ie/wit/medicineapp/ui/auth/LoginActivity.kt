@@ -7,6 +7,7 @@ import android.text.TextUtils
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import ie.wit.medicineapp.databinding.ActivityLoginBinding
 import ie.wit.medicineapp.ui.home.Home
@@ -17,6 +18,7 @@ import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
 import ie.wit.medicineapp.R
+import ie.wit.medicineapp.ui.settings.ThemeProvider
 
 class LoginActivity : AppCompatActivity() {
 
@@ -41,6 +43,9 @@ class LoginActivity : AppCompatActivity() {
         loginBinding.googleSignInButton.setSize(SignInButton.SIZE_WIDE)
         loginBinding.googleSignInButton.setColorScheme(2)
         loginBinding.googleSignInButton.setOnClickListener { googleSignIn() }
+        //initialise theme from shared preferences
+        val theme = ThemeProvider(this).getThemeFromPreferences()
+        AppCompatDelegate.setDefaultNightMode(theme)
     }
 
     public override fun onStart() {

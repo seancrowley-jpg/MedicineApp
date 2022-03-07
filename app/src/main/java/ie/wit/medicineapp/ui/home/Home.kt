@@ -15,6 +15,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -26,6 +27,7 @@ import ie.wit.medicineapp.databinding.NavHeaderBinding
 import ie.wit.medicineapp.helpers.customTransformation
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
 import ie.wit.medicineapp.ui.auth.LoginActivity
+import ie.wit.medicineapp.ui.settings.ThemeProvider
 import ie.wit.medicineapp.ui.utils.NotificationService
 
 class Home : AppCompatActivity() {
@@ -45,7 +47,6 @@ class Home : AppCompatActivity() {
         drawerLayout = homeBinding.drawerLayout
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-
         val drawerLayout: DrawerLayout = homeBinding.drawerLayout
         val navView: NavigationView = homeBinding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
