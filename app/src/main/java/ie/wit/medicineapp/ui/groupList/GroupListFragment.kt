@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +25,7 @@ import ie.wit.medicineapp.helpers.createLoader
 import ie.wit.medicineapp.helpers.hideLoader
 import ie.wit.medicineapp.helpers.showLoader
 import ie.wit.medicineapp.models.GroupModel
+import ie.wit.medicineapp.models.MedicineModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
 import ie.wit.medicineapp.ui.utils.SwipeToDeleteCallback
 import ie.wit.medicineapp.ui.utils.SwipeToEditCallback
@@ -72,9 +74,29 @@ class GroupListFragment : Fragment(), GroupListener {
         }
         val swipeDeleteHandler = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                adapter.removeAt(viewHolder.adapterPosition)
-                groupListViewModel.deleteGroup(viewHolder.itemView.tag as GroupModel)
-                hideLoader(loader)
+                val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context!!)
+                val confirmBool = sharedPreferences.getBoolean("confirm_delete", true)
+                if (confirmBool) {
+                    val alertDialog = AlertDialog.Builder(context)
+                    alertDialog.setTitle("Delete Group?")
+                    alertDialog.setMessage("Are you sure you want to delete this Group? " +
+                            "\nAll medication in this group will also be deleted.")
+                    alertDialog.setNegativeButton("No") { _, _ ->
+                        groupListViewModel.load()
+                    }
+                    alertDialog.setPositiveButton("Yes") { _, _ ->
+                        adapter.removeAt(viewHolder.adapterPosition)
+                        groupListViewModel.deleteGroup(viewHolder.itemView.tag as GroupModel)
+                        hideLoader(loader)
+                    }
+                    alertDialog.setOnDismissListener {groupListViewModel.load()}
+                    alertDialog.show()
+                }
+                else{
+                    adapter.removeAt(viewHolder.adapterPosition)
+                    groupListViewModel.deleteGroup(viewHolder.itemView.tag as GroupModel)
+                    hideLoader(loader)
+                }
             }
         }
         val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)

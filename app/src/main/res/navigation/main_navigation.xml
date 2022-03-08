@@ -182,4 +182,9 @@
         android:name="ie.wit.medicineapp.ui.auth.LoginActivity"
         android:label="activity_login"
         tools:layout="@layout/activity_login" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="ie.wit.medicineapp.ui.settings.SettingsFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

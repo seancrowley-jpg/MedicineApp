@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:useSimpleSummaryProvider="true">
+
+    <PreferenceCategory
+        app:key="reminders_category"
+        app:title="Reminders">
+
+    <EditTextPreference
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:defaultValue="5"
+        android:key="snooze_limit"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="Set Snooze Time"
+        android:inputType="numberDecimal"
+        android:icon="@drawable/ic_settings_snooze"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="theme_category"
+        app:title="Theme">
+
+    <ListPreference
+        app:entries="@array/themes_entries"
+        app:entryValues="@array/themes_values"
+        app:key="@string/theme_preferences_key"
+        app:defaultValue="@string/system_theme_preference_value"
+        app:title="Theme"
+        android:icon="@drawable/ic_baseline_theme"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+    app:key="notification_category"
+    app:title="Notifications">
+
+    <Preference
+        android:key="@string/notif_preferences_key"
+        android:title="Notification Settings"
+        android:icon="@drawable/ic_notifications_icon"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="confirm_category"
+        app:title="Action Confirmations">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:icon="@drawable/ic_delete_icon"
+            android:key="confirm_delete"
+            android:title="Confirm before deleting" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

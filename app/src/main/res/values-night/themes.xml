@@ -13,4 +13,18 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.MedicineApp.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.MedicineApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.MedicineApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="toggleStyle">
+        <item name="colorControlActivated">@color/white</item>
+        <item name="colorControlHighlight">@color/black</item>
+    </style>
 </resources>
