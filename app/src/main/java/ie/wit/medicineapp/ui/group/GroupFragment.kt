@@ -51,12 +51,11 @@ class GroupFragment : Fragment() {
             })
         }
 
-        fragBinding.priorityLevelPicker.minValue = 0
-        fragBinding.priorityLevelPicker.maxValue= 2
-        fragBinding.priorityLevelPicker.value = 0
-
-        fragBinding.priorityLevelPicker.setOnValueChangedListener{ _, _, newVal ->
-            fragBinding.groupPriorityText.text = "$newVal"
+        fragBinding.priorityLevelGroup.setOnCheckedChangeListener { radioGroup, i ->
+            if(fragBinding.priorityLevelGroup.checkedRadioButtonId == R.id.highPriorityRadio)
+                fragBinding.priorityHelperText.text = getString(R.string.high_priority_helper_text)
+            else
+                fragBinding.priorityHelperText.text = getString(R.string.low_priority_helper_text)
         }
 
         setButtonListener(fragBinding)
@@ -82,21 +81,29 @@ class GroupFragment : Fragment() {
         if (args.edit) {
             layout.addGroupButton.text = getString(R.string.btn_edit_group)
             layout.addGroupButton.setOnClickListener() {
-                group.name = layout.groupName.text.toString()
-                group.uid = args.uid
-                if (layout.groupPriorityText.text.isNotEmpty()) {
-                    group.priorityLevel = layout.groupPriorityText.text.toString().toInt()
+                if (layout.groupName.text!!.isNotEmpty()) {
+                    group.name = layout.groupName.text.toString()
+                    group.uid = args.uid
+                    group.priorityLevel = if(layout.priorityLevelGroup.checkedRadioButtonId == R.id.highPriorityRadio) 1 else 0
+                    groupViewModel.updateGroup(group,loggedInViewModel.liveFirebaseUser.value?.uid!!,args.uid)
+                    val action = GroupFragmentDirections.actionGroupFragmentToGroupListFragment()
+                    findNavController().navigate(action)
                 }
-                groupViewModel.updateGroup(group,loggedInViewModel.liveFirebaseUser.value?.uid!!,args.uid)
+                else
+                    Toast.makeText(context, "Please Enter a Group Name", Toast.LENGTH_LONG).show()
             }
         }
         else{
             layout.addGroupButton.setOnClickListener() {
-                group.name = layout.groupName.text.toString()
-                if (layout.groupPriorityText.text.isNotEmpty()) {
-                    group.priorityLevel = layout.groupPriorityText.text.toString().toInt()
+                if (layout.groupName.text!!.isNotEmpty()) {
+                    group.name = layout.groupName.text.toString()
+                    group.priorityLevel = if(layout.priorityLevelGroup.checkedRadioButtonId == R.id.highPriorityRadio) 1 else 0
+                    groupViewModel.addGroup(loggedInViewModel.liveFirebaseUser, group)
+                    val action = GroupFragmentDirections.actionGroupFragmentToGroupListFragment()
+                    findNavController().navigate(action)
                 }
-                groupViewModel.addGroup(loggedInViewModel.liveFirebaseUser, group)
+                else
+                    Toast.makeText(context, "Please Enter a Group Name", Toast.LENGTH_LONG).show()
             }
         }
     }

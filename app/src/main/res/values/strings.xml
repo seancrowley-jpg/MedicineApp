@@ -97,6 +97,13 @@
         <item>@string/system_theme_preference_value</item>
     </string-array>
 
+    <string name="high_priority_helper_text">High Priority Medication\nUsed for medication that can not be missed. You will receive Reminders that cannot be skipped for meds in this group.</string>
+    <string name="low_priority_helper_text">Low Priority Medication\nUsed for skippable medication (eg. Vitamins)that can be missed. You will receive non intrusive notifications for meds in this group.</string>
+    <string name="group_high">High</string>
+    <string name="group_low">Low</string>
+    <string name="group_priority">Priority</string>
+
+
 
 
 

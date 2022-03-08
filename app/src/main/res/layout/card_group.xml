@@ -38,23 +38,26 @@
                 android:id="@+id/priorityText"
                 android:layout_width="48dp"
                 android:layout_height="21dp"
-                android:text="Priority"
+                android:text="@string/group_priority"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.21"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/groupName"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.508" />
 
             <TextView
                 android:id="@+id/priorityLevel"
-                android:layout_width="23dp"
+                android:layout_width="30dp"
                 android:layout_height="21dp"
-                android:text="@{Integer.toString(group.priorityLevel)}"
+                android:text="@{group.priorityLevel == 1 ? @string/group_high : @string/group_low}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.841"
                 app:layout_constraintStart_toEndOf="@+id/groupName"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="10dp"
+                tools:text="High"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

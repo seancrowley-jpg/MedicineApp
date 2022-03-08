@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
@@ -9,9 +9,11 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         tools:context=".ui.group.GroupFragment">
 
         <TextView
@@ -19,6 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="33dp"
+            android:gravity="center"
             android:text="@string/group_header"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,9 +49,9 @@
                 android:layout_marginEnd="8dp"
                 android:inputType="textMultiLine"
                 android:padding="8dp"
+                android:text="@{groupvm.observableGroup.name}"
                 android:textColor="@color/teal_700"
                 android:textSize="14sp"
-                android:text="@{groupvm.observableGroup.name}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -61,62 +64,61 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="36dp"
+            android:gravity="center"
             android:text="@string/hint_group_priority"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/GroupNameTextField" />
 
-        <TextView
-            android:id="@+id/groupPriorityText"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:gravity="center_horizontal"
-            android:text="@{``+ groupvm.observableGroup.priorityLevel}"
-            app:layout_constraintBottom_toTopOf="@+id/priorityLevelPicker"
+        <RadioGroup
+            android:id="@+id/priorityLevelGroup"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/groupPriorityHeader" />
+            app:layout_constraintTop_toBottomOf="@+id/groupPriorityHeader">
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintBottom_toTopOf="@+id/priorityLevelPicker"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
+            <RadioButton
+                android:id="@+id/highPriorityRadio"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="High" />
 
-        <NumberPicker
-            android:id="@+id/priorityLevelPicker"
-            android:layout_width="match_parent"
-            android:layout_height="107dp"
-            android:layout_marginTop="324dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <RadioButton
+                android:id="@+id/lowPriority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="false"
 
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/priorityLevelPicker" />
+                android:text="Low" />
+        </RadioGroup>
 
         <Button
             android:id="@+id/add_group_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_marginBottom="120dp"
             android:text="@string/btn_add_group"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/priorityHelperText"
+            android:layout_width="370dp"
+            android:layout_height="188dp"
+            app:layout_constraintBottom_toTopOf="@+id/add_group_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/priorityLevelPicker" />
+            app:layout_constraintTop_toBottomOf="@+id/priorityLevelGroup"
+            android:textSize="20sp"
+            android:text="@string/high_priority_helper_text"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -20,13 +20,13 @@ import java.util.*
 class NotificationService : BroadcastReceiver() {
 
     companion object {
-        val channelID = "channelID"
+        const val channelID = "channelID"
         var notificationID = Random().nextInt()
-        val titleExtra = "Reminder Notification"
-        val messageExtra = "A Reminder"
-        val group = "Group Name"
-        val highChannelId = "highChannelID"
-        val time = "time"
+        const val titleExtra = "Reminder Notification"
+        const val messageExtra = "A Reminder"
+        const val group = "Group Name"
+        const val highChannelId = "highChannelID"
+        const val time = "time"
 
         private fun getIntent(context: Context, reminder: ReminderModel, userId: String): PendingIntent? {
             val intent = Intent(context, NotificationService::class.java)
@@ -43,7 +43,7 @@ class NotificationService : BroadcastReceiver() {
             if(reminder.repeatDays!!.size != 0){
                 intent.putExtra("repeat", true)
             }
-            if (reminder.groupPriorityLevel == 2)
+            if (reminder.groupPriorityLevel == 1)
                 intent.putExtra(channelID, "highChannelID")
             else
                 intent.putExtra(channelID, channelID)
@@ -70,7 +70,7 @@ class NotificationService : BroadcastReceiver() {
             if(reminder.repeatDays!!.size != 0){
                 intent.putExtra("repeat", true)
             }
-            if (reminder.groupPriorityLevel == 2)
+            if (reminder.groupPriorityLevel == 1)
                 intent.putExtra(channelID, "highChannelID")
             else
                 intent.putExtra(channelID, channelID)
@@ -87,7 +87,7 @@ class NotificationService : BroadcastReceiver() {
             if(reminder.time < System.currentTimeMillis()) {
                 val calendar = Calendar.getInstance().apply {
                     timeInMillis = reminder.time
-                    add(Calendar.DAY_OF_YEAR, 1);
+                    add(Calendar.DAY_OF_YEAR, 1)
                 }
                 alarmManager.setExactAndAllowWhileIdle(
                     AlarmManager.RTC_WAKEUP,
@@ -184,7 +184,7 @@ class NotificationService : BroadcastReceiver() {
 
         val snoozeIntent = Intent(context, ButtonReceiver::class.java)
         snoozeIntent.putExtra("action", "ACTION_SNOOZE")
-        snoozeIntent.putExtras(intent!!)
+        snoozeIntent.putExtras(intent)
         val snoozePendingIntent = PendingIntent.getBroadcast(
             context, 0, snoozeIntent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
@@ -192,7 +192,7 @@ class NotificationService : BroadcastReceiver() {
 
         val skipIntent = Intent(context, ButtonReceiver::class.java)
         skipIntent.putExtra("action", "ACTION_SKIP")
-        skipIntent.putExtras(intent!!)
+        skipIntent.putExtras(intent)
         val skipPendingIntent = PendingIntent.getBroadcast(
             context, 1, skipIntent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
@@ -203,27 +203,29 @@ class NotificationService : BroadcastReceiver() {
         }
         val confirmIntent = Intent(context, ButtonReceiver::class.java)
         confirmIntent.putExtra("action", "ACTION_CONFIRM")
-        confirmIntent.putExtras(intent!!)
+        confirmIntent.putExtras(intent)
         val confirmPendingIntent = PendingIntent.getBroadcast(
             context, 2, confirmIntent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
         val notification = NotificationCompat.Builder(context, channelID)
-            .setContentTitle(intent?.getStringExtra(titleExtra))
-            .setContentText(intent?.getStringExtra(messageExtra))
+            .setContentTitle(intent.getStringExtra(titleExtra))
+            .setContentText(intent.getStringExtra(messageExtra))
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setChannelId(intent?.getStringExtra(channelID)!!)
+            .setChannelId(intent.getStringExtra(channelID)!!)
             .setGroup(intent.getStringExtra(group))
             .setContentIntent(tapIntent)
             .addAction(R.drawable.ic_launcher_foreground,"Snooze", snoozePendingIntent)
-            .addAction(R.drawable.ic_launcher_foreground,"Skip", skipPendingIntent)
             .addAction(R.drawable.ic_launcher_foreground,"Confirm",confirmPendingIntent)
-            .build()
+
+        if(intent.getStringExtra("channelID") == channelID) {
+            notification.addAction(R.drawable.ic_launcher_foreground,"Skip",skipPendingIntent)
+        }
 
 
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        manager.notify(notificationID, notification)
+        manager.notify(notificationID, notification.build())
     }
 
 }
