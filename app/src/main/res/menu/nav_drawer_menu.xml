@@ -15,6 +15,10 @@
             android:id="@+id/schedulerFragment"
             android:title="@string/menu_scheduler" />
 
+        <item
+            android:id="@+id/historyFragment"
+            android:title="History" />
+
         <item android:title="Access Control">
             <menu>
                 <item

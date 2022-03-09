@@ -32,7 +32,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         loginBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(loginBinding.root)
-        Firebase.database.setPersistenceEnabled(true)
+        //Firebase.database.setPersistenceEnabled(true)
 
         loginBinding.btnLogin.setOnClickListener {
             signIn(loginBinding.emailField.text.toString(),

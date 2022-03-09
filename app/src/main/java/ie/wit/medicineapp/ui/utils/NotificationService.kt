@@ -6,7 +6,6 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.navigation.NavDeepLinkBuilder
@@ -199,7 +198,7 @@ class NotificationService : BroadcastReceiver() {
         )
 
         if(!repeat) {
-            FirebaseDBManager.skipReminder(userID!!, reminderID!!)
+            FirebaseDBManager.onceOffReminderTriggered(userID!!, reminderID!!)
         }
         val confirmIntent = Intent(context, ButtonReceiver::class.java)
         confirmIntent.putExtra("action", "ACTION_CONFIRM")

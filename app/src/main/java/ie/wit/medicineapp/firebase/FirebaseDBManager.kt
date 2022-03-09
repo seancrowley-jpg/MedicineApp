@@ -2,17 +2,12 @@ package ie.wit.medicineapp.firebase
 
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import ie.wit.medicineapp.R
-import ie.wit.medicineapp.models.GroupModel
-import ie.wit.medicineapp.models.MedicineAppStore
-import ie.wit.medicineapp.models.MedicineModel
-import ie.wit.medicineapp.models.ReminderModel
+import ie.wit.medicineapp.models.*
 import ie.wit.medicineapp.ui.utils.NotificationService
 import timber.log.Timber
 
@@ -224,7 +219,7 @@ object FirebaseDBManager : MedicineAppStore {
         database.updateChildren(childUpdate)
     }
 
-    override fun skipReminder(userid: String, reminderId: String) {
+    override fun onceOffReminderTriggered(userid: String, reminderId: String) {
         database.child("user-reminders")
             .child(userid).child(reminderId).child("active").setValue(false)
     }
@@ -263,5 +258,48 @@ object FirebaseDBManager : MedicineAppStore {
                 }
             })
 
+    }
+
+    override fun createConfirmation(userid: String, confirmation: ConfirmationModel) {
+        Timber.i("Firebase DB Reference : $database")
+        val key = database.child("confirmations").push().key
+        if (key == null) {
+            Timber.i("Firebase Error : Key Empty")
+            return
+        }
+        confirmation.uid = key
+        val confirmationValues = confirmation.toMap()
+        val childAdd = HashMap<String, Any>()
+        childAdd["/user-confirmations/$userid/$key"] = confirmationValues
+        database.updateChildren(childAdd)
+    }
+
+    override fun findHistory(
+        userid: String, historyList: MutableLiveData<List<ConfirmationModel>>, day: Int, month: Int,
+        year:Int
+    ) {
+        database.child("user-confirmations").child(userid)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val localList = ArrayList<ConfirmationModel>()
+                    val children = snapshot.children
+                    children.forEach {
+                        val confirmation = it.getValue(ConfirmationModel::class.java)
+                        if(confirmation!!.day == day && confirmation.month == month && confirmation.year == year) {
+                            localList.add(confirmation)
+                        }
+                        //localList.add(confirmation!!)
+
+                    }
+                    database.child("user-confirmations").child(userid)
+                        .removeEventListener(this)
+
+                    historyList.value = localList
+                }
+            })
     }
 }

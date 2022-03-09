@@ -187,4 +187,9 @@
         android:name="ie.wit.medicineapp.ui.settings.SettingsFragment"
         android:label="@string/settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="ie.wit.medicineapp.ui.history.HistoryFragment"
+        android:label="Medication History"
+        tools:layout="@layout/fragment_history" />
 </navigation>

@@ -9,7 +9,11 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.preference.PreferenceManager
 import ie.wit.medicineapp.firebase.FirebaseDBManager
+import ie.wit.medicineapp.models.ConfirmationModel
+import ie.wit.medicineapp.ui.auth.LoggedInViewModel
 import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.time.Duration.Companion.days
 
 class ButtonReceiver : BroadcastReceiver(){
 
@@ -62,11 +66,12 @@ class ButtonReceiver : BroadcastReceiver(){
                 manager.cancel(NotificationService.notificationID)
             }
             action.equals("ACTION_SKIP") -> {
+                medButtonPressed(intent,context, "Skipped")
                 Toast.makeText(context,"Skip Button Pressed", Toast.LENGTH_SHORT).show()
                 manager.cancel(NotificationService.notificationID)
             }
             action.equals("ACTION_CONFIRM") -> {
-                confirmMedTaken(intent,context)
+                medButtonPressed(intent,context, "Taken")
                 Toast.makeText(context,"Confirm Button Pressed", Toast.LENGTH_SHORT).show()
                 manager.cancel(NotificationService.notificationID)
             }
@@ -74,10 +79,23 @@ class ButtonReceiver : BroadcastReceiver(){
     }
 
 
-    private fun confirmMedTaken(intent: Intent , context: Context){
+    private fun medButtonPressed(intent: Intent , context: Context,status: String){
         val userID = intent.getStringExtra("userID")
-        val groupId = intent.getStringExtra("groupID")
+        val groupID = intent.getStringExtra("groupID")
         val medicineID = intent.getStringExtra("medicineID")
-        FirebaseDBManager.confirmMedTaken(userID!!,groupId!!,medicineID!!, context)
+        if(status != "Skipped") {
+            FirebaseDBManager.confirmMedTaken(userID!!, groupID!!, medicineID!!, context)
+        }
+        val confirmation = ConfirmationModel()
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = System.currentTimeMillis()
+        confirmation.time = System.currentTimeMillis()
+        confirmation.day = calendar.get(Calendar.DAY_OF_MONTH)
+        confirmation.month = calendar.get(Calendar.MONTH) + 1
+        confirmation.year = calendar.get(Calendar.YEAR)
+        confirmation.medicineID = medicineID!!
+        confirmation.groupID = groupID!!
+        confirmation.status = status
+        FirebaseDBManager.createConfirmation(userID!!, confirmation)
     }
 }

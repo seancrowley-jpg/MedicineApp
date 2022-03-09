@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ie.wit.medicineapp.R
 import ie.wit.medicineapp.databinding.FragmentConfirmationBinding
+import ie.wit.medicineapp.models.ConfirmationModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
 import ie.wit.medicineapp.ui.group.GroupViewModel
 import ie.wit.medicineapp.ui.home.Home
@@ -24,6 +25,7 @@ import ie.wit.medicineapp.ui.medicineDetails.MedicineDetailsViewModel
 import ie.wit.medicineapp.ui.reminder.ReminderFragmentDirections
 import ie.wit.medicineapp.ui.reminder.ReminderViewModel
 import ie.wit.medicineapp.ui.utils.ButtonReceiver
+import java.util.*
 
 class ConfirmationFragment : Fragment() {
 
@@ -35,6 +37,7 @@ class ConfirmationFragment : Fragment() {
     private val args by navArgs<ConfirmationFragmentArgs>()
     private var _fragBinding: FragmentConfirmationBinding? = null
     private val fragBinding get() = _fragBinding!!
+    val confirmation = ConfirmationModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,8 +90,18 @@ class ConfirmationFragment : Fragment() {
         val manager = context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val bundle = arguments
         val requestCode = bundle!!.getInt("notificationID")
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = System.currentTimeMillis()
+        confirmation.time = System.currentTimeMillis()
+        confirmation.day = calendar.get(Calendar.DAY_OF_MONTH)
+        confirmation.month = calendar.get(Calendar.MONTH) + 1
+        confirmation.year = calendar.get(Calendar.YEAR)
+        confirmation.medicineID = args.medicineId
+        confirmation.groupID = args.groupId
+        confirmation.status = "Taken"
         layout.btnConfirm.setOnClickListener(){
             confirmationViewModel.confirmMed(args.userId,args.groupId,args.medicineId,context!!)
+            confirmationViewModel.createConfirmation(args.userId, confirmation)
             manager.cancel(requestCode)
             Toast.makeText(context, "Confirmed", Toast.LENGTH_SHORT).show()
             val action = ConfirmationFragmentDirections.actionConfirmationFragmentToLoginActivity()
