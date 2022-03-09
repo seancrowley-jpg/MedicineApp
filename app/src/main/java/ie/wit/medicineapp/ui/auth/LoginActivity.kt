@@ -17,6 +17,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import ie.wit.medicineapp.R
 import ie.wit.medicineapp.ui.settings.ThemeProvider
 
@@ -30,6 +32,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         loginBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(loginBinding.root)
+        Firebase.database.setPersistenceEnabled(true)
 
         loginBinding.btnLogin.setOnClickListener {
             signIn(loginBinding.emailField.text.toString(),
