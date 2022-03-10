@@ -177,6 +177,7 @@ class ReminderFragment : Fragment() {
         reminder.uid = loggedInViewModel.liveFirebaseUser.value!!.uid
         reminder.medicineID = medicineDetailsViewModel.observableMedicine.value!!.uid!!
         reminder.groupID = groupViewModel.observableGroup.value!!.uid!!
+        reminder.groupName = groupViewModel.observableGroup.value!!.name
         reminder.time = time
         reminder.requestCode = Random().nextInt()
         reminder.minute = minute
@@ -200,6 +201,7 @@ class ReminderFragment : Fragment() {
         reminder.uid = reminderViewModel.observableReminder.value!!.uid
         reminder.medicineID = medicineDetailsViewModel.observableMedicine.value!!.uid!!
         reminder.groupID = groupViewModel.observableGroup.value!!.uid!!
+        reminder.groupName = groupViewModel.observableGroup.value!!.name
         reminder.time = time
         reminder.requestCode = reminderViewModel.observableReminder.value!!.requestCode
         reminder.minute = minute

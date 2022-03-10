@@ -96,6 +96,8 @@ class ButtonReceiver : BroadcastReceiver(){
         confirmation.medicineID = medicineID!!
         confirmation.groupID = groupID!!
         confirmation.status = status
+        confirmation.medicineName = intent.getStringExtra("medName")!!
+        confirmation.groupName = intent.getStringExtra("groupName")!!
         FirebaseDBManager.createConfirmation(userID!!, confirmation)
     }
 }

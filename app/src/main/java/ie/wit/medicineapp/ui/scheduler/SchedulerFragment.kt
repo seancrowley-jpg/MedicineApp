@@ -9,35 +9,26 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
-import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ie.wit.medicineapp.R
-import ie.wit.medicineapp.adapters.MedicineAdapter
 import ie.wit.medicineapp.adapters.ReminderAdapter
 import ie.wit.medicineapp.adapters.ReminderListener
 import ie.wit.medicineapp.databinding.FragmentSchedulerBinding
 import ie.wit.medicineapp.helpers.createLoader
 import ie.wit.medicineapp.helpers.hideLoader
 import ie.wit.medicineapp.helpers.showLoader
-import ie.wit.medicineapp.models.GroupModel
 import ie.wit.medicineapp.models.ReminderModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
 import ie.wit.medicineapp.ui.group.GroupViewModel
 import ie.wit.medicineapp.ui.medicineDetails.MedicineDetailsViewModel
 import ie.wit.medicineapp.ui.reminder.ReminderViewModel
 import ie.wit.medicineapp.ui.utils.NotificationService
-import ie.wit.medicineapp.ui.utils.ReminderSwipeToDeleteCallback
 import ie.wit.medicineapp.ui.utils.SwipeToDeleteCallback
-import timber.log.Timber
-import java.time.LocalDate
 import java.util.*
 
 class SchedulerFragment : Fragment(), ReminderListener {
@@ -82,7 +73,7 @@ class SchedulerFragment : Fragment(), ReminderListener {
             findNavController().navigate(action)
         }
 
-        val swipeDeleteHandler = object : ReminderSwipeToDeleteCallback(requireContext()) {
+        val swipeDeleteHandler = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context!!)
                 val confirmBool = sharedPreferences.getBoolean("confirm_delete", true)

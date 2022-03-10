@@ -102,6 +102,9 @@
     <string name="group_high">High</string>
     <string name="group_low">Low</string>
     <string name="group_priority">Priority</string>
+    <string name="group_history">Group: </string>
+    <string name="med_history">Med: </string>
+    <string name="history_header">Reminder History</string>
 
 
 

@@ -22,14 +22,10 @@ import ie.wit.medicineapp.adapters.MedicineAdapter
 import ie.wit.medicineapp.adapters.MedicineListener
 import ie.wit.medicineapp.databinding.FragmentMedicineListBinding
 import ie.wit.medicineapp.helpers.*
-import ie.wit.medicineapp.models.GroupModel
 import ie.wit.medicineapp.models.MedicineModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
-import ie.wit.medicineapp.ui.groupList.GroupListFragmentDirections
 import ie.wit.medicineapp.ui.utils.MedSwipeToDeleteCallback
 import ie.wit.medicineapp.ui.utils.MedSwipeToEditCallback
-import ie.wit.medicineapp.ui.utils.SwipeToDeleteCallback
-import ie.wit.medicineapp.ui.utils.SwipeToEditCallback
 import timber.log.Timber
 
 class MedicineListFragment : Fragment(), MedicineListener {

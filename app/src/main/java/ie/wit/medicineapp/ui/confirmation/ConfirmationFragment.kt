@@ -15,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.firebase.auth.FirebaseAuth
 import ie.wit.medicineapp.R
 import ie.wit.medicineapp.databinding.FragmentConfirmationBinding
 import ie.wit.medicineapp.models.ConfirmationModel
@@ -99,13 +100,23 @@ class ConfirmationFragment : Fragment() {
         confirmation.medicineID = args.medicineId
         confirmation.groupID = args.groupId
         confirmation.status = "Taken"
+        confirmation.medicineName = bundle.getString("medName","UnKnown")
+        confirmation.groupName = bundle.getString("groupName","UnKnown")
         layout.btnConfirm.setOnClickListener(){
             confirmationViewModel.confirmMed(args.userId,args.groupId,args.medicineId,context!!)
             confirmationViewModel.createConfirmation(args.userId, confirmation)
             manager.cancel(requestCode)
             Toast.makeText(context, "Confirmed", Toast.LENGTH_SHORT).show()
-            val action = ConfirmationFragmentDirections.actionConfirmationFragmentToLoginActivity()
-            findNavController().navigate(action)
+            if(FirebaseAuth.getInstance().currentUser == null) {
+                val action =
+                    ConfirmationFragmentDirections.actionConfirmationFragmentToLoginActivity()
+                findNavController().navigate(action)
+            }
+            else {
+                val action =
+                    ConfirmationFragmentDirections.actionConfirmationFragmentToGroupListFragment()
+                findNavController().navigate(action)
+            }
         }
         layout.btnSnooze.setOnClickListener(){
             val snoozeIntent = Intent(context, ButtonReceiver::class.java)

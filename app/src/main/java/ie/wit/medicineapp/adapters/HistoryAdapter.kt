@@ -24,6 +24,11 @@ class HistoryAdapter constructor(private var history: ArrayList<ConfirmationMode
 
     override fun getItemCount(): Int = history.size
 
+    fun removeAt(position: Int) {
+        history.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
 
     class MainHolder(private val binding : CardHistoryBinding) :
         RecyclerView.ViewHolder(binding.root) {

@@ -175,6 +175,9 @@
         <action
             android:id="@+id/action_confirmationFragment_to_loginActivity"
             app:destination="@id/loginActivity" />
+        <action
+            android:id="@+id/action_confirmationFragment_to_groupListFragment"
+            app:destination="@id/groupListFragment" />
 
     </fragment>
     <activity

@@ -54,7 +54,8 @@ class Home : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.groupListFragment, R.id.groupFragment, R.id.schedulerFragment
+                R.id.groupListFragment, R.id.groupFragment, R.id.schedulerFragment,
+                R.id.historyFragment, R.id.settingsFragment
             ), drawerLayout
         )
         createNotificationChannel()

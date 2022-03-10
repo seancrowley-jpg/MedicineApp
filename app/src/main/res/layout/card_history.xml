@@ -23,55 +23,52 @@
 
             <TextView
                 android:id="@+id/confirmationDate"
-                android:layout_width="100dp"
+                android:layout_width="115dp"
                 android:layout_height="27dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:text="@{@string/formatDate(confirmation.time)}"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                tools:text="04/04/22" />
+                tools:text="04/04/2022" />
 
             <TextView
                 android:id="@+id/confirmationTime"
-                android:layout_width="100dp"
+                android:layout_width="80dp"
                 android:layout_height="27dp"
-                android:layout_marginStart="16dp"
                 android:text="@{@string/formatTime(confirmation.time)}"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/medName"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/confirmationDate"
-                app:layout_constraintVertical_bias="0.0"
-                tools:text="02:09pm" />
+                tools:text="12:59pm" />
 
             <TextView
                 android:id="@+id/GroupName"
-                android:layout_width="96dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="136dp"
-                android:text="@{confirmation.groupName}"
+                android:layout_width="125dp"
+                android:layout_height="27dp"
+                android:layout_marginEnd="116dp"
+                android:text="@{@string/group_history + confirmation.groupName}"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.075"
+                app:layout_constraintVertical_bias="0.0"
                 tools:text="Group Name" />
 
             <TextView
                 android:id="@+id/medName"
-                android:layout_width="96dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="136dp"
-                android:text="@{confirmation.medicineName}"
+                android:layout_width="125dp"
+                android:layout_height="27dp"
+                android:layout_marginEnd="116dp"
+                android:text="@{@string/med_history + confirmation.medicineName}"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.757"
+                app:layout_constraintVertical_bias="0.915"
                 tools:text="Med Name" />
 
             <TextView

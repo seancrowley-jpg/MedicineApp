@@ -35,4 +35,5 @@ interface MedicineAppStore {
         month: Int,
         year: Int
     )
+    fun deleteConfirmationHistory(userid: String, confirmationId: String)
 }

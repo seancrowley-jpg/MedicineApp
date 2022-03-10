@@ -39,6 +39,8 @@ class NotificationService : BroadcastReceiver() {
             intent.putExtra("userID", userId)
             intent.putExtra("groupID", reminder.groupID)
             intent.putExtra("medicineID", reminder.medicineID)
+            intent.putExtra("medName", reminder.medName)
+            intent.putExtra("groupName",reminder.groupName)
             if(reminder.repeatDays!!.size != 0){
                 intent.putExtra("repeat", true)
             }

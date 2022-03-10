@@ -16,6 +16,7 @@ data class ReminderModel(
     var minute: Int = 0,
     var medName: String = "",
     var medDosage: String = "",
+    var groupName: String = "",
     var groupPriorityLevel: Int = 0,
     var active: Boolean = false,
     var repeatDays: MutableList<Int>? = ArrayList()
@@ -32,6 +33,7 @@ data class ReminderModel(
             "minute" to minute,
             "medName" to medName,
             "medDosage" to medDosage,
+            "groupName" to groupName,
             "groupPriorityLevel" to groupPriorityLevel,
             "active" to active,
             "repeatDays" to repeatDays,

@@ -5,12 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
@@ -25,10 +22,9 @@ import ie.wit.medicineapp.helpers.createLoader
 import ie.wit.medicineapp.helpers.hideLoader
 import ie.wit.medicineapp.helpers.showLoader
 import ie.wit.medicineapp.models.GroupModel
-import ie.wit.medicineapp.models.MedicineModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
-import ie.wit.medicineapp.ui.utils.SwipeToDeleteCallback
-import ie.wit.medicineapp.ui.utils.SwipeToEditCallback
+import ie.wit.medicineapp.ui.utils.GroupSwipeToDeleteCallback
+import ie.wit.medicineapp.ui.utils.GroupSwipeToEditCallback
 
 class GroupListFragment : Fragment(), GroupListener {
 
@@ -72,7 +68,7 @@ class GroupListFragment : Fragment(), GroupListener {
             val action = GroupListFragmentDirections.actionGroupListFragmentToGroupFragment()
             findNavController().navigate(action)
         }
-        val swipeDeleteHandler = object : SwipeToDeleteCallback(requireContext()) {
+        val swipeDeleteHandler = object : GroupSwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context!!)
                 val confirmBool = sharedPreferences.getBoolean("confirm_delete", true)
@@ -102,7 +98,7 @@ class GroupListFragment : Fragment(), GroupListener {
         val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
         itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerView)
 
-        val swipeEditHandler = object : SwipeToEditCallback(requireContext()) {
+        val swipeEditHandler = object : GroupSwipeToEditCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 onEditGroupClick(viewHolder.itemView.tag as GroupModel)
             }
