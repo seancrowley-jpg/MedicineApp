@@ -26,12 +26,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
         findPreference<ListPreference>(getString(R.string.theme_preferences_key)) }
     private val notificationSettingsPreference by lazy {
         findPreference<Preference>(getString(R.string.notif_preferences_key))}
+    private val pharmacyPreference by lazy {
+        findPreference<EditTextPreference>(getString(R.string.pharmacy_preference_key))
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
         setSnoozeValue()
         setThemePreference()
         openAppNotificationSettings()
+        setPharmacyNumber()
     }
 
     //snooze option setup
@@ -84,6 +88,17 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 }
                 context!!.startActivity(intent)
                 true
+            }
+    }
+
+    private fun setPharmacyNumber(){
+        pharmacyPreference?.setOnBindEditTextListener { editText ->
+            editText.inputType = InputType.TYPE_CLASS_NUMBER
+        }
+        pharmacyPreference?.summaryProvider =
+            Preference.SummaryProvider<EditTextPreference> { preference ->
+                val text = preference.text
+                "Your Pharmacies phone No.: $text"
             }
     }
 }

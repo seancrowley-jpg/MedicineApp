@@ -18,6 +18,17 @@
         android:inputType="numberDecimal"
         android:icon="@drawable/ic_settings_snooze"/>
 
+        <EditTextPreference
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:defaultValue="5"
+            android:key="@string/pharmacy_preference_key"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Enter Pharmacy Number"
+            android:inputType="numberDecimal"
+            android:icon="@drawable/ic_baseline_phone"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory

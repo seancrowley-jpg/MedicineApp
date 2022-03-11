@@ -1,10 +1,14 @@
 package ie.wit.medicineapp.firebase
 
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
+import androidx.preference.PreferenceManager
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import ie.wit.medicineapp.R
@@ -254,6 +258,12 @@ object FirebaseDBManager : MedicineAppStore {
                     } else
                         newQuantity = 0
                     if (newQuantity <= reminderLimit.toInt()) {
+                        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+                        val phoneNum = sharedPreferences.getString("pharmacy", "")
+                        val callIntent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNum, null))
+                        val callPendingIntent = PendingIntent.getActivity(context, 5,
+                            callIntent,
+                            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
                         val notification = NotificationCompat.Builder(
                             context,
                             NotificationService.channelID
@@ -265,6 +275,9 @@ object FirebaseDBManager : MedicineAppStore {
                             )
                             .setSmallIcon(R.drawable.ic_launcher_foreground)
                             .setChannelId("highChannelID")
+                            .addAction(R.drawable.ic_launcher_foreground,"Call Pharmacy",
+                                callPendingIntent)
+                            .setAutoCancel(true)
                             .build()
                         val manager =
                             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

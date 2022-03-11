@@ -80,6 +80,7 @@
     <string name="snooze_preference_key">snooze_limit</string>
     <string name="theme_preferences_key">theme</string>
     <string name="notif_preferences_key">notif_settings</string>
+    <string name="pharmacy_preference_key">pharmacy</string>
     <string name="dark_theme_description">Dark Mode</string>
     <string name="light_theme_description">Light Mode</string>
     <string name="system_theme_description">Following Systems Theme</string>
