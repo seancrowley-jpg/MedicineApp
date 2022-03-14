@@ -15,6 +15,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
+import androidx.preference.PreferenceManager
 import ie.wit.medicineapp.R
 import ie.wit.medicineapp.databinding.FragmentReminderBinding
 import ie.wit.medicineapp.models.ReminderModel
@@ -97,25 +98,58 @@ class ReminderFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.schedulerFragment) {
-            schedulerViewModel.deleteReminder(reminderViewModel.observableReminder.value!!)
-            val intent = Intent(context, NotificationService::class.java)
-            val pendingIntent = PendingIntent.getBroadcast(
-                context, reminderViewModel.observableReminder.value!!.requestCode, intent,
-                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-            )
-            val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            if (pendingIntent != null) {
-                alarmManager.cancel(pendingIntent)
-                Toast.makeText(context, "ALARM CANCELLED", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(context, "ALARM Not Found", Toast.LENGTH_SHORT).show()
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context!!)
+            val confirmBool = sharedPreferences.getBoolean("confirm_delete", true)
+            if (confirmBool) {
+                val alertDialog = AlertDialog.Builder(context)
+                alertDialog.setTitle("Delete Reminder?")
+                alertDialog.setMessage("Are you sure you want to delete this Reminder? ")
+                alertDialog.setNegativeButton("No") { _, _ -> }
+                alertDialog.setPositiveButton("Yes") { _, _ ->
+                    schedulerViewModel.deleteReminder(reminderViewModel.observableReminder.value!!)
+                    val intent = Intent(context, NotificationService::class.java)
+                    val pendingIntent = PendingIntent.getBroadcast(
+                        context, reminderViewModel.observableReminder.value!!.requestCode, intent,
+                        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                    )
+                    val alarmManager =
+                        context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                    if (pendingIntent != null) {
+                        alarmManager.cancel(pendingIntent)
+                        Toast.makeText(context, "ALARM CANCELLED", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "ALARM Not Found", Toast.LENGTH_SHORT).show()
+                    }
+                    NavigationUI.onNavDestinationSelected(
+                        item,
+                        requireView().findNavController()
+                    ) || super.onOptionsItemSelected(item)
+                }
+                alertDialog.show()
+            }
+            else{
+                schedulerViewModel.deleteReminder(reminderViewModel.observableReminder.value!!)
+                val intent = Intent(context, NotificationService::class.java)
+                val pendingIntent = PendingIntent.getBroadcast(
+                    context, reminderViewModel.observableReminder.value!!.requestCode, intent,
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                )
+                val alarmManager =
+                    context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                if (pendingIntent != null) {
+                    alarmManager.cancel(pendingIntent)
+                    Toast.makeText(context, "ALARM CANCELLED", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "ALARM Not Found", Toast.LENGTH_SHORT).show()
+                }
+                return NavigationUI.onNavDestinationSelected(
+                    item,
+                    requireView().findNavController()
+                ) || super.onOptionsItemSelected(item)
             }
         }
-        return NavigationUI.onNavDestinationSelected(
-            item,
-            requireView().findNavController()
-        ) || super.onOptionsItemSelected(item)
 
+        return super.onOptionsItemSelected(item)
     }
 
 
@@ -251,13 +285,28 @@ class ReminderFragment : Fragment() {
     private fun showRepeatDialog(){
         val selectedItems = ArrayList<Int>()
         val builder = AlertDialog.Builder(context)
+        val checkedItems : BooleanArray = booleanArrayOf(false,false,false,false,false,false,false)
+        if (args.edit){
+            for(i in reminderViewModel.observableReminder.value!!.repeatDays!!){
+                checkedItems[i -1] = true
+            }
+            selectedItems.addAll(reminderViewModel.observableReminder.value!!.repeatDays!!)
+        }
+        else{
+            for(i in reminder.repeatDays!!){
+                checkedItems[i -1] = true
+            }
+            selectedItems.addAll(reminder.repeatDays!!)
+        }
         builder.setTitle("Repeat")
-            .setMultiChoiceItems(R.array.days_of_week,null,
+            .setMultiChoiceItems(R.array.days_of_week,checkedItems,
                 DialogInterface.OnMultiChoiceClickListener { _, which, isChecked ->
                     if (isChecked) {
                         selectedItems.add(which + 1)
-                    } else if (selectedItems.contains(which)) {
-                        selectedItems.remove(which)
+                        checkedItems[which] = true
+                    } else if (selectedItems.contains(which +1)) {
+                        selectedItems.remove(which + 1)
+                        checkedItems[which] = false
                     }
                 })
             .setPositiveButton("OK",
