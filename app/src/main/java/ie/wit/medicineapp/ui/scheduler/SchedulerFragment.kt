@@ -7,6 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.EditorInfo
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
@@ -16,6 +18,7 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ie.wit.medicineapp.R
 import ie.wit.medicineapp.adapters.ReminderAdapter
 import ie.wit.medicineapp.adapters.ReminderListener
 import ie.wit.medicineapp.databinding.FragmentSchedulerBinding
@@ -131,6 +134,23 @@ class SchedulerFragment : Fragment(), ReminderListener {
         itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerView)
 
         return root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_scheduler, menu)
+        val searchItem = menu.findItem(R.id.item_search_reminders)
+        val searchView = searchItem?.actionView as SearchView
+        searchView.imeOptions = EditorInfo.IME_ACTION_DONE
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+            override fun onQueryTextChange(p0: String?): Boolean {
+                adapter.filter.filter(p0)
+                return true
+            }
+        })
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     private fun renderReminders(reminders: ArrayList<ReminderModel>) {

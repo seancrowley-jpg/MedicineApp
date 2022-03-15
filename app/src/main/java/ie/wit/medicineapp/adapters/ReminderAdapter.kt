@@ -2,8 +2,11 @@ package ie.wit.medicineapp.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import ie.wit.medicineapp.databinding.CardReminderBinding
+import ie.wit.medicineapp.models.MedicineModel
 import ie.wit.medicineapp.models.ReminderModel
 
 interface ReminderListener{
@@ -13,7 +16,10 @@ interface ReminderListener{
 }
 
 class ReminderAdapter constructor(private var reminders: ArrayList<ReminderModel>, private val listener: ReminderListener) :
-    RecyclerView.Adapter<ReminderAdapter.MainHolder>(){
+    RecyclerView.Adapter<ReminderAdapter.MainHolder>(), Filterable{
+
+    private val remindersFiltered = reminders
+    private val searchList = ArrayList<ReminderModel>(remindersFiltered)
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -33,6 +39,35 @@ class ReminderAdapter constructor(private var reminders: ArrayList<ReminderModel
     fun removeAt(position: Int) {
         reminders.removeAt(position)
         notifyItemRemoved(position)
+    }
+
+    override fun getFilter(): Filter {
+        return object: Filter() {
+            override fun performFiltering(p0: CharSequence?): FilterResults {
+                val filteredList = ArrayList<ReminderModel>()
+                val searchText = p0.toString()
+                if(searchText.isBlank() or searchText.isEmpty()){
+                    filteredList.addAll(searchList)
+                }
+                else{
+                    searchList.forEach{
+                        if(it.medName.lowercase().contains(searchText) or it.groupName.lowercase().contains(searchText)){
+                            filteredList.add(it)
+                        }
+                    }
+                }
+                val results = FilterResults()
+                results.values = filteredList
+                return results
+            }
+
+            override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
+                remindersFiltered.clear()
+                remindersFiltered.addAll(p1!!.values as ArrayList<ReminderModel>)
+                notifyDataSetChanged()
+            }
+
+        }
     }
 
     class MainHolder(private val binding : CardReminderBinding) :

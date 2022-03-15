@@ -3,19 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/item_search_medicine"
+        android:id="@+id/item_search_groups"
         android:icon="@android:drawable/ic_menu_search"
         android:title="Search"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="android.widget.SearchView"/>
-
-    <item
-        android:id="@+id/saveAsPdf"
-        android:title="@string/save_list_pdf"
-        app:showAsAction="collapseActionView"/>
-    <item
-        android:id="@+id/print"
-        android:title="Print"
-        app:showAsAction="collapseActionView"/>
 
 </menu>

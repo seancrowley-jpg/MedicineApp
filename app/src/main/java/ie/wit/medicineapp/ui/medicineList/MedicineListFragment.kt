@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.print.PrintAttributes
 import android.print.PrintManager
 import android.view.*
+import android.view.inputmethod.EditorInfo
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -125,8 +127,20 @@ class MedicineListFragment : Fragment(), MedicineListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_medicine_list, menu)
+        val searchItem = menu.findItem(R.id.item_search_medicine)
+        val searchView = searchItem?.actionView as SearchView
+        searchView.imeOptions = EditorInfo.IME_ACTION_DONE
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+            override fun onQueryTextChange(p0: String?): Boolean {
+                adapter.filter.filter(p0)
+                return true
+            }
+        })
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_medicine_list,menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
