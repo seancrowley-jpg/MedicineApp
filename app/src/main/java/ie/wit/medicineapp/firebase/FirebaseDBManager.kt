@@ -111,6 +111,13 @@ object FirebaseDBManager : MedicineAppStore {
             })
     }
 
+    override fun deleteAllGroups(userid: String) {
+        val childDelete: MutableMap<String, Any?> = HashMap()
+        childDelete["/user-groups/$userid"] = null
+        childDelete["/user-medication/$userid"] = null
+        database.updateChildren(childDelete)
+    }
+
     override fun findMedicineById(
         userid: String,
         groupId: String,

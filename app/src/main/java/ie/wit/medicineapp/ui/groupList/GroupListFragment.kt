@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -15,6 +16,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import ie.wit.medicineapp.R
 import ie.wit.medicineapp.adapters.GroupAdapter
 import ie.wit.medicineapp.adapters.GroupListener
@@ -36,6 +39,7 @@ class GroupListFragment : Fragment(), GroupListener {
     private lateinit var adapter: GroupAdapter
     lateinit var loader : AlertDialog
     private val args by navArgs<GroupListFragmentArgs>()
+    private lateinit var snackbar: Snackbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
@@ -106,6 +110,30 @@ class GroupListFragment : Fragment(), GroupListener {
         }
         val itemTouchEditHelper = ItemTouchHelper(swipeEditHandler)
         itemTouchEditHelper.attachToRecyclerView(fragBinding.recyclerView)
+
+        snackbar = Snackbar.make(
+            fragBinding.recyclerView,
+            "Groups Deleted",
+            Snackbar.LENGTH_INDEFINITE
+        )
+            .setAction("Undo", View.OnClickListener {
+                Toast.makeText(context, "Delete Undone", Toast.LENGTH_LONG).show()
+            })
+            .addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                override fun onShown(transientBottomBar: Snackbar?) {
+                    super.onShown(transientBottomBar)
+                }
+
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                        groupListViewModel.load()
+                    } else {
+                        groupListViewModel.deleteAllGroups()
+                        groupListViewModel.load()
+                    }
+                    super.onDismissed(transientBottomBar, event)
+                }
+            })
         return root
     }
 
@@ -128,6 +156,31 @@ class GroupListFragment : Fragment(), GroupListener {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.delete_all_groups) {
+            if (groupListViewModel.observableGroupsList.value!!.isNotEmpty()) {
+                val alertDialog = AlertDialog.Builder(context)
+                alertDialog.setTitle("Delete Groups?")
+                alertDialog.setMessage(
+                    "Are you sure you want to delete all Groups? " +
+                            "\nAll medication will also be deleted."
+                )
+                alertDialog.setNegativeButton("No") { _, _ ->
+                    groupListViewModel.load()
+                }
+                alertDialog.setPositiveButton("Yes") { _, _ ->
+                    snackbar.show()
+                }
+                alertDialog.setOnDismissListener { groupListViewModel.load() }
+                alertDialog.show()
+            }
+            else{
+                Toast.makeText(context, "No Groups To Delete Found", Toast.LENGTH_LONG).show()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun render(groupList: ArrayList<GroupModel>) {
         fragBinding.recyclerView.adapter = GroupAdapter(groupList, this, args.reminder)
         adapter = fragBinding.recyclerView.adapter as GroupAdapter
@@ -137,6 +190,14 @@ class GroupListFragment : Fragment(), GroupListener {
         } else {
             fragBinding.recyclerView.visibility = View.VISIBLE
             fragBinding.groupsNotFound.visibility = View.GONE
+        }
+        if (snackbar.isShown){
+            fragBinding.recyclerView.visibility = View.GONE
+            fragBinding.swiperefresh.isEnabled = false
+        }
+        else{
+            fragBinding.recyclerView.visibility = View.VISIBLE
+            fragBinding.swiperefresh.isEnabled = true
         }
     }
 
@@ -149,6 +210,11 @@ class GroupListFragment : Fragment(), GroupListener {
                 groupListViewModel.load()
             }
         })
+    }
+
+    override fun onDestroy() {
+        snackbar.dismiss()
+        super.onDestroy()
     }
 
     private fun setSwipeRefresh() {
@@ -189,5 +255,9 @@ class GroupListFragment : Fragment(), GroupListener {
     override fun onEditGroupClick(group: GroupModel) {
         val action = GroupListFragmentDirections.actionGroupListFragmentToGroupFragment(edit = true, group.uid!!)
         findNavController().navigate(action)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
     }
 }
