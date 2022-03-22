@@ -21,6 +21,7 @@ interface MedicineAppStore {
     fun createMedicine(firebaseUser: MutableLiveData<FirebaseUser>, medicine: MedicineModel, groupId: String)
     fun updateMedicine(userid: String, groupId: String, medicineId: String, medicine: MedicineModel)
     fun deleteMedicine(userid:String, groupId: String, medicineId: String)
+    fun deleteAllMedicine(userid: String, groupId: String)
     fun createReminder(firebaseUser: MutableLiveData<FirebaseUser>, reminder: ReminderModel)
     fun findReminders(userid:String, reminderList: MutableLiveData<List<ReminderModel>>)
     fun deleteReminder(userid:String, reminderId: String)

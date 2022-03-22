@@ -9,6 +9,7 @@ import android.print.PrintManager
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -19,6 +20,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import ie.wit.medicineapp.R
 import ie.wit.medicineapp.adapters.MedicineAdapter
 import ie.wit.medicineapp.adapters.MedicineListener
@@ -39,6 +42,7 @@ class MedicineListFragment : Fragment(), MedicineListener {
     private val args by navArgs<MedicineListFragmentArgs>()
     lateinit var loader : AlertDialog
     private lateinit var adapter: MedicineAdapter
+    private lateinit var snackbar: Snackbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,6 +116,30 @@ class MedicineListFragment : Fragment(), MedicineListener {
         }
         val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
         itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerView)
+
+        snackbar = Snackbar.make(
+            fragBinding.recyclerView,
+            "Meds Deleted",
+            Snackbar.LENGTH_INDEFINITE
+        )
+            .setAction("Undo", View.OnClickListener {
+                Toast.makeText(context, "Delete Undone", Toast.LENGTH_LONG).show()
+            })
+            .addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                override fun onShown(transientBottomBar: Snackbar?) {
+                    super.onShown(transientBottomBar)
+                }
+
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                        medicineListViewModel.load(args.groupId)
+                    } else {
+                        medicineListViewModel.deleteAllMeds(args.groupId)
+                        medicineListViewModel.load(args.groupId)
+                    }
+                    super.onDismissed(transientBottomBar, event)
+                }
+            })
         return root
     }
 
@@ -173,6 +201,26 @@ class MedicineListFragment : Fragment(), MedicineListener {
                 Timber.e(e)
             }
         }
+        if(item.itemId == R.id.delete_all_meds) {
+            if (medicineListViewModel.observableMedicationList.value!!.isNotEmpty()) {
+                val alertDialog = AlertDialog.Builder(context)
+                alertDialog.setTitle("Delete All Meds For This Group?")
+                alertDialog.setMessage(
+                    "Are you sure you want to delete all Meds in this Group? "
+                )
+                alertDialog.setNegativeButton("No") { _, _ ->
+                    medicineListViewModel.load(args.groupId)
+                }
+                alertDialog.setPositiveButton("Yes") { _, _ ->
+                    snackbar.show()
+                }
+                alertDialog.setOnDismissListener { medicineListViewModel.load(args.groupId) }
+                alertDialog.show()
+            }
+            else{
+                Toast.makeText(context, "No Meds To Delete Found", Toast.LENGTH_LONG).show()
+            }
+        }
         return super.onOptionsItemSelected(item)
     }
 
@@ -185,6 +233,14 @@ class MedicineListFragment : Fragment(), MedicineListener {
         } else {
             fragBinding.recyclerView.visibility = View.VISIBLE
             fragBinding.medicationNotFound.visibility = View.GONE
+        }
+        if (snackbar.isShown){
+            fragBinding.recyclerView.visibility = View.GONE
+            fragBinding.swiperefresh.isEnabled = false
+        }
+        else{
+            fragBinding.recyclerView.visibility = View.VISIBLE
+            fragBinding.swiperefresh.isEnabled = true
         }
     }
 
@@ -225,6 +281,11 @@ class MedicineListFragment : Fragment(), MedicineListener {
         val action = MedicineListFragmentDirections.actionMedicineListFragmentToMedicineFragment(edit = true, medicineId = medicine.uid!!, groupId = args.groupId
         )
         findNavController().navigate(action)
+    }
+
+    override fun onDestroy() {
+        snackbar.dismiss()
+        super.onDestroy()
     }
 
 }

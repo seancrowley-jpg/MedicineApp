@@ -170,6 +170,12 @@ object FirebaseDBManager : MedicineAppStore {
         database.updateChildren(childDelete)
     }
 
+    override fun deleteAllMedicine(userid: String, groupId: String) {
+        val childDelete: MutableMap<String, Any?> = HashMap()
+        childDelete["/user-medication/$userid/$groupId"] = null
+        database.updateChildren(childDelete)
+    }
+
     override fun createReminder(
         firebaseUser: MutableLiveData<FirebaseUser>,
         reminder: ReminderModel

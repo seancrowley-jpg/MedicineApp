@@ -17,5 +17,9 @@
         android:id="@+id/print"
         android:title="Print"
         app:showAsAction="collapseActionView"/>
+    <item
+        android:id="@+id/delete_all_meds"
+        android:title="Delete All"
+        app:showAsAction="collapseActionView"/>
 
 </menu>
