@@ -39,7 +39,6 @@
         android:text="@string/empty_medication"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/black"
         app:layout_anchor="@+id/recyclerView"
         app:layout_anchorGravity="center"
         app:layout_constraintBottom_toBottomOf="parent"

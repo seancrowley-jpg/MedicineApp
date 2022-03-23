@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.splashScreen.SplashScreenActivity"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:background="@drawable/side_nav_bar">
 
     <TextView
         android:id="@+id/textView2"
@@ -13,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="Medicine App"
         android:textSize="30sp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/SplashScreenImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

@@ -43,8 +43,6 @@ class MedicineListFragment : Fragment(), MedicineListener {
     private val args by navArgs<MedicineListFragmentArgs>()
     lateinit var loader : AlertDialog
     private lateinit var adapter: MedicineAdapter
-    private lateinit var snackbarDeleteAll: Snackbar
-    private lateinit var snackbarDelete: Snackbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,36 +70,6 @@ class MedicineListFragment : Fragment(), MedicineListener {
             fragBinding.fab.visibility = View.GONE
         }
 
-        snackbarDeleteAll = Snackbar.make(
-            fragBinding.recyclerView,
-            "Meds Deleted",
-            Snackbar.LENGTH_INDEFINITE
-        )
-            .setAction("Undo", View.OnClickListener {
-                Toast.makeText(context, "Delete Undone", Toast.LENGTH_LONG).show()
-            })
-            .addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
-                override fun onShown(transientBottomBar: Snackbar?) {
-                    super.onShown(transientBottomBar)
-                }
-
-                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                    if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                        medicineListViewModel.load(args.groupId)
-                    } else {
-                        medicineListViewModel.deleteAllMeds(args.groupId)
-                        medicineListViewModel.load(args.groupId)
-                    }
-                    super.onDismissed(transientBottomBar, event)
-                }
-            })
-
-        snackbarDelete = Snackbar.make(
-            fragBinding.recyclerView,
-            "Medicine Deleted",
-            Snackbar.LENGTH_INDEFINITE
-        )
-
         val fab: FloatingActionButton = fragBinding.fab
         fab.setOnClickListener {
             val action =
@@ -120,24 +88,6 @@ class MedicineListFragment : Fragment(), MedicineListener {
 
         val swipeDeleteHandler = object : MedSwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                snackbarDelete.setAction("Undo", View.OnClickListener {
-                    Toast.makeText(context, "Delete Undone", Toast.LENGTH_LONG).show()
-                })
-                    .addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
-                        override fun onShown(transientBottomBar: Snackbar?) {
-                            super.onShown(transientBottomBar)
-                        }
-
-                        override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                            if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                                medicineListViewModel.load(args.groupId)
-                            } else {
-                                medicineListViewModel.deleteMedicine(viewHolder.itemView.tag as MedicineModel, args.groupId)
-                                medicineListViewModel.load(args.groupId)
-                            }
-                            super.onDismissed(transientBottomBar, event)
-                        }
-                    })
                 val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context!!)
                 val confirmBool = sharedPreferences.getBoolean("confirm_delete", true)
                 adapter.removeAt(viewHolder.adapterPosition)
@@ -146,21 +96,15 @@ class MedicineListFragment : Fragment(), MedicineListener {
                     alertDialog.setTitle("Delete Medicine?")
                     alertDialog.setMessage("Are you sure you want to delete this Medication?")
                     alertDialog.setPositiveButton("Yes") { _, _ ->
-                        snackbarDelete.show()
+                        createDeleteSnackBar(fragBinding, viewHolder)
                     }
                     alertDialog.setNegativeButton("No") { _, _ ->
                         medicineListViewModel.load(args.groupId)
                     }
-                    //alertDialog.setOnDismissListener {medicineListViewModel.load(args.groupId)}
                     alertDialog.show()
                 }
                 else{
-                    adapter.removeAt(viewHolder.adapterPosition)
-                    /*medicineListViewModel.deleteMedicine(
-                        viewHolder.itemView.tag as MedicineModel,
-                        args.groupId
-                    )*/
-                    snackbarDelete.show()
+                    createDeleteSnackBar(fragBinding, viewHolder)
                     hideLoader(loader)
                 }
             }
@@ -241,9 +185,9 @@ class MedicineListFragment : Fragment(), MedicineListener {
                     medicineListViewModel.load(args.groupId)
                 }
                 alertDialog.setPositiveButton("Yes") { _, _ ->
-                    snackbarDeleteAll.show()
+                    createDeleteAllSnackBar(fragBinding)
                 }
-                alertDialog.setOnDismissListener { medicineListViewModel.load(args.groupId) }
+                //alertDialog.setOnDismissListener { medicineListViewModel.load(args.groupId) }
                 alertDialog.show()
             }
             else{
@@ -263,15 +207,6 @@ class MedicineListFragment : Fragment(), MedicineListener {
             fragBinding.recyclerView.visibility = View.VISIBLE
             fragBinding.medicationNotFound.visibility = View.GONE
         }
-        if (snackbarDeleteAll.isShown){
-            fragBinding.recyclerView.visibility = View.GONE
-            fragBinding.swiperefresh.isEnabled = false
-        }
-        else{
-            fragBinding.recyclerView.visibility = View.VISIBLE
-            fragBinding.swiperefresh.isEnabled = true
-        }
-        fragBinding.swiperefresh.isEnabled = !snackbarDelete.isShown
     }
 
     private fun setSwipeRefresh() {
@@ -313,10 +248,74 @@ class MedicineListFragment : Fragment(), MedicineListener {
         findNavController().navigate(action)
     }
 
-    override fun onDestroy() {
-        snackbarDeleteAll.dismiss()
-        snackbarDelete.dismiss()
-        super.onDestroy()
+    private fun createDeleteAllSnackBar(layout: FragmentMedicineListBinding) {
+        layout.recyclerView.visibility = View.GONE
+        layout.swiperefresh.isEnabled = false
+        Snackbar.make(
+            layout.recyclerView,
+            "Meds Deleted",
+            Snackbar.LENGTH_INDEFINITE
+        )
+            .setAction("Undo", View.OnClickListener {
+                Toast.makeText(context, "Delete Undone", Toast.LENGTH_LONG).show()
+            })
+            .addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                override fun onShown(transientBottomBar: Snackbar?) {
+                    super.onShown(transientBottomBar)
+                }
+
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                        medicineListViewModel.load(args.groupId)
+                        layout.swiperefresh.isEnabled = true
+                        layout.recyclerView.visibility = View.VISIBLE
+                    } else {
+                        medicineListViewModel.deleteAllMeds(args.groupId)
+                        medicineListViewModel.load(args.groupId)
+                        layout.swiperefresh.isEnabled = true
+                        layout.recyclerView.visibility = View.VISIBLE
+                    }
+                    super.onDismissed(transientBottomBar, event)
+                }
+            })
+            .show()
+    }
+
+    private fun createDeleteSnackBar(
+        layout: FragmentMedicineListBinding,
+        viewHolder: RecyclerView.ViewHolder
+    ) {
+        layout.swiperefresh.isEnabled = false
+        Snackbar.make(
+            layout.recyclerView,
+            "Medicine Deleted",
+            Snackbar.LENGTH_INDEFINITE
+        )
+            .setAction("Undo", View.OnClickListener {
+                medicineListViewModel.load(args.groupId)
+                Toast.makeText(context, "Delete Undone", Toast.LENGTH_LONG).show()
+            })
+            .addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                override fun onShown(transientBottomBar: Snackbar?) {
+                    super.onShown(transientBottomBar)
+                }
+
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                        //medicineListViewModel.load(args.groupId)
+                        layout.swiperefresh.isEnabled = true
+                    } else {
+                        medicineListViewModel.deleteMedicine(
+                            viewHolder.itemView.tag as MedicineModel,
+                            args.groupId
+                        )
+                        layout.swiperefresh.isEnabled = true
+                        //medicineListViewModel.load(args.groupId)
+                    }
+                    super.onDismissed(transientBottomBar, event)
+                }
+            })
+            .show()
     }
 
 }

@@ -39,8 +39,6 @@ class GroupListFragment : Fragment(), GroupListener {
     private lateinit var adapter: GroupAdapter
     lateinit var loader : AlertDialog
     private val args by navArgs<GroupListFragmentArgs>()
-    private lateinit var snackbarDeleteAll: Snackbar
-    private lateinit var snackbarDelete: Snackbar
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,33 +68,6 @@ class GroupListFragment : Fragment(), GroupListener {
         if(args.reminder) {
             fragBinding.fab.visibility = View.GONE
         }
-        snackbarDeleteAll = Snackbar.make(
-            fragBinding.recyclerView,
-            "All Groups Deleted",
-            Snackbar.LENGTH_INDEFINITE)
-            .setAction("Undo", View.OnClickListener {
-                Toast.makeText(context, "Delete Undone", Toast.LENGTH_LONG).show()
-            })
-            .addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
-                override fun onShown(transientBottomBar: Snackbar?) {
-                    super.onShown(transientBottomBar)
-                }
-
-                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                    if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                        groupListViewModel.load()
-                    } else {
-                        groupListViewModel.deleteAllGroups()
-                        groupListViewModel.load()
-                    }
-                    super.onDismissed(transientBottomBar, event)
-                }
-            })
-        snackbarDelete = Snackbar.make(
-            fragBinding.recyclerView,
-            "Group Deleted",
-            Snackbar.LENGTH_INDEFINITE
-        )
 
         val fab: FloatingActionButton = fragBinding.fab
         fab.setOnClickListener {
@@ -106,24 +77,6 @@ class GroupListFragment : Fragment(), GroupListener {
 
         val swipeDeleteHandler = object : GroupSwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                snackbarDelete.setAction("Undo", View.OnClickListener {
-                        Toast.makeText(context, "Delete Undone", Toast.LENGTH_LONG).show()
-                    })
-                    .addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
-                        override fun onShown(transientBottomBar: Snackbar?) {
-                            super.onShown(transientBottomBar)
-                        }
-
-                        override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                            if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                                groupListViewModel.load()
-                            } else {
-                                groupListViewModel.deleteGroup(viewHolder.itemView.tag as GroupModel)
-                                groupListViewModel.load()
-                            }
-                            super.onDismissed(transientBottomBar, event)
-                        }
-                    })
                 val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context!!)
                 val confirmBool = sharedPreferences.getBoolean("confirm_delete", true)
                 adapter.removeAt(viewHolder.adapterPosition)
@@ -136,15 +89,14 @@ class GroupListFragment : Fragment(), GroupListener {
                         groupListViewModel.load()
                     }
                     alertDialog.setPositiveButton("Yes") { _, _ ->
-                        snackbarDelete.show()
+                        createDeleteSnackBar(fragBinding, viewHolder)
                     }
                     //alertDialog.setOnDismissListener {groupListViewModel.load()}
                     alertDialog.show()
                 }
                 else{
-                    adapter.removeAt(viewHolder.adapterPosition)
                     //groupListViewModel.deleteGroup(viewHolder.itemView.tag as GroupModel)
-                    snackbarDelete.show()
+                    createDeleteSnackBar(fragBinding, viewHolder)
                     hideLoader(loader)
                 }
             }
@@ -197,9 +149,9 @@ class GroupListFragment : Fragment(), GroupListener {
                     groupListViewModel.load()
                 }
                 alertDialog.setPositiveButton("Yes") { _, _ ->
-                    snackbarDeleteAll.show()
+                    createDeleteAllSnackBar(fragBinding)
                 }
-                alertDialog.setOnDismissListener { groupListViewModel.load() }
+                //alertDialog.setOnDismissListener { groupListViewModel.load() }
                 alertDialog.show()
             }
             else{
@@ -219,15 +171,6 @@ class GroupListFragment : Fragment(), GroupListener {
             fragBinding.recyclerView.visibility = View.VISIBLE
             fragBinding.groupsNotFound.visibility = View.GONE
         }
-        if (snackbarDeleteAll.isShown){
-            fragBinding.recyclerView.visibility = View.GONE
-            fragBinding.swiperefresh.isEnabled = false
-        }
-        else{
-            fragBinding.recyclerView.visibility = View.VISIBLE
-            fragBinding.swiperefresh.isEnabled = true
-        }
-        fragBinding.swiperefresh.isEnabled = !snackbarDelete.isShown
     }
 
     override fun onResume() {
@@ -241,11 +184,6 @@ class GroupListFragment : Fragment(), GroupListener {
         })
     }
 
-    override fun onDestroy() {
-        snackbarDeleteAll.dismiss()
-        snackbarDelete.dismiss()
-        super.onDestroy()
-    }
 
     private fun setSwipeRefresh() {
         fragBinding.swiperefresh.setOnRefreshListener {
@@ -287,7 +225,70 @@ class GroupListFragment : Fragment(), GroupListener {
         findNavController().navigate(action)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    private fun createDeleteAllSnackBar(layout: FragmentGroupListBinding) {
+        layout.recyclerView.visibility = View.GONE
+        layout.swiperefresh.isEnabled = false
+        Snackbar.make(
+            layout.recyclerView,
+            "All Groups Deleted",
+            Snackbar.LENGTH_INDEFINITE
+        )
+            .setAction("Undo", View.OnClickListener {
+                Toast.makeText(context, "Delete Undone", Toast.LENGTH_LONG).show()
+            })
+            .addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                override fun onShown(transientBottomBar: Snackbar?) {
+                    super.onShown(transientBottomBar)
+                }
+
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                        groupListViewModel.load()
+                        layout.swiperefresh.isEnabled = true
+                        layout.recyclerView.visibility = View.VISIBLE
+                    } else {
+                        groupListViewModel.deleteAllGroups()
+                        groupListViewModel.load()
+                        layout.swiperefresh.isEnabled = true
+                        layout.recyclerView.visibility = View.VISIBLE
+                    }
+                    super.onDismissed(transientBottomBar, event)
+                }
+            })
+            .show()
+    }
+
+    private fun createDeleteSnackBar(
+        layout: FragmentGroupListBinding,
+        viewHolder: RecyclerView.ViewHolder
+    ) {
+        layout.swiperefresh.isEnabled = false
+        Snackbar.make(
+            layout.recyclerView,
+            "Group Deleted",
+            Snackbar.LENGTH_INDEFINITE
+        )
+            .setAction("Undo", View.OnClickListener {
+                groupListViewModel.load()
+                Toast.makeText(context, "Delete Undone", Toast.LENGTH_LONG).show()
+            })
+            .addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                override fun onShown(transientBottomBar: Snackbar?) {
+                    super.onShown(transientBottomBar)
+                }
+
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                        //groupListViewModel.load()
+                        layout.swiperefresh.isEnabled = true
+                    } else {
+                        groupListViewModel.deleteGroup(viewHolder.itemView.tag as GroupModel)
+                        //groupListViewModel.load()
+                        layout.swiperefresh.isEnabled = true
+                    }
+                    super.onDismissed(transientBottomBar, event)
+                }
+            })
+            .show()
     }
 }
