@@ -44,7 +44,7 @@
     <string name="hint_medicine_dosage">Medicine Dosage</string>
     <string name="hint_medicine_sideEffects">Enter Side Effects</string>
     <string name="enter_quantity_text">Enter Quantity:</string>
-    <string name="enter_reminder_limit">Enter Reminder Limit:</string>
+    <string name="enter_reminder_limit">Reminder Limit:</string>
     <string name="enter_dosage">Enter Dosage:</string>
     <string name="btn_add_medication">Add Medicine</string>
     <string name="btn_edit_medication">Edit Medicine</string>
