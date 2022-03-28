@@ -53,10 +53,12 @@ class LoginActivity : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        loginRegisterViewModel = ViewModelProvider(this).get(LoginRegisterViewModel::class.java)
+        loginRegisterViewModel = ViewModelProvider(this)[LoginRegisterViewModel::class.java]
         loginRegisterViewModel.liveFirebaseUser.observe(this, Observer
         { firebaseUser -> if (firebaseUser != null)
-            startActivity(Intent(this, Home::class.java)) })
+            startActivity(Intent(this, Home::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            ))
+            finish()})
 
         loginRegisterViewModel.firebaseAuthManager.errorStatus.observe(this, Observer
         { status -> checkStatus(status) })
