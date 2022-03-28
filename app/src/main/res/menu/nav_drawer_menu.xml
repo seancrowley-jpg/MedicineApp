@@ -6,35 +6,39 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/groupFragment"
+            android:icon="@android:drawable/ic_input_add"
             android:title="@string/menu_group" />
         <item
             android:id="@+id/groupListFragment"
+            android:icon="@drawable/ic_group_list_icon"
             android:title="@string/menu_group_list" />
 
         <item
             android:id="@+id/schedulerFragment"
+            android:icon="@drawable/ic_scheduler_icon"
             android:title="@string/menu_scheduler" />
 
         <item
             android:id="@+id/historyFragment"
-            android:title="History" />
+            android:icon="@drawable/ic_baseline_history_24"
+            android:title="@string/menu_history" />
 
-        <item android:title="Access Control">
+        <item android:title="@string/menu_access_control">
             <menu>
                 <item
                     android:id="@+id/nav_sign_out"
                     android:icon="@android:drawable/ic_menu_revert"
-                    android:title="@string/sign_out"
-                    android:onClick="signOut"/>
+                    android:onClick="signOut"
+                    android:title="@string/sign_out" />
+            </menu>
+        </item>
+        <item android:title="@string/settings">
+            <menu>
+                <item
+                    android:id="@+id/settingsFragment"
+                    android:icon="@android:drawable/ic_menu_preferences"
+                    android:title="@string/settings" />
             </menu>
         </item>
     </group>
-    <item android:title="@string/settings">
-        <menu>
-            <item
-                android:id="@+id/settingsFragment"
-                android:icon="@android:drawable/ic_menu_preferences"
-                android:title="@string/settings"/>
-        </menu>
-    </item>
 </menu>

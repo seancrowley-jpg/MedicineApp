@@ -1,5 +1,6 @@
 package ie.wit.medicineapp.ui.home
 
+import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -19,6 +20,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import com.google.firebase.auth.FirebaseUser
 import com.squareup.picasso.Picasso
 import ie.wit.medicineapp.R
@@ -29,6 +31,7 @@ import ie.wit.medicineapp.ui.auth.LoggedInViewModel
 import ie.wit.medicineapp.ui.auth.LoginActivity
 import ie.wit.medicineapp.ui.settings.ThemeProvider
 import ie.wit.medicineapp.ui.utils.NotificationService
+import timber.log.Timber
 
 class Home : AppCompatActivity() {
 
@@ -128,5 +131,30 @@ class Home : AppCompatActivity() {
         val notificationManager =
             this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
+    }
+
+    override fun onBackPressed() {
+        ///Checks if back stack number is 0 then asks if user wants to quit app
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val confirmExit = sharedPreferences.getBoolean("confirm_exit", true)
+        if(confirmExit) {
+            val navHostFragment =
+                supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)
+            Timber.i("Back Stack Num: ${navHostFragment!!.childFragmentManager.backStackEntryCount}")
+            if (navHostFragment.childFragmentManager.backStackEntryCount == 0) {
+                AlertDialog.Builder(this)
+                    .setTitle("Quit?")
+                    .setMessage("Quit Application?")
+                    .setPositiveButton("Exit") { _, _ ->
+                        finish()
+                        super.onBackPressed()
+                    }
+                    .setNegativeButton("Cancel") { _, _ -> }
+                    .show()
+            } else
+                super.onBackPressed()
+        }
+        else
+            super.onBackPressed()
     }
 }

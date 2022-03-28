@@ -19,94 +19,85 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
 
-
-            <TextView
-                android:id="@+id/medicineId"
-                android:layout_width="127dp"
-                android:layout_height="47dp"
-                android:layout_marginStart="83dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="201dp"
-                android:layout_marginBottom="369dp"
-                android:text="@{medicineVM.observableMedicine.name}"
-                android:textSize="25sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/timePicker"
-                tools:text="MedicineID" />
 
             <TimePicker
                 android:id="@+id/timePicker"
                 android:layout_width="245dp"
                 android:layout_height="215dp"
-                android:layout_marginTop="64dp"
-                android:layout_marginBottom="452dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="80dp"
                 android:hour="@{reminderVM.observableReminder.hour}"
                 android:minute="@{reminderVM.observableReminder.minute}"
-                android:timePickerMode="spinner"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:timePickerMode="spinner" />
 
-            </TimePicker>
 
-            <Button
+            <TextView
+                android:id="@+id/medicineId"
+                android:layout_width="180dp"
+                android:layout_height="30dp"
+                android:layout_below="@+id/timePicker"
+                android:layout_alignStart="@+id/btnAddMed"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="34dp"
+                android:autoSizeTextType="uniform"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@{medicineVM.observableMedicine.name}"
+                android:textSize="25sp"
+                tools:text="MedicineID" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAddMed"
-                android:layout_width="wrap_content"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="227dp"
-                android:layout_marginTop="314dp"
-                android:layout_marginEnd="83dp"
-                android:layout_marginBottom="369dp"
-                android:text="Add Med"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_below="@+id/timePicker"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="225dp"
+                android:layout_marginTop="29dp"
+                android:layout_marginEnd="13dp"
+                android:text="@string/btn_add_medication" />
 
             <TextView
                 android:id="@+id/repeat"
-                android:layout_width="127dp"
-                android:layout_height="47dp"
-                android:layout_marginStart="82dp"
-                android:layout_marginTop="8dp"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/medicineId"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="41dp"
                 android:layout_marginEnd="20dp"
                 android:text="Repeat"
-                android:textSize="25sp"
-                app:layout_constraintEnd_toStartOf="@+id/btn_repeat"
-                app:layout_constraintHorizontal_bias="0.076"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/medicineId" />
+                android:textSize="25sp" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_repeat"
-                android:layout_width="90dp"
-                android:layout_height="52dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="80dp"
+                android:layout_width="157dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btnAddMed"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="225dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="13dp"
                 app:icon="@android:drawable/ic_input_add"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnAddMed" />
+                app:iconGravity="textStart" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_set_reminder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="132dp"
-                android:layout_marginEnd="132dp"
-                android:layout_marginBottom="240dp"
-                android:text="Add Reminder"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/repeat"
+                android:layout_marginTop="141dp"
+                android:text="Add Reminder" />
+        </RelativeLayout>
     </ScrollView>
 </layout>

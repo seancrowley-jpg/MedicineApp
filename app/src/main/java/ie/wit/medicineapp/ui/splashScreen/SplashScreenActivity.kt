@@ -18,7 +18,6 @@ class SplashScreenActivity : AppCompatActivity() {
 
 
         Handler(Looper.getMainLooper()).postDelayed({
-             Firebase.database.setPersistenceEnabled(true)
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()

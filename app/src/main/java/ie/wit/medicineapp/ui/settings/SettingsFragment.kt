@@ -46,13 +46,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
         numberPreference?.summaryProvider =
             Preference.SummaryProvider<EditTextPreference> { preference ->
                 val text = preference.text
-                "Current Snooze Time: $text minute(s)"
+                "Current snooze time: $text minute(s)"
             }
 
         numberPreference?.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _, newValue ->
                 if (newValue == "" || newValue.toString().toInt() == 0 || newValue.toString().toInt() > 120){
-                    Toast.makeText(context,"Please Enter a valid time between 1 & 120 minutes", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,"Please enter a valid time between 1 & 120 minutes", Toast.LENGTH_SHORT).show()
                     false
                 }
                 else {
@@ -98,7 +98,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         pharmacyPreference?.summaryProvider =
             Preference.SummaryProvider<EditTextPreference> { preference ->
                 val text = preference.text
-                "Your Pharmacies phone No.: $text"
+                "Your pharmacies phone number: $text"
             }
     }
 }

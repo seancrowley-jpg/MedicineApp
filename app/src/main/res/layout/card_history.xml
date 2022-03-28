@@ -47,9 +47,11 @@
 
             <TextView
                 android:id="@+id/GroupName"
-                android:layout_width="125dp"
+                android:layout_width="140dp"
                 android:layout_height="27dp"
-                android:layout_marginEnd="116dp"
+                android:layout_marginEnd="112dp"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:text="@{@string/group_history + confirmation.groupName}"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -60,15 +62,17 @@
 
             <TextView
                 android:id="@+id/medName"
-                android:layout_width="125dp"
+                android:layout_width="140dp"
                 android:layout_height="27dp"
-                android:layout_marginEnd="116dp"
+                android:layout_marginEnd="112dp"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:text="@{@string/med_history + confirmation.medicineName}"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.915"
+                app:layout_constraintVertical_bias="1.0"
                 tools:text="Med Name" />
 
             <TextView

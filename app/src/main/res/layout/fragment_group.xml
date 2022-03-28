@@ -34,6 +34,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:hint="@string/hint_group"
+            android:inputType="textMultiLine"
+            android:padding="8dp"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,20 +45,9 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/groupName"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="28dp"
-                android:layout_marginEnd="8dp"
-                android:inputType="textMultiLine"
-                android:padding="8dp"
+                android:layout_height="wrap_content"
                 android:text="@{groupvm.observableGroup.name}"
-                android:textColor="@color/teal_700"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/groupText" />
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -87,18 +79,17 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="High" />
+                android:text="@string/group_high" />
 
             <RadioButton
                 android:id="@+id/lowPriority"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checked="false"
-
-                android:text="Low" />
+                android:text="@string/group_low" />
         </RadioGroup>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/add_group_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

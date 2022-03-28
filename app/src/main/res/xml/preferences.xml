@@ -14,7 +14,7 @@
         android:key="snooze_limit"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:title="Set Snooze Time"
+        android:title="Set snooze time"
         android:inputType="numberDecimal"
         android:icon="@drawable/ic_settings_snooze"/>
 
@@ -25,7 +25,7 @@
             android:key="@string/pharmacy_preference_key"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Enter Pharmacy Number"
+            android:title="Enter pharmacy number"
             android:inputType="numberDecimal"
             android:icon="@drawable/ic_baseline_phone"/>
 
@@ -50,19 +50,25 @@
 
     <Preference
         android:key="@string/notif_preferences_key"
-        android:title="Notification Settings"
+        android:title="Notification settings"
         android:icon="@drawable/ic_notifications_icon"/>
     </PreferenceCategory>
 
     <PreferenceCategory
         app:key="confirm_category"
-        app:title="Action Confirmations">
+        app:title="Action confirmations">
 
         <CheckBoxPreference
-            android:defaultValue="false"
+            android:defaultValue="ture"
             android:icon="@drawable/ic_delete_icon"
             android:key="confirm_delete"
             android:title="Confirm before deleting" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="@drawable/ic_exit_app"
+            android:key="confirm_exit"
+            android:title="Confirm before quiting app" />
     </PreferenceCategory>
 
 </PreferenceScreen>
