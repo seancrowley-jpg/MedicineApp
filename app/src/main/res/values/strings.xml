@@ -83,9 +83,9 @@
     <string name="theme_preferences_key">theme</string>
     <string name="notif_preferences_key">notif_settings</string>
     <string name="pharmacy_preference_key">pharmacy</string>
-    <string name="dark_theme_description">Dark Mode</string>
-    <string name="light_theme_description">Light Mode</string>
-    <string name="system_theme_description">Following Systems Theme</string>
+    <string name="dark_theme_description">Dark mode</string>
+    <string name="light_theme_description">Light mode</string>
+    <string name="system_theme_description">Following systems theme</string>
     <string name="dark_theme_preference_value">0</string>
     <string name="light_theme_preference_value">1</string>
     <string name="system_theme_preference_value">2</string>
