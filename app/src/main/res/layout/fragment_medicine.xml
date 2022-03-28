@@ -37,6 +37,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:hint="@string/hint_medicine_name"
+                android:inputType="textMultiLine"
+                android:padding="8dp"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -45,20 +48,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/medicineName"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_margin="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="28dp"
-                    android:layout_marginEnd="8dp"
-                    android:inputType="textMultiLine"
-                    android:padding="8dp"
-                    android:text="@{medicinevm.observableMedicine.name}"
-                    android:textColor="@color/teal_700"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/groupText" />
+                    android:layout_height="wrap_content"
+                    android:text="@{medicinevm.observableMedicine.name}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="58dp"
+                android:layout_marginTop="65dp"
                 android:text="@string/enter_quantity_text"
                 app:layout_constraintEnd_toStartOf="@+id/MedicineQuantityTextField"
                 app:layout_constraintHorizontal_bias="0.272"
@@ -81,9 +72,12 @@
                 android:id="@+id/MedicineQuantityTextField"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="214dp"
-                android:layout_height="62dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
                 android:hint="@string/hint_medicine_quantity"
+                android:inputType="number"
+                android:padding="8dp"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.847"
                 app:layout_constraintStart_toStartOf="parent"
@@ -92,20 +86,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/medicineQuantity"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_margin="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="28dp"
-                    android:layout_marginEnd="8dp"
-                    android:inputType="number"
-                    android:padding="8dp"
-                    android:text="@{`` + medicinevm.observableMedicine.quantity}"
-                    android:textColor="@color/teal_700"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/MedicineNameTextField" />
+                    android:layout_height="match_parent"
+                    android:text="@{`` + medicinevm.observableMedicine.quantity}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -113,10 +95,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="82dp"
+                android:layout_marginTop="101dp"
                 android:text="@string/enter_dosage"
                 app:layout_constraintEnd_toStartOf="@+id/MedicineDosageTextField"
-                app:layout_constraintHorizontal_bias="0.321"
+                app:layout_constraintHorizontal_bias="0.387"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/medicineQuantityHeader">
 
@@ -126,9 +108,12 @@
                 android:id="@+id/MedicineDosageTextField"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="214dp"
-                android:layout_height="62dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
                 android:hint="@string/hint_medicine_dosage"
+                android:inputType="text"
+                android:padding="8dp"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.847"
                 app:layout_constraintStart_toStartOf="parent"
@@ -137,20 +122,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/medicineDosage"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_margin="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="28dp"
-                    android:layout_marginEnd="8dp"
-                    android:inputType="text"
-                    android:padding="8dp"
-                    android:text="@{medicinevm.observableMedicine.dosage}"
-                    android:textColor="@color/teal_700"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/MedicineQuantityTextField" />
+                    android:layout_height="match_parent"
+                    android:text="@{medicinevm.observableMedicine.dosage}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -162,6 +135,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
                 android:hint="@string/hint_medicine_usageDir"
+                android:inputType="textMultiLine"
+                android:padding="8dp"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -170,22 +146,15 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/medicineUserDir"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_margin="8dp"
-                    android:ems="10"
-                    android:gravity="start|top"
-                    android:inputType="textMultiLine"
-                    android:padding="8dp"
-                    android:text="@{medicinevm.observableMedicine.usageDir}"
-                    android:textColor="@color/teal_700"
-                    android:textSize="14sp" />
+                    android:layout_height="wrap_content"
+                    android:text="@{medicinevm.observableMedicine.usageDir}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="57dp"
+                android:layout_marginTop="65dp"
                 android:layout_marginEnd="9dp"
                 android:text="@string/enter_reminder_limit"
                 app:layout_constraintEnd_toStartOf="@+id/MedicineReminderLimitTextField"
@@ -199,9 +168,12 @@
                 android:id="@+id/MedicineReminderLimitTextField"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="214dp"
-                android:layout_height="62dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
                 android:hint="@string/hint_medicine_reminderLimit"
+                android:inputType="number"
+                android:padding="8dp"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.847"
                 app:layout_constraintStart_toStartOf="parent"
@@ -210,20 +182,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/medicineReminderLimit"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_margin="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="28dp"
-                    android:layout_marginEnd="8dp"
-                    android:inputType="number"
-                    android:padding="8dp"
-                    android:text="@{`` + medicinevm.observableMedicine.reminderLimit}"
-                    android:textColor="@color/teal_700"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/MedicineNameTextField" />
+                    android:layout_height="wrap_content"
+                    android:text="@{`` + medicinevm.observableMedicine.reminderLimit}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -231,15 +191,13 @@
                 android:id="@+id/add_medicine_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="567dp"
-                android:layout_marginBottom="116dp"
+                android:layout_marginBottom="50dp"
                 android:text="@string/btn_add_medication"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toBottomOf="@+id/MedicineReminderLimitTextField" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

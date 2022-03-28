@@ -119,66 +119,66 @@
                 android:id="@+id/medicine_details_usage_dir_header"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="352dp"
+                android:layout_marginEnd="116dp"
+                android:layout_marginBottom="368dp"
                 android:autoSizeTextType="uniform"
                 android:text="@string/medicine_details_usage_directions"
                 android:textSize="35sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/medicine_details_reminder_limit" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/medicine_details_usage_dir"
                 android:layout_width="wrap_content"
                 android:layout_height="57dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="4dp"
                 android:autoSizeTextType="uniform"
                 android:text="@{medicineVM.observableMedicine.usageDir}"
                 android:textSize="11sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/medicine_details_usage_dir_header"
-                app:layout_constraintVertical_bias="0.066"
                 tools:text="Usage Directions" />
 
             <View
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginBottom="8dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintBottom_toTopOf="@+id/MedicineSideEffectTextField"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/medicine_details_usage_dir" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/MedicineSideEffectTextField"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="241dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="36dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:ems="10"
+                android:gravity="start|top"
                 android:hint="@string/hint_medicine_sideEffects"
+                android:inputType="textMultiLine"
+                android:lines="4"
+                android:maxLength="180"
+                android:maxLines="4"
+                android:padding="8dp"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.105"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/medicine_details_usage_dir">
+                app:layout_constraintTop_toBottomOf="@+id/divider">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/sideEffectText"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_margin="8dp"
-                    android:ems="10"
-                    android:gravity="start|top"
-                    android:inputType="textMultiLine"
-                    android:lines="4"
-                    android:maxLength="180"
-                    android:maxLines="4"
-                    android:padding="8dp"
-                    android:textSize="14sp" />
+                    android:layout_height="match_parent" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -198,16 +198,15 @@
                 style="@style/Widget.MaterialComponents.Button.Icon"
                 android:layout_width="60dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="44dp"
+                android:layout_marginStart="56dp"
+                android:layout_marginTop="465dp"
+                android:layout_marginBottom="188dp"
                 android:textAlignment="center"
                 app:icon="@android:drawable/ic_input_add"
                 app:iconGravity="start"
-                app:layout_constraintBottom_toTopOf="@+id/recyclerView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.524"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/MedicineSideEffectTextField"
-                app:layout_constraintTop_toBottomOf="@+id/medicine_details_usage_dir"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
