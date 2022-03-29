@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -49,6 +50,7 @@ class GroupFragment : Fragment() {
             groupViewModel.observableGroup.observe(viewLifecycleOwner, Observer {
                 group -> group?.let { render() }
             })
+            (requireActivity() as AppCompatActivity).supportActionBar?.title = getString(R.string.btn_edit_group)
         }
 
         fragBinding.priorityLevelGroup.setOnCheckedChangeListener { radioGroup, i ->
@@ -81,7 +83,7 @@ class GroupFragment : Fragment() {
         if (args.edit) {
             layout.addGroupButton.text = getString(R.string.btn_edit_group)
             layout.addGroupButton.setOnClickListener() {
-                if (layout.groupName.text!!.isNotEmpty()) {
+                if (validateForm()) {
                     group.name = layout.groupName.text.toString()
                     group.uid = args.uid
                     group.priorityLevel = if(layout.priorityLevelGroup.checkedRadioButtonId == R.id.highPriorityRadio) 1 else 0
@@ -95,7 +97,7 @@ class GroupFragment : Fragment() {
         }
         else{
             layout.addGroupButton.setOnClickListener() {
-                if (layout.groupName.text!!.isNotEmpty()) {
+                if (validateForm()) {
                     group.name = layout.groupName.text.toString()
                     group.priorityLevel = if(layout.priorityLevelGroup.checkedRadioButtonId == R.id.highPriorityRadio) 1 else 0
                     groupViewModel.addGroup(loggedInViewModel.liveFirebaseUser, group)
@@ -111,5 +113,20 @@ class GroupFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _fragBinding = null
+    }
+
+    private fun validateForm(): Boolean {
+        var valid = true
+        if(fragBinding.groupName.text!!.isEmpty()){
+            fragBinding.groupName.requestFocus()
+            fragBinding.groupName.error = "Please enter a name for your group"
+            valid = false
+        }
+        if(fragBinding.groupName.text!!.length >= 50){
+            fragBinding.groupName.requestFocus()
+            fragBinding.groupName.error = "Group name too long (50 characters)"
+            valid = false
+        }
+        return valid
     }
 }

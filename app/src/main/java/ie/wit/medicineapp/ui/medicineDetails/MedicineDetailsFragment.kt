@@ -70,12 +70,31 @@ class MedicineDetailsFragment : Fragment(), SideEffectListener {
 
     fun setButtonListener(layout: FragmentMedicineDetailsBinding) {
         layout.btnAddSideEffect.setOnClickListener() {
-            medicineDetailsViewModel.observableMedicine.value!!.sideEffects.add(layout.sideEffectText.text.toString())
-            medicine = medicineDetailsViewModel.observableMedicine.value!!
-            medicineDetailsViewModel.updateMedicine(loggedInViewModel.liveFirebaseUser.value?.uid!!,
-                args.groupId, args.medicineId, medicine)
-            render()
+            if (validateForm()) {
+                medicineDetailsViewModel.observableMedicine.value!!.sideEffects.add(layout.sideEffectText.text.toString())
+                medicine = medicineDetailsViewModel.observableMedicine.value!!
+                medicineDetailsViewModel.updateMedicine(
+                    loggedInViewModel.liveFirebaseUser.value?.uid!!,
+                    args.groupId, args.medicineId, medicine
+                )
+                render()
+            }
         }
+    }
+
+    private fun validateForm(): Boolean {
+        var valid = true
+        if(fragBinding.sideEffectText.text.toString().length >=50){
+            fragBinding.sideEffectText.requestFocus()
+            fragBinding.sideEffectText.error = "Side Effect character limit reached (50 characters)"
+            valid = false
+        }
+        if(fragBinding.sideEffectText.text!!.isEmpty()){
+            fragBinding.sideEffectText.requestFocus()
+            fragBinding.sideEffectText.error = "Side effect field empty"
+            valid = false
+        }
+        return valid
     }
 
     override fun onDestroyView() {
