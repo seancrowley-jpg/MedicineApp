@@ -349,4 +349,37 @@ object FirebaseDBManager : MedicineAppStore {
         childDelete["/user-confirmations/$userid/$confirmationId"] = null
         database.updateChildren(childDelete)
     }
+
+    override fun getStats(
+        userid: String,
+        groupCount: MutableLiveData<Int>,
+        medCount: MutableLiveData<Int>
+    ) {
+        database.child("user-groups").child(userid)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    groupCount.value = snapshot.childrenCount.toInt()
+                }
+            })
+        database.child("user-medication").child(userid)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val children = snapshot.children
+                    val localList = ArrayList<Int>()
+                    children.forEach{
+                        localList.add(it.childrenCount.toInt())
+                    }
+                    medCount.value = localList.sum()
+                }
+            })
+    }
 }
+
