@@ -38,5 +38,6 @@ interface MedicineAppStore {
         year: Int
     )
     fun deleteConfirmationHistory(userid: String, confirmationId: String)
-    fun getStats(userid: String, groupCount: MutableLiveData<Int>, medCount: MutableLiveData<Int>)
+    fun getStats(userid: String, groupCount: MutableLiveData<Int>, medCount: MutableLiveData<Int>,
+                 historyCount: MutableLiveData<Int>, reminderCount: MutableLiveData<Int>)
 }

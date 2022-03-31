@@ -353,7 +353,9 @@ object FirebaseDBManager : MedicineAppStore {
     override fun getStats(
         userid: String,
         groupCount: MutableLiveData<Int>,
-        medCount: MutableLiveData<Int>
+        medCount: MutableLiveData<Int>,
+        historyCount: MutableLiveData<Int>,
+        reminderCount: MutableLiveData<Int>
     ) {
         database.child("user-groups").child(userid)
             .addValueEventListener(object : ValueEventListener {
@@ -378,6 +380,27 @@ object FirebaseDBManager : MedicineAppStore {
                         localList.add(it.childrenCount.toInt())
                     }
                     medCount.value = localList.sum()
+                }
+            })
+        database.child("user-confirmations").child(userid)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    historyCount.value = snapshot.childrenCount.toInt()
+                }
+            })
+
+        database.child("user-reminders").child(userid)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    reminderCount.value = snapshot.childrenCount.toInt()
                 }
             })
     }

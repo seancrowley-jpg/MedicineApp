@@ -12,6 +12,8 @@ class DashboardViewModel : ViewModel() {
     private val groupCount = MutableLiveData<Int>()
     private val medCount = MutableLiveData<Int>()
     var liveFirebaseUser = MutableLiveData<FirebaseUser>()
+    private val historyCount = MutableLiveData<Int>()
+    private val reminderCount = MutableLiveData<Int>()
 
 
     val observableGroupCount: LiveData<Int>
@@ -20,11 +22,17 @@ class DashboardViewModel : ViewModel() {
     val observableMedCount: LiveData<Int>
         get() = medCount
 
+    val observableHistoryCount: LiveData<Int>
+        get() = historyCount
+
+    val observableReminderCount: LiveData<Int>
+        get() = reminderCount
+
 
     fun load() {
         try {
             FirebaseDBManager.getStats(liveFirebaseUser.value?.uid!!,
-                groupCount, medCount)
+                groupCount, medCount, historyCount, reminderCount)
             Timber.i("Load Success : GroupCount${groupCount.value.toString()} MedCount${medCount.value.toString()}")
         }
         catch (e: Exception) {

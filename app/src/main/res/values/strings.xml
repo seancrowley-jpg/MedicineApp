@@ -17,6 +17,7 @@
     <string name="menu_reminder">Add Reminder</string>
     <string name="menu_history">History</string>
     <string name="menu_access_control">Access Control</string>
+    <string name="menu_dashboard">Dashboard</string>
 
     <string name="group_header">Create a Group</string>
     <string name="hint_group">Group Name</string>
@@ -119,8 +120,10 @@
     <string name="confirm_header_name">Name:</string>
     <string name="confirm_med_due">Medication Due</string>
 
-    <string name="dashboard_groups_chip">Groups: </string>
-    <string name="dashboard_meds_chip">Meds: </string>
+    <string name="dashboard_groups_chip">Total Groups: </string>
+    <string name="dashboard_meds_chip">Total Meds: </string>
+    <string name="dashboard_history_chip">Total Confirmations: </string>
+    <string name="dashboard_scheduler_chip">Total Reminders: </string>
     <string name="dashboard_groups_meds_header">Your Groups + Meds</string>
     <string name="dashboard_next_alarm_header">Next Alarm</string>
     <string name="dashboard_welcome">Welcome</string>

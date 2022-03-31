@@ -9,8 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import ie.wit.medicineapp.R
 import ie.wit.medicineapp.databinding.FragmentDashboardBinding
+import ie.wit.medicineapp.databinding.FragmentMedicineBinding
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
 
 class DashboardFragment : Fragment() {
@@ -32,10 +34,13 @@ class DashboardFragment : Fragment() {
         dashboardViewModel.observableMedCount.observe(viewLifecycleOwner, Observer {
                 medCount -> medCount?.let { render() }
         })
-        if (loggedInViewModel.liveFirebaseUser.value!!.displayName != null)
-            fragBinding.userNameHeader.text =  loggedInViewModel.liveFirebaseUser.value!!.displayName
-        else
-            fragBinding.userNameHeader.text =  loggedInViewModel.liveFirebaseUser.value!!.email
+        dashboardViewModel.observableHistoryCount.observe(viewLifecycleOwner, Observer {
+                historyCount -> historyCount?.let { render() }
+        })
+        dashboardViewModel.observableReminderCount.observe(viewLifecycleOwner, Observer {
+                reminderCount -> reminderCount?.let { render() }
+        })
+        setButtonListener(fragBinding)
         return root
     }
 
@@ -43,11 +48,31 @@ class DashboardFragment : Fragment() {
         fragBinding.dashboardVM = dashboardViewModel
     }
 
+    private fun setButtonListener(layout: FragmentDashboardBinding) {
+        layout.btnGroups.setOnClickListener(){
+            val action = DashboardFragmentDirections.actionDashboardFragmentToGroupListFragment()
+            findNavController().navigate(action)
+        }
+        layout.btnScheduler.setOnClickListener(){
+            val action = DashboardFragmentDirections.actionDashboardFragmentToSchedulerFragment()
+            findNavController().navigate(action)
+        }
+        layout.btnHistory.setOnClickListener(){
+            val action = DashboardFragmentDirections.actionDashboardFragmentToHistoryFragment()
+            findNavController().navigate(action)
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         loggedInViewModel.liveFirebaseUser.observe(viewLifecycleOwner, Observer { firebaseUser ->
             if (firebaseUser != null) {
                 dashboardViewModel.liveFirebaseUser.value = firebaseUser
+                if (dashboardViewModel.liveFirebaseUser.value!!.displayName != null)
+                    fragBinding.userNameHeader.text =  dashboardViewModel.liveFirebaseUser.value!!.displayName
+                else
+                fragBinding.userNameHeader.text =  dashboardViewModel.liveFirebaseUser.value!!.email
+
                 dashboardViewModel.load()
             }
         })

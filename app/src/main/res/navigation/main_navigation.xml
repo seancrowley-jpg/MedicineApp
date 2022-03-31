@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/groupListFragment">
+    app:startDestination="@id/dashboardFragment">
 
     <fragment
         android:id="@+id/groupFragment"
@@ -243,5 +243,15 @@
         android:id="@+id/dashboardFragment"
         android:name="ie.wit.medicineapp.ui.dashboard.DashboardFragment"
         android:label="Dashboard"
-        tools:layout="@layout/fragment_dashboard"/>
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_dashboardFragment_to_groupListFragment"
+            app:destination="@id/groupListFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_schedulerFragment"
+            app:destination="@id/schedulerFragment" />
+    </fragment>
 </navigation>
