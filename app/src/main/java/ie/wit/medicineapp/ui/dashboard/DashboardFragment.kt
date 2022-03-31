@@ -14,6 +14,8 @@ import ie.wit.medicineapp.R
 import ie.wit.medicineapp.databinding.FragmentDashboardBinding
 import ie.wit.medicineapp.databinding.FragmentMedicineBinding
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
+import timber.log.Timber
+import java.util.*
 
 class DashboardFragment : Fragment() {
 
@@ -41,6 +43,7 @@ class DashboardFragment : Fragment() {
                 reminderCount -> reminderCount?.let { render() }
         })
         setButtonListener(fragBinding)
+        welcomeMessage(fragBinding)
         return root
     }
 
@@ -60,6 +63,26 @@ class DashboardFragment : Fragment() {
         layout.btnHistory.setOnClickListener(){
             val action = DashboardFragmentDirections.actionDashboardFragmentToHistoryFragment()
             findNavController().navigate(action)
+        }
+    }
+
+    private fun welcomeMessage(layout: FragmentDashboardBinding){
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        Timber.i("$hour")
+        when (hour) {
+            in 12..16 -> {
+                layout.welcomeHeader.text = getString(R.string.dashboard_afternoon)
+            }
+            in 17..20 -> {
+                layout.welcomeHeader.text = getString(R.string.dashboard_evening)
+            }
+            in 21..23 -> {
+                layout.welcomeHeader.text = getString(R.string.dashboard_night)
+            }
+            else -> {
+                layout.welcomeHeader.text = getString(R.string.dashboard_morning)
+            }
         }
     }
 

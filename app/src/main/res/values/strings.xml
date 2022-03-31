@@ -126,6 +126,10 @@
     <string name="dashboard_scheduler_chip">Total Reminders: </string>
     <string name="dashboard_groups_meds_header">Your Groups + Meds</string>
     <string name="dashboard_next_alarm_header">Next Alarm</string>
-    <string name="dashboard_welcome">Welcome</string>
+    <string name="dashboard_welcome">Welcome,</string>
+    <string name="dashboard_morning">Good Morning,</string>
+    <string name="dashboard_afternoon">Afternoon,</string>
+    <string name="dashboard_evening">Good Evening,</string>
+    <string name="dashboard_night">Good Night,</string>
 
 </resources>
