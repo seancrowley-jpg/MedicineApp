@@ -17,6 +17,7 @@
     <string name="menu_reminder">Add Reminder</string>
     <string name="menu_history">History</string>
     <string name="menu_access_control">Access Control</string>
+    <string name="menu_dashboard">Dashboard</string>
 
     <string name="group_header">Create a Group</string>
     <string name="hint_group">Group Name</string>
@@ -118,4 +119,17 @@
     <string name="confirm_header_dosage">Dosage:</string>
     <string name="confirm_header_name">Name:</string>
     <string name="confirm_med_due">Medication Due</string>
+
+    <string name="dashboard_groups_chip">Total Groups: </string>
+    <string name="dashboard_meds_chip">Total Meds: </string>
+    <string name="dashboard_history_chip">Total Confirmations: </string>
+    <string name="dashboard_scheduler_chip">Total Reminders: </string>
+    <string name="dashboard_groups_meds_header">Your Groups + Meds</string>
+    <string name="dashboard_next_alarm_header">Next Alarm</string>
+    <string name="dashboard_welcome">Welcome,</string>
+    <string name="dashboard_morning">Good Morning,</string>
+    <string name="dashboard_afternoon">Afternoon,</string>
+    <string name="dashboard_evening">Good Evening,</string>
+    <string name="dashboard_night">Good Night,</string>
+
 </resources>

@@ -58,7 +58,7 @@ class Home : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.groupListFragment, R.id.groupFragment, R.id.schedulerFragment,
-                R.id.historyFragment, R.id.settingsFragment
+                R.id.historyFragment, R.id.settingsFragment, R.id.dashboardFragment
             ), drawerLayout
         )
         createNotificationChannel()
@@ -143,6 +143,7 @@ class Home : AppCompatActivity() {
             Timber.i("Back Stack Num: ${navHostFragment!!.childFragmentManager.backStackEntryCount}")
             if (navHostFragment.childFragmentManager.backStackEntryCount == 0) {
                 AlertDialog.Builder(this)
+                    .setIcon(R.drawable.ic_exit_app)
                     .setTitle("Quit?")
                     .setMessage("Quit Application?")
                     .setPositiveButton("Exit") { _, _ ->

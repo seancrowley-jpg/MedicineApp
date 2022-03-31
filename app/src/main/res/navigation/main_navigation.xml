@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/groupListFragment">
+    app:startDestination="@id/dashboardFragment">
 
     <fragment
         android:id="@+id/groupFragment"
@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_group">
         <action
             android:id="@+id/action_groupFragment_to_groupListFragment"
-            app:destination="@id/groupListFragment" />
+            app:destination="@id/groupListFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
         <argument
             android:name="edit"
             android:defaultValue="false"
@@ -30,10 +34,18 @@
         tools:layout="@layout/fragment_group_list">
         <action
             android:id="@+id/action_groupListFragment_to_groupFragment"
-            app:destination="@id/groupFragment" />
+            app:destination="@id/groupFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
         <action
             android:id="@+id/action_groupListFragment_to_medicineListFragment"
-            app:destination="@id/medicineListFragment" />
+            app:destination="@id/medicineListFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
         <argument
             android:name="reminder"
             app:argType="boolean"
@@ -73,17 +85,29 @@
         tools:layout="@layout/fragment_medicine_list">
         <action
             android:id="@+id/action_medicineListFragment_to_medicineFragment"
-            app:destination="@id/medicineFragment" />
+            app:destination="@id/medicineFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
         <argument
             android:name="groupId"
             android:defaultValue="0"
             app:argType="string" />
         <action
             android:id="@+id/action_medicineListFragment_to_medicineDetails"
-            app:destination="@id/medicineDetails" />
+            app:destination="@id/medicineDetails"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
         <action
             android:id="@+id/action_medicineListFragment_to_reminderFragment"
-            app:destination="@id/reminderFragment" />
+            app:destination="@id/reminderFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
         <argument
             android:name="reminder"
             app:argType="boolean"
@@ -96,6 +120,13 @@
             android:name="edit"
             app:argType="boolean"
             android:defaultValue="false" />
+        <action
+            android:id="@+id/action_medicineListFragment_to_groupListFragment"
+            app:destination="@id/groupListFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/medicineDetails"
@@ -117,7 +148,11 @@
         tools:layout="@layout/fragment_scheduler">
         <action
             android:id="@+id/action_schedulerFragment_to_reminderFragment"
-            app:destination="@id/reminderFragment" />
+            app:destination="@id/reminderFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/reminderFragment"
@@ -126,7 +161,11 @@
         tools:layout="@layout/fragment_reminder">
         <action
             android:id="@+id/action_reminderFragment_to_groupListFragment"
-            app:destination="@id/groupListFragment" />
+            app:destination="@id/groupListFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
         <argument
             android:name="medicineId"
             app:argType="string"
@@ -174,10 +213,15 @@
         <deepLink app:uri="App://confirmationFragment/{userId}" />
         <action
             android:id="@+id/action_confirmationFragment_to_loginActivity"
-            app:destination="@id/loginActivity" />
+            app:destination="@id/loginActivity"
+            app:enterAnim="@android:anim/fade_in" />
         <action
             android:id="@+id/action_confirmationFragment_to_groupListFragment"
-            app:destination="@id/groupListFragment" />
+            app:destination="@id/groupListFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
 
     </fragment>
     <activity
@@ -189,10 +233,25 @@
         android:id="@+id/settingsFragment"
         android:name="ie.wit.medicineapp.ui.settings.SettingsFragment"
         android:label="@string/settings"
-        tools:layout="@layout/fragment_settings" />
+        />
     <fragment
         android:id="@+id/historyFragment"
         android:name="ie.wit.medicineapp.ui.history.HistoryFragment"
         android:label="Medication History"
         tools:layout="@layout/fragment_history" />
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="ie.wit.medicineapp.ui.dashboard.DashboardFragment"
+        android:label="Dashboard"
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_dashboardFragment_to_groupListFragment"
+            app:destination="@id/groupListFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_schedulerFragment"
+            app:destination="@id/schedulerFragment" />
+    </fragment>
 </navigation>
