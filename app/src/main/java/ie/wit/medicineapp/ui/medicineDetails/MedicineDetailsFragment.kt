@@ -55,7 +55,19 @@ class MedicineDetailsFragment : Fragment(), SideEffectListener {
         _fragBinding = FragmentMedicineDetailsBinding.inflate(inflater, container, false)
         val root: View = fragBinding.root
         fragBinding.recyclerView.layoutManager = LinearLayoutManager(activity)
-        medicineDetailsViewModel.getMedicine(loggedInViewModel.liveFirebaseUser.value?.uid!!,args.groupId, args.medicineId)
+        if(args.userId == "0") {
+            medicineDetailsViewModel.getMedicine(
+                loggedInViewModel.liveFirebaseUser.value?.uid!!,
+                args.groupId,
+                args.medicineId
+            )
+        }
+        else
+            medicineDetailsViewModel.getMedicine(
+                args.userId,
+                args.groupId,
+                args.medicineId
+            )
         medicineDetailsViewModel.observableMedicine.observe(viewLifecycleOwner, Observer {
                 medicine -> medicine?.let { render() }
         })

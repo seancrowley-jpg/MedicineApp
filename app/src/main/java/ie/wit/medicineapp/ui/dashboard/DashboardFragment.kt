@@ -1,7 +1,5 @@
 package ie.wit.medicineapp.ui.dashboard
 
-import android.app.AlarmManager
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,9 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import ie.wit.medicineapp.R
 import ie.wit.medicineapp.databinding.FragmentDashboardBinding
-import ie.wit.medicineapp.databinding.FragmentMedicineBinding
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
 import timber.log.Timber
 import java.util.*

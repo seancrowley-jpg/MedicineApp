@@ -140,6 +140,10 @@
             android:name="medicineId"
             android:defaultValue="0"
             app:argType="string" />
+        <argument
+            android:name="userId"
+            app:argType="string"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/schedulerFragment"
@@ -214,14 +218,17 @@
         <action
             android:id="@+id/action_confirmationFragment_to_loginActivity"
             app:destination="@id/loginActivity"
-            app:enterAnim="@android:anim/fade_in" />
-        <action
-            android:id="@+id/action_confirmationFragment_to_groupListFragment"
-            app:destination="@id/groupListFragment"
             app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
+            app:launchSingleTop="true"
+            app:popUpTo="@id/loginActivity"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_confirmationFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/dashboardFragment"
+            app:popUpToInclusive="true" />
 
     </fragment>
     <activity

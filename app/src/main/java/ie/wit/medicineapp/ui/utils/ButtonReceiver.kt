@@ -22,7 +22,7 @@ class ButtonReceiver : BroadcastReceiver(){
         fun snoozeAlarm(context: Context, intent: Intent?) {
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
             val snoozeTime = sharedPreferences.getString("snooze_limit", "")
-            var minute = snoozeTime?.toInt()
+            val minute = snoozeTime?.toInt()
 
             val notificationIntent = Intent(context, NotificationService::class.java)
             notificationIntent.putExtras(intent!!)
@@ -33,10 +33,6 @@ class ButtonReceiver : BroadcastReceiver(){
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
             )
 
-            if(minute == 0)
-            {
-                minute = 1
-            }
 
             val calendar = Calendar.getInstance().apply {
                 timeInMillis = System.currentTimeMillis()

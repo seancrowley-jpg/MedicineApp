@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.ActionBar
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -26,6 +27,7 @@ import ie.wit.medicineapp.ui.medicineDetails.MedicineDetailsViewModel
 import ie.wit.medicineapp.ui.reminder.ReminderFragmentDirections
 import ie.wit.medicineapp.ui.reminder.ReminderViewModel
 import ie.wit.medicineapp.ui.utils.ButtonReceiver
+import ie.wit.medicineapp.ui.utils.NotificationService
 import java.util.*
 
 class ConfirmationFragment : Fragment() {
@@ -75,6 +77,7 @@ class ConfirmationFragment : Fragment() {
             val action = ConfirmationFragmentDirections.actionConfirmationFragmentToLoginActivity()
             findNavController().navigate(action)
         }
+        fragBinding.btnSkip.visibility = View.GONE
         setButtonListener(fragBinding)
         return root
     }
@@ -106,6 +109,7 @@ class ConfirmationFragment : Fragment() {
             confirmationViewModel.confirmMed(args.userId,args.groupId,args.medicineId,context!!)
             confirmationViewModel.createConfirmation(args.userId, confirmation)
             manager.cancel(requestCode)
+            //findNavController().popBackStack(R.id.confirmationFragment, false)
             Toast.makeText(context, "Confirmed", Toast.LENGTH_SHORT).show()
             if(FirebaseAuth.getInstance().currentUser == null) {
                 val action =
@@ -114,7 +118,7 @@ class ConfirmationFragment : Fragment() {
             }
             else {
                 val action =
-                    ConfirmationFragmentDirections.actionConfirmationFragmentToGroupListFragment()
+                    ConfirmationFragmentDirections.actionConfirmationFragmentToDashboardFragment()
                 findNavController().navigate(action)
             }
         }
@@ -125,8 +129,36 @@ class ConfirmationFragment : Fragment() {
             ButtonReceiver.snoozeAlarm(context!!,snoozeIntent)
             manager.cancel(requestCode)
             Toast.makeText(context, "Snoozing", Toast.LENGTH_SHORT).show()
-            val action = ConfirmationFragmentDirections.actionConfirmationFragmentToLoginActivity()
-            findNavController().navigate(action)
+            //findNavController().popBackStack(R.id.dashboardFragment, true)
+            if(FirebaseAuth.getInstance().currentUser == null) {
+                val action =
+                    ConfirmationFragmentDirections.actionConfirmationFragmentToLoginActivity()
+                findNavController().navigate(action)
+            }
+            else {
+                val action =
+                    ConfirmationFragmentDirections.actionConfirmationFragmentToDashboardFragment()
+                findNavController().navigate(action)
+            }
+        }
+        if (bundle.getString("channelId") == NotificationService.channelID){
+            fragBinding.btnSkip.visibility = View.VISIBLE
+            layout.btnSkip.setOnClickListener(){
+                confirmation.status = "Skipped"
+                confirmationViewModel.createConfirmation(args.userId, confirmation)
+                manager.cancel(requestCode)
+                //findNavController().popBackStack(R.id.dashboardFragment, true)
+                if(FirebaseAuth.getInstance().currentUser == null) {
+                    val action =
+                        ConfirmationFragmentDirections.actionConfirmationFragmentToLoginActivity()
+                    findNavController().navigate(action)
+                }
+                else {
+                    val action =
+                        ConfirmationFragmentDirections.actionConfirmationFragmentToDashboardFragment()
+                    findNavController().navigate(action)
+                }
+            }
         }
     }
 

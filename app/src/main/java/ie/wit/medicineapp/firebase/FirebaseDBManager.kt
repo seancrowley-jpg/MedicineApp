@@ -5,14 +5,17 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavDeepLinkBuilder
 import androidx.preference.PreferenceManager
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import ie.wit.medicineapp.R
 import ie.wit.medicineapp.models.*
+import ie.wit.medicineapp.ui.home.Home
 import ie.wit.medicineapp.ui.utils.NotificationService
 import timber.log.Timber
 
@@ -277,6 +280,16 @@ object FirebaseDBManager : MedicineAppStore {
                         val callPendingIntent = PendingIntent.getActivity(context, 5,
                             callIntent,
                             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+                        val bundle  = Bundle()
+                        bundle.putString("groupId", groupId)
+                        bundle.putString("medicineId", medicineId)
+                        bundle.putString("userId", userid)
+                        val tapIntent = NavDeepLinkBuilder(context)
+                            .setComponentName(Home::class.java)
+                            .setGraph(R.navigation.main_navigation)
+                            .setDestination(R.id.medicineDetails)
+                            .setArguments(bundle)
+                            .createPendingIntent()
                         val notification = NotificationCompat.Builder(
                             context,
                             NotificationService.channelID
@@ -291,6 +304,7 @@ object FirebaseDBManager : MedicineAppStore {
                             .addAction(R.drawable.ic_launcher_foreground,"Call Pharmacy",
                                 callPendingIntent)
                             .setAutoCancel(true)
+                            .setContentIntent(tapIntent)
                             .build()
                         val manager =
                             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

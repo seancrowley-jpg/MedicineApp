@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.navigation.NavDeepLinkBuilder
@@ -68,6 +69,8 @@ class NotificationService : BroadcastReceiver() {
             intent.putExtra("userID", userId)
             intent.putExtra("groupID", reminder.groupID)
             intent.putExtra("medicineID", reminder.medicineID)
+            intent.putExtra("medName", reminder.medName)
+            intent.putExtra("groupName",reminder.groupName)
             if(reminder.repeatDays!!.size != 0){
                 intent.putExtra("repeat", true)
             }
@@ -171,10 +174,12 @@ class NotificationService : BroadcastReceiver() {
         val reminderID = intent.getStringExtra("reminderID")
         val groupID = intent.getStringExtra("groupID")
         val medicineID = intent.getStringExtra("medicineID")
+        val channelId = intent.getStringExtra(channelID)
         bundle!!.putString("reminderId", reminderID)
         bundle.putString("groupId", groupID)
         bundle.putString("medicineId", medicineID)
         bundle.putString("userId", userID)
+        bundle.putString("channelId",channelId)
 
         val tapIntent = NavDeepLinkBuilder(context)
             .setComponentName(Home::class.java)
@@ -219,9 +224,14 @@ class NotificationService : BroadcastReceiver() {
             .setContentIntent(tapIntent)
             .addAction(R.drawable.ic_launcher_foreground,"Snooze", snoozePendingIntent)
             .addAction(R.drawable.ic_launcher_foreground,"Confirm",confirmPendingIntent)
+            .setFullScreenIntent(tapIntent, true)
+            .setLights(Color.CYAN, 3000,3000)
 
         if(intent.getStringExtra("channelID") == channelID) {
             notification.addAction(R.drawable.ic_launcher_foreground,"Skip",skipPendingIntent)
+        }
+        else{
+            notification.setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
         }
 
 
