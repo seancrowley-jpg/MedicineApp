@@ -42,6 +42,7 @@ class NotificationService : BroadcastReceiver() {
             intent.putExtra("medicineID", reminder.medicineID)
             intent.putExtra("medName", reminder.medName)
             intent.putExtra("groupName",reminder.groupName)
+            intent.putExtra("quantityDue", reminder.quantity)
             if(reminder.repeatDays!!.size != 0){
                 intent.putExtra("repeat", true)
             }
@@ -71,6 +72,7 @@ class NotificationService : BroadcastReceiver() {
             intent.putExtra("medicineID", reminder.medicineID)
             intent.putExtra("medName", reminder.medName)
             intent.putExtra("groupName",reminder.groupName)
+            intent.putExtra("quantityDue", reminder.quantity)
             if(reminder.repeatDays!!.size != 0){
                 intent.putExtra("repeat", true)
             }
@@ -175,11 +177,14 @@ class NotificationService : BroadcastReceiver() {
         val groupID = intent.getStringExtra("groupID")
         val medicineID = intent.getStringExtra("medicineID")
         val channelId = intent.getStringExtra(channelID)
+        val quantityDue = intent.getIntExtra("quantityDue" ,1)
+
         bundle!!.putString("reminderId", reminderID)
         bundle.putString("groupId", groupID)
         bundle.putString("medicineId", medicineID)
         bundle.putString("userId", userID)
         bundle.putString("channelId",channelId)
+        bundle.putInt("quantityDue", quantityDue)
 
         val tapIntent = NavDeepLinkBuilder(context)
             .setComponentName(Home::class.java)

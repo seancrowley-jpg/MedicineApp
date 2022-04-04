@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.widget.TimePicker
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.activity.addCallback
@@ -24,6 +25,7 @@ import ie.wit.medicineapp.ui.group.GroupViewModel
 import ie.wit.medicineapp.ui.medicineDetails.MedicineDetailsViewModel
 import ie.wit.medicineapp.ui.scheduler.SchedulerViewModel
 import ie.wit.medicineapp.ui.utils.NotificationService
+import timber.log.Timber
 import java.util.*
 
 class ReminderFragment : Fragment() {
@@ -36,9 +38,9 @@ class ReminderFragment : Fragment() {
     private val medicineDetailsViewModel: MedicineDetailsViewModel by activityViewModels()
     private val schedulerViewModel: SchedulerViewModel by activityViewModels()
     private val args by navArgs<ReminderFragmentArgs>()
-    private var alarmManager: AlarmManager? = null
-    private lateinit var pendingIntent: PendingIntent
     var reminder = ReminderModel()
+    private var pickerHour = 0
+    private var pickerMinute = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
@@ -76,14 +78,14 @@ class ReminderFragment : Fragment() {
             val action = ReminderFragmentDirections.actionReminderFragmentToSchedulerFragment()
             findNavController().navigate(action)
         }
+        reminderViewModel.observableReminder.observe(
+            viewLifecycleOwner,
+            Observer { reminder -> reminder?.let { render() } })
         if (args.edit) {
             reminderViewModel.getReminder(
                 loggedInViewModel.liveFirebaseUser.value!!.uid,
                 args.reminderId
             )
-            reminderViewModel.observableReminder.observe(
-                viewLifecycleOwner,
-                Observer { reminder -> reminder?.let { render() } })
         }
         setButtonListener(fragBinding)
         return root
@@ -157,11 +159,11 @@ class ReminderFragment : Fragment() {
         if (args.edit) {
             layout.btnSetReminder.text = getString(R.string.btn_edit_reminder)
             layout.btnSetReminder.setOnClickListener() {
-                if (layout.medicineId.text != "") {
+                if (validateForm()) {
                     updateReminder()
+                    val action = ReminderFragmentDirections.actionReminderFragmentToSchedulerFragment()
+                    findNavController().navigate(action)
                     Toast.makeText(context, "Reminder Updated", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(context, "Please Select a Medication", Toast.LENGTH_SHORT).show()
                 }
             }
             layout.btnAddMed.text = getString(R.string.btn_change_medication)
@@ -173,12 +175,11 @@ class ReminderFragment : Fragment() {
             }
         } else {
             layout.btnSetReminder.setOnClickListener() {
-                if (layout.medicineId.text != "") {
+                if (validateForm()) {
                     scheduleReminder()
+                    val action = ReminderFragmentDirections.actionReminderFragmentToSchedulerFragment()
+                    findNavController().navigate(action)
                     Toast.makeText(context, "Reminder Created", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(context, "Please Select a Medication", Toast.LENGTH_SHORT)
-                        .show()
                 }
             }
         }
@@ -189,6 +190,10 @@ class ReminderFragment : Fragment() {
 
     private fun render() {
         fragBinding.reminderVM = reminderViewModel
+        if(args.edit) {
+            fragBinding.timePicker.hour = reminderViewModel.observableReminder.value!!.hour
+            fragBinding.timePicker.minute = reminderViewModel.observableReminder.value!!.minute
+        }
     }
 
     private fun renderGroup() {
@@ -203,9 +208,6 @@ class ReminderFragment : Fragment() {
     private fun scheduleReminder() {
         val minute = fragBinding.timePicker.minute
         val hour = fragBinding.timePicker.hour
-        /*val day = fragBinding.datePicker.dayOfMonth
-        val month = fragBinding.datePicker.month
-        val year = fragBinding.datePicker.year*/
         val time = getTime(hour, minute)
 
         reminder.uid = loggedInViewModel.liveFirebaseUser.value!!.uid
@@ -219,6 +221,7 @@ class ReminderFragment : Fragment() {
         reminder.medName = medicineDetailsViewModel.observableMedicine.value!!.name
         reminder.medDosage = medicineDetailsViewModel.observableMedicine.value!!.dosage!!
         reminder.groupPriorityLevel = groupViewModel.observableGroup.value!!.priorityLevel
+        reminder.quantity = fragBinding.quantityInput.text.toString().toInt()
 
         reminderViewModel.addReminder(loggedInViewModel.liveFirebaseUser, reminder)
         showAlert(time)
@@ -227,9 +230,6 @@ class ReminderFragment : Fragment() {
     private fun updateReminder() {
         val minute = fragBinding.timePicker.minute
         val hour = fragBinding.timePicker.hour
-        /*val day = fragBinding.datePicker.dayOfMonth
-        val month = fragBinding.datePicker.month
-        val year = fragBinding.datePicker.year*/
         val time = getTime(hour, minute)
 
         reminder.uid = reminderViewModel.observableReminder.value!!.uid
@@ -244,6 +244,7 @@ class ReminderFragment : Fragment() {
         reminder.medDosage = medicineDetailsViewModel.observableMedicine.value!!.dosage!!
         reminder.groupPriorityLevel = groupViewModel.observableGroup.value!!.priorityLevel
         reminder.repeatDays = reminderViewModel.observableReminder.value!!.repeatDays
+        reminder.quantity = reminderViewModel.observableReminder.value!!.quantity
 
         reminderViewModel.updateReminder(
             reminder,
@@ -328,6 +329,26 @@ class ReminderFragment : Fragment() {
                 })
         builder.create()
         builder.show()
+    }
+
+    private fun validateForm(): Boolean {
+        var valid = true
+        if (fragBinding.quantityInput.text.toString().toInt() <=0 ){
+            fragBinding.quantityInput.requestFocus()
+            fragBinding.quantityInput.error = "Please enter a quantity greater than 0"
+            valid = false
+        }
+        if (fragBinding.medicineId.text.toString().isEmpty() || medicineDetailsViewModel.observableMedicine.value == null) {
+            fragBinding.medicineId.requestFocus()
+            Toast.makeText(context, "Please select a Medication", Toast.LENGTH_LONG).show()
+            valid = false
+        }
+        return valid
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        medicineDetailsViewModel.observableMedicine.value!!.name = ""
     }
 
 }

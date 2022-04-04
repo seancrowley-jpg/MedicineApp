@@ -79,8 +79,10 @@ class ButtonReceiver : BroadcastReceiver(){
         val userID = intent.getStringExtra("userID")
         val groupID = intent.getStringExtra("groupID")
         val medicineID = intent.getStringExtra("medicineID")
+        val quantityDue = intent.getIntExtra("quantityDue", 1)
+
         if(status != "Skipped") {
-            FirebaseDBManager.confirmMedTaken(userID!!, groupID!!, medicineID!!, context)
+            FirebaseDBManager.confirmMedTaken(userID!!, groupID!!, medicineID!!, context, quantityDue)
         }
         val confirmation = ConfirmationModel()
         val calendar = Calendar.getInstance()

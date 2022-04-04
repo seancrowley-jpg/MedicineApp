@@ -19,7 +19,8 @@ data class ReminderModel(
     var groupName: String = "",
     var groupPriorityLevel: Int = 0,
     var active: Boolean = false,
-    var repeatDays: MutableList<Int>? = ArrayList()
+    var repeatDays: MutableList<Int>? = ArrayList(),
+    var quantity: Int = 0
     ): Parcelable {
     @Exclude
     fun toMap(): Map<String, Any?> {
@@ -37,6 +38,7 @@ data class ReminderModel(
             "groupPriorityLevel" to groupPriorityLevel,
             "active" to active,
             "repeatDays" to repeatDays,
+            "quantity" to quantity
             )
     }
 }

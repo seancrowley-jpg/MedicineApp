@@ -255,7 +255,8 @@ object FirebaseDBManager : MedicineAppStore {
         userid: String,
         groupId: String,
         medicineId: String,
-        context: Context
+        context: Context,
+        quantityDue: Int
     ) {
         val path = database.child("user-medication").child(userid).child(groupId).child(medicineId)
         database.child("user-medication").child(userid).child(groupId).child(medicineId)
@@ -267,7 +268,7 @@ object FirebaseDBManager : MedicineAppStore {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val quantity = snapshot.child("quantity").value.toString()
                     val reminderLimit = snapshot.child("reminderLimit").value.toString()
-                    var newQuantity = quantity.toInt() - 1
+                    var newQuantity = quantity.toInt() - quantityDue
                     val name = snapshot.child("name").value.toString()
                     if (quantity.toInt() != 0) {
                         path.child("quantity").setValue(newQuantity)

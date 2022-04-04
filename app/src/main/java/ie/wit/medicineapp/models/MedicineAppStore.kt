@@ -28,7 +28,7 @@ interface MedicineAppStore {
     fun findReminderById(userid:String, reminderId: String, reminder: MutableLiveData<ReminderModel>)
     fun updateReminder(userid:String, reminderId: String, reminder: ReminderModel)
     fun onceOffReminderTriggered(userid: String, reminderId: String)
-    fun confirmMedTaken(userid: String,groupId: String,medicineId: String, context: Context)
+    fun confirmMedTaken(userid: String,groupId: String,medicineId: String, context: Context, quantityDue: Int)
     fun createConfirmation(userid: String, confirmation: ConfirmationModel)
     fun findHistory(
         userid: String,

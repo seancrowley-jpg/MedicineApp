@@ -94,6 +94,7 @@ class ConfirmationFragment : Fragment() {
         val manager = context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val bundle = arguments
         val requestCode = bundle!!.getInt("notificationID")
+        val quantityDue = bundle.getInt("quantityDue")
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = System.currentTimeMillis()
         confirmation.time = System.currentTimeMillis()
@@ -106,7 +107,7 @@ class ConfirmationFragment : Fragment() {
         confirmation.medicineName = bundle.getString("medName","UnKnown")
         confirmation.groupName = bundle.getString("groupName","UnKnown")
         layout.btnConfirm.setOnClickListener(){
-            confirmationViewModel.confirmMed(args.userId,args.groupId,args.medicineId,context!!)
+            confirmationViewModel.confirmMed(args.userId,args.groupId,args.medicineId,context!!, quantityDue)
             confirmationViewModel.createConfirmation(args.userId, confirmation)
             manager.cancel(requestCode)
             //findNavController().popBackStack(R.id.confirmationFragment, false)

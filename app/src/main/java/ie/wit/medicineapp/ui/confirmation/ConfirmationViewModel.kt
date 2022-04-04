@@ -8,9 +8,9 @@ import timber.log.Timber
 
 class ConfirmationViewModel : ViewModel() {
 
-    fun confirmMed(userId: String, groupId: String, medicineId: String, context: Context){
+    fun confirmMed(userId: String, groupId: String, medicineId: String, context: Context, quantityDue: Int){
         try {
-            FirebaseDBManager.confirmMedTaken(userId, groupId, medicineId, context)
+            FirebaseDBManager.confirmMedTaken(userId, groupId, medicineId, context, quantityDue)
             Timber.i("Success Medication taken confirmed")
         } catch (e: Exception) {
             Timber.i("Error : $e.message")
