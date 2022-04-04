@@ -175,6 +175,32 @@
                 android:textSize="20sp"
                 tools:text="100" />
 
+            <TextView
+                android:id="@+id/medicineQuantityDueHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/medicineQuantityHeader"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="28dp"
+                android:text="@string/confirm_header_quantityDue"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/medicineQuantityDue"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="90dp"
+                android:layout_marginEnd="23dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@{`` + reminderVM.observableReminder.quantity}"
+                android:textSize="20sp"
+                tools:text="10" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_confirm"
                 android:layout_width="wrap_content"
@@ -182,7 +208,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="60dp"
-                android:layout_marginTop="115dp"
+                android:layout_marginTop="140dp"
                 android:text="@string/btn_confirm" />
 
             <com.google.android.material.button.MaterialButton
@@ -191,7 +217,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="115dp"
+                android:layout_marginTop="140dp"
                 android:layout_marginEnd="68dp"
                 android:text="@string/btn_snooze" />
 
@@ -201,7 +227,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerInParent="true"
-                android:layout_marginTop="165dp"
+                android:layout_marginTop="190dp"
                 android:text="Skip" />
 
         </RelativeLayout>

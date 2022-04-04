@@ -33,7 +33,8 @@ class NotificationService : BroadcastReceiver() {
             intent.putExtra(titleExtra, "Medicine Due!")
             intent.putExtra(
                 messageExtra,
-                reminder.medName + " " + reminder.medDosage + " " + reminder.requestCode
+                reminder.medName + " " + reminder.medDosage + " " + reminder.requestCode +
+                        " -- Quantity Due: " + reminder.quantity
             )
             intent.putExtra(time, reminder.time)
             intent.putExtra("reminderID", reminder.uid)
@@ -63,7 +64,8 @@ class NotificationService : BroadcastReceiver() {
             intent.putExtra(titleExtra, "Medicine Due!")
             intent.putExtra(
                 messageExtra,
-                reminder.medName + " " + reminder.medDosage + " " + reminder.requestCode
+                reminder.medName + " " + reminder.medDosage + " " + reminder.requestCode +
+                        "\n Quantity Due:" + reminder.quantity
             )
             intent.putExtra(time, reminder.time)
             intent.putExtra("reminderID", reminder.uid)

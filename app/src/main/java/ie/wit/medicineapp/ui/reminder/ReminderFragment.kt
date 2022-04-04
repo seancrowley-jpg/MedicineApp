@@ -259,13 +259,18 @@ class ReminderFragment : Fragment() {
     private fun showAlert(time: Long) {
         val dateFormat = android.text.format.DateFormat.getLongDateFormat(context)
         val timeFormat = android.text.format.DateFormat.getTimeFormat(context)
+        var level = groupViewModel.observableGroup.value!!.priorityLevel.toString()
+        level = if(level == "1"){
+            "High"
+        }else
+            "Low"
         AlertDialog.Builder(context)
             .setTitle("Reminder Set")
             .setMessage(
                 "Reminder Set For:" + dateFormat.format(time) + "\nAt: " + timeFormat.format(
                     time
                 )
-                        + "\nPriority: " + groupViewModel.observableGroup.value!!.priorityLevel
+                        + "\nPriority: " + level
             )
             .setPositiveButton("Okay") { _, _ -> }
             .show()

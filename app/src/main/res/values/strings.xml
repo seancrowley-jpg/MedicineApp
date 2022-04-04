@@ -118,6 +118,7 @@
     <string name="confirm_header_quantity">Quantity:</string>
     <string name="confirm_header_dosage">Dosage:</string>
     <string name="confirm_header_name">Name:</string>
+    <string name="confirm_header_quantityDue">Quantity Due:</string>
     <string name="confirm_med_due">Medication Due</string>
 
     <string name="dashboard_groups_chip">Total Groups: </string>
