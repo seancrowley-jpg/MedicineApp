@@ -270,10 +270,12 @@ object FirebaseDBManager : MedicineAppStore {
                     val reminderLimit = snapshot.child("reminderLimit").value.toString()
                     var newQuantity = quantity.toInt() - quantityDue
                     val name = snapshot.child("name").value.toString()
-                    if (quantity.toInt() != 0) {
+                    if (newQuantity >= 0) {
                         path.child("quantity").setValue(newQuantity)
-                    } else
+                    } else {
                         newQuantity = 0
+                        path.child("quantity").setValue(newQuantity)
+                    }
                     if (newQuantity <= reminderLimit.toInt()) {
                         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
                         val phoneNum = sharedPreferences.getString("pharmacy", "")

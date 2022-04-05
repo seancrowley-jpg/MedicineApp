@@ -134,16 +134,34 @@ class MedicineDetailsFragment : Fragment(), SideEffectListener {
             }
         }
         if (item.itemId == R.id.print) {
-            val printManager : PrintManager = requireContext().getSystemService(Context.PRINT_SERVICE) as PrintManager
-            try {
-                val file = createPdf(medicineDetailsViewModel.observableMedicine.value!!, context!!, "userName")
-                val printAdapter = PrintAdapter(file.absolutePath)
-                printManager.print("Document", printAdapter, PrintAttributes.Builder().build())
-            } catch (e : Exception) {
-                Timber.e(e)
+            val printManager: PrintManager =
+                requireContext().getSystemService(Context.PRINT_SERVICE) as PrintManager
+            if (loggedInViewModel.liveFirebaseUser.value!!.displayName != null) {
+                try {
+                    val file = createPdf(
+                        medicineDetailsViewModel.observableMedicine.value!!,
+                        context!!,
+                        loggedInViewModel.liveFirebaseUser.value!!.displayName!!
+                    )
+                    val printAdapter = PrintAdapter(file.absolutePath)
+                    printManager.print("Document", printAdapter, PrintAttributes.Builder().build())
+                } catch (e: Exception) {
+                    Timber.e(e)
+                }
             }
-
-
+            else{
+                try {
+                    val file = createPdf(
+                        medicineDetailsViewModel.observableMedicine.value!!,
+                        context!!,
+                        loggedInViewModel.liveFirebaseUser.value!!.email!!
+                    )
+                    val printAdapter = PrintAdapter(file.absolutePath)
+                    printManager.print("Document", printAdapter, PrintAttributes.Builder().build())
+                } catch (e: Exception) {
+                    Timber.e(e)
+                }
+            }
 
         }
         return super.onOptionsItemSelected(item)

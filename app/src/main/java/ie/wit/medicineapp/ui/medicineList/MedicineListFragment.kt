@@ -162,16 +162,31 @@ class MedicineListFragment : Fragment(), MedicineListener {
         if (item.itemId == R.id.print) {
             val printManager: PrintManager =
                 requireContext().getSystemService(Context.PRINT_SERVICE) as PrintManager
-            try {
-                val file = createListPdf(
-                    medicineListViewModel.observableMedicationList.value!! as ArrayList<MedicineModel>,
-                    context!!,
-                    "userName"
-                )
-                val printAdapter = PrintAdapter(file.absolutePath)
-                printManager.print("Document", printAdapter, PrintAttributes.Builder().build())
-            } catch (e: Exception) {
-                Timber.e(e)
+            if (loggedInViewModel.liveFirebaseUser.value!!.displayName != null) {
+                try {
+                    val file = createListPdf(
+                        medicineListViewModel.observableMedicationList.value!! as ArrayList<MedicineModel>,
+                        context!!,
+                        loggedInViewModel.liveFirebaseUser.value!!.displayName!!
+                    )
+                    val printAdapter = PrintAdapter(file.absolutePath)
+                    printManager.print("Document", printAdapter, PrintAttributes.Builder().build())
+                } catch (e: Exception) {
+                    Timber.e(e)
+                }
+            }
+            else{
+                try {
+                    val file = createListPdf(
+                        medicineListViewModel.observableMedicationList.value!! as ArrayList<MedicineModel>,
+                        context!!,
+                        loggedInViewModel.liveFirebaseUser.value!!.email!!
+                    )
+                    val printAdapter = PrintAdapter(file.absolutePath)
+                    printManager.print("Document", printAdapter, PrintAttributes.Builder().build())
+                } catch (e: Exception) {
+                    Timber.e(e)
+                }
             }
         }
         if(item.itemId == R.id.delete_all_meds) {

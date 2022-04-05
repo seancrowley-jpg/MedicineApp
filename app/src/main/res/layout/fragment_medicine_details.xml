@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="5dp"
@@ -24,143 +24,133 @@
                 android:id="@+id/medicine_details_name"
                 android:layout_width="wrap_content"
                 android:layout_height="46dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="25dp"
                 android:autoSizeTextType="uniform"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
                 android:ellipsize="end"
                 android:text="@{medicineVM.observableMedicine.name}"
-                android:textSize="35sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textSize="35sp" />
 
             <TextView
                 android:id="@+id/medicine_details_quantity"
                 android:layout_width="180dp"
                 android:layout_height="48dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="75dp"
                 android:autoSizeTextType="uniform"
                 android:text="@string/medicine_details_quantity"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/medicine_details_name" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/medicine_details_quantity_num"
                 android:layout_width="84dp"
                 android:layout_height="48dp"
-                android:layout_marginTop="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="75dp"
+                android:layout_marginEnd="25dp"
                 android:autoSizeTextType="uniform"
                 android:text="@{`` + medicineVM.observableMedicine.quantity}"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.467"
-                app:layout_constraintStart_toEndOf="@+id/medicine_details_quantity"
-                app:layout_constraintTop_toBottomOf="@+id/medicine_details_name"
                 tools:text="200" />
 
             <TextView
                 android:id="@+id/medicine_details_dosage"
                 android:layout_width="180dp"
                 android:layout_height="48dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="40dp"
+                android:layout_alignTop="@+id/medicine_details_reminder_limit"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="75dp"
                 android:autoSizeTextType="uniform"
                 android:text="@string/medicine_details_dosage"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/medicine_details_quantity" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/medicine_details_dosage_num"
                 android:layout_width="84dp"
                 android:layout_height="48dp"
-                android:layout_marginTop="40dp"
+                android:layout_alignTop="@+id/medicine_details_reminder_limit_num"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="75dp"
+                android:layout_marginEnd="25dp"
                 android:autoSizeTextType="uniform"
                 android:text="@{medicineVM.observableMedicine.dosage}"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.464"
-                app:layout_constraintStart_toEndOf="@+id/medicine_details_dosage"
-                app:layout_constraintTop_toBottomOf="@+id/medicine_details_quantity"
                 tools:text="200" />
 
             <TextView
                 android:id="@+id/medicine_details_reminder_limit"
                 android:layout_width="180dp"
                 android:layout_height="48dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="128dp"
+                android:layout_alignTop="@+id/medicine_details_quantity"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="75dp"
                 android:layout_marginBottom="432dp"
                 android:autoSizeTextType="uniform"
                 android:text="@string/medicine_details_reminder_limit"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/medicine_details_quantity"
-                app:layout_constraintVertical_bias="0.0" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/medicine_details_reminder_limit_num"
                 android:layout_width="84dp"
                 android:layout_height="48dp"
-                android:layout_marginTop="40dp"
+                android:layout_alignTop="@+id/medicine_details_quantity_num"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="75dp"
+                android:layout_marginEnd="25dp"
                 android:autoSizeTextType="uniform"
                 android:text="@{`` + medicineVM.observableMedicine.reminderLimit}"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.467"
-                app:layout_constraintStart_toEndOf="@+id/medicine_details_reminder_limit"
-                app:layout_constraintTop_toBottomOf="@+id/medicine_details_dosage"
                 tools:text="200" />
 
             <TextView
                 android:id="@+id/medicine_details_usage_dir_header"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:layout_marginTop="352dp"
-                android:layout_marginEnd="116dp"
-                android:layout_marginBottom="368dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="300dp"
                 android:autoSizeTextType="uniform"
                 android:text="@string/medicine_details_usage_directions"
-                android:textSize="35sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textSize="35sp" />
 
             <TextView
                 android:id="@+id/medicine_details_usage_dir"
                 android:layout_width="wrap_content"
                 android:layout_height="57dp"
-                android:layout_marginTop="4dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="370dp"
                 android:autoSizeTextType="uniform"
                 android:text="@{medicineVM.observableMedicine.usageDir}"
                 android:textSize="11sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/medicine_details_usage_dir_header"
                 tools:text="Usage Directions" />
 
             <View
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="8dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/medicine_details_usage_dir" />
+                android:layout_below="@+id/medicine_details_usage_dir"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="15dp"
+                android:background="?android:attr/listDivider" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/MedicineSideEffectTextField"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="241dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="475dp"
+                android:layout_marginBottom="225dp"
                 android:ems="10"
                 android:gravity="start|top"
                 android:hint="@string/hint_medicine_sideEffects"
@@ -169,11 +159,7 @@
                 android:maxLength="180"
                 android:maxLines="4"
                 android:padding="8dp"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.105"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider">
+                android:textSize="14sp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/sideEffectText"
@@ -182,44 +168,33 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_marginBottom="8dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintBottom_toTopOf="@+id/recyclerView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent" />
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_add_sideEffect"
                 style="@style/Widget.MaterialComponents.Button.Icon"
                 android:layout_width="60dp"
                 android:layout_height="50dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginStart="56dp"
-                android:layout_marginTop="465dp"
+                android:layout_marginTop="492dp"
+                android:layout_marginEnd="25dp"
                 android:layout_marginBottom="188dp"
                 android:textAlignment="center"
                 app:icon="@android:drawable/ic_input_add"
-                app:iconGravity="start"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/MedicineSideEffectTextField"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:iconGravity="start" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="132dp"
-                android:layout_marginTop="28dp"
+                android:layout_height="200dp"
                 android:scrollbars="vertical"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                app:layout_constraintTop_toBottomOf="@+id/MedicineSideEffectTextField"
-                tools:layout_editor_absoluteX="0dp">
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-            </androidx.recyclerview.widget.RecyclerView>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
+
 
     </ScrollView>
 </layout>
