@@ -49,6 +49,7 @@
     <string name="hint_medicine_sideEffects">Enter Side Effects</string>
     <string name="enter_quantity_text">Enter Quantity:</string>
     <string name="enter_reminder_limit">Reminder Limit:</string>
+    <string name="choose_med_type">Choose Type:</string>
     <string name="enter_dosage">Enter Dosage:</string>
     <string name="btn_add_medication">Add Med</string>
     <string name="btn_edit_medication">Edit Med</string>
@@ -132,5 +133,12 @@
     <string name="dashboard_afternoon">Afternoon,</string>
     <string name="dashboard_evening">Good Evening,</string>
     <string name="dashboard_night">Good Night,</string>
+
+    <string-array name="type">
+        <item>Pills</item>
+        <item>Injection</item>
+        <item>Liquid</item>
+        <item>Drops</item>
+    </string-array>
 
 </resources>

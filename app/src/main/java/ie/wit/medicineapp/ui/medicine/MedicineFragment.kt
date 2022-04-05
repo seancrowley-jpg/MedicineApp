@@ -38,14 +38,15 @@ class MedicineFragment : Fragment() {
     ): View? {
         _fragBinding = FragmentMedicineBinding.inflate(inflater, container, false)
         val root: View = fragBinding.root
+        medicineViewModel.observableMedicine.observe(viewLifecycleOwner, Observer {
+                medicine -> medicine?.let { render() }
+        })
         if(args.edit){
             medicineViewModel.getMedicine(loggedInViewModel.liveFirebaseUser.value?.uid!!,args.groupId, args.medicineId)
-            medicineViewModel.observableMedicine.observe(viewLifecycleOwner, Observer {
-                    medicine -> medicine?.let { render() }
-            })
             (requireActivity() as AppCompatActivity).supportActionBar?.title = getString(R.string.menu_medicine_edit)
         }
         setButtonListener(fragBinding)
+        setUpPicker(fragBinding)
         return root
     }
 
@@ -61,6 +62,7 @@ class MedicineFragment : Fragment() {
                     medicine.usageDir = layout.medicineUserDir.text.toString().trim()
                     medicine.dosage = layout.medicineDosage.text.toString().trim()
                     medicine.sideEffects = medicineViewModel.observableMedicine.value!!.sideEffects
+                    medicine.type = medicineViewModel.observableMedicine.value!!.type
                     medicineViewModel.updateMedicine(
                         loggedInViewModel.liveFirebaseUser.value?.uid!!,
                         args.groupId, args.medicineId, medicine
@@ -76,6 +78,7 @@ class MedicineFragment : Fragment() {
                     medicine.reminderLimit = layout.medicineReminderLimit.text.toString().toInt()
                     medicine.usageDir = layout.medicineUserDir.text.toString().trim()
                     medicine.dosage = layout.medicineDosage.text.toString().trim()
+                    medicine.type = medicineViewModel.observableMedicine.value!!.type
                     medicineViewModel.addMedicine(
                         loggedInViewModel.liveFirebaseUser,
                         medicine,
@@ -118,6 +121,11 @@ class MedicineFragment : Fragment() {
             valid = false
         }
         return valid
+    }
+
+    private fun setUpPicker(layout: FragmentMedicineBinding){
+        val types = resources.getStringArray(R.array.type)
+        layout.typePicker.displayedValues = types
     }
 
     override fun onDestroyView() {

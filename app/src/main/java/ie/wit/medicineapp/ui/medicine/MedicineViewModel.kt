@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
 import ie.wit.medicineapp.firebase.FirebaseDBManager
-import ie.wit.medicineapp.models.GroupModel
 import ie.wit.medicineapp.models.MedicineModel
 import timber.log.Timber
 
@@ -20,10 +19,15 @@ class MedicineViewModel : ViewModel() {
     fun addMedicine (firebaseUser: MutableLiveData<FirebaseUser>, medicine: MedicineModel, groupId: String,) {
         try {
             FirebaseDBManager.createMedicine(firebaseUser, medicine, groupId)
-            true
+            Timber.i("Success got medicine info : $medicine")
         } catch (e: IllegalArgumentException) {
-            false
+            Timber.i("Error : $e.message")
         }
+    }
+
+    fun setType(newVal: Int){
+        medicine.value!!.type = newVal
+        Timber.i("Info : ${medicine.value!!.type.toString()}")
     }
 
     fun getMedicine(userid:String, groupId: String, medicineId: String) {
