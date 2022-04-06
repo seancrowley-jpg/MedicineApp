@@ -139,6 +139,15 @@
         <item>Injection</item>
         <item>Liquid</item>
         <item>Drops</item>
+        <item>Inhaler</item>
+    </string-array>
+
+    <string-array name="unit">
+        <item>pill(s)</item>
+        <item>unit(s)</item>
+        <item>ml(s)</item>
+        <item>ml(s)</item>
+        <item>puff(s)</item>
     </string-array>
 
 </resources>

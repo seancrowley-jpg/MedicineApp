@@ -27,7 +27,7 @@ class MedicineViewModel : ViewModel() {
 
     fun setType(newVal: Int){
         medicine.value!!.type = newVal
-        Timber.i("Info : ${medicine.value!!.type.toString()}")
+        Timber.i("Info : ${medicine.value!!.type}")
     }
 
     fun getMedicine(userid:String, groupId: String, medicineId: String) {

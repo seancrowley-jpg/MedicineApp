@@ -46,14 +46,14 @@
 
             <TextView
                 android:id="@+id/medicine_details_quantity_num"
-                android:layout_width="84dp"
+                android:layout_width="125dp"
                 android:layout_height="48dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="75dp"
                 android:layout_marginEnd="25dp"
                 android:autoSizeTextType="uniform"
-                android:text="@{`` + medicineVM.observableMedicine.quantity}"
+                android:text="@{`` + medicineVM.observableMedicine.quantity + ' ' +medicineVM.observableMedicine.unit}"
                 android:textSize="20sp"
                 tools:text="200" />
 
@@ -71,7 +71,7 @@
 
             <TextView
                 android:id="@+id/medicine_details_dosage_num"
-                android:layout_width="84dp"
+                android:layout_width="125dp"
                 android:layout_height="48dp"
                 android:layout_alignTop="@+id/medicine_details_reminder_limit_num"
                 android:layout_alignParentEnd="true"
@@ -97,14 +97,14 @@
 
             <TextView
                 android:id="@+id/medicine_details_reminder_limit_num"
-                android:layout_width="84dp"
+                android:layout_width="125dp"
                 android:layout_height="48dp"
                 android:layout_alignTop="@+id/medicine_details_quantity_num"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="75dp"
                 android:layout_marginEnd="25dp"
                 android:autoSizeTextType="uniform"
-                android:text="@{`` + medicineVM.observableMedicine.reminderLimit}"
+                android:text="@{`` + medicineVM.observableMedicine.reminderLimit + ' ' + medicineVM.observableMedicine.unit}"
                 android:textSize="20sp"
                 tools:text="200" />
 
@@ -121,7 +121,7 @@
 
             <TextView
                 android:id="@+id/medicine_details_usage_dir"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="57dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"

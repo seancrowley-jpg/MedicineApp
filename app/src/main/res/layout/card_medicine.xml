@@ -22,40 +22,42 @@
             <TextView
                 android:id="@+id/medicineName"
                 android:layout_width="262dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="16dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:layout_marginEnd="16dp"
-                android:text="@{medicine.name}"
-                android:textSize="25sp"
                 android:ellipsize="end"
                 android:singleLine="true"
+                android:text="@{medicine.name}"
+                android:textSize="25sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Medicine Name"/>
+                app:layout_constraintVertical_bias="0.0"
+                tools:text="Medicine Name" />
 
             <TextView
-                android:id="@+id/priorityText"
-                android:layout_width="48dp"
+                android:id="@+id/quantityText"
+                android:layout_width="55dp"
                 android:layout_height="21dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.21"
                 app:layout_constraintStart_toEndOf="@+id/medicineName"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Quantity"/>
+                android:text="@{medicine.unit}"/>
 
             <TextView
                 android:id="@+id/priorityLevel"
-                android:layout_width="23dp"
+                android:layout_width="35dp"
                 android:layout_height="21dp"
+                android:singleLine="true"
                 android:text="@{Integer.toString(medicine.quantity)}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.841"
-                app:layout_constraintStart_toEndOf="@+id/medicineName"
+                app:layout_constraintStart_toEndOf="@+id/quantityText"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="20"/>
 

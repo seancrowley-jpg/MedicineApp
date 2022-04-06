@@ -222,6 +222,7 @@ class ReminderFragment : Fragment() {
         reminder.medDosage = medicineDetailsViewModel.observableMedicine.value!!.dosage!!
         reminder.groupPriorityLevel = groupViewModel.observableGroup.value!!.priorityLevel
         reminder.quantity = fragBinding.quantityInput.text.toString().toInt()
+        reminder.unit = medicineDetailsViewModel.observableMedicine.value!!.unit
 
         reminderViewModel.addReminder(loggedInViewModel.liveFirebaseUser, reminder)
         showAlert(time)
@@ -245,6 +246,7 @@ class ReminderFragment : Fragment() {
         reminder.groupPriorityLevel = groupViewModel.observableGroup.value!!.priorityLevel
         reminder.repeatDays = reminderViewModel.observableReminder.value!!.repeatDays
         reminder.quantity = reminderViewModel.observableReminder.value!!.quantity
+        reminder.unit = medicineDetailsViewModel.observableMedicine.value!!.unit
 
         reminderViewModel.updateReminder(
             reminder,

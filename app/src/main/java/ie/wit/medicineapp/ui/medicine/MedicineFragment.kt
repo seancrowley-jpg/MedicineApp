@@ -51,6 +51,7 @@ class MedicineFragment : Fragment() {
     }
 
     private fun setButtonListener(layout: FragmentMedicineBinding) {
+        val units: Array<String> = resources.getStringArray(R.array.unit)
         if (args.edit) {
             layout.addMedicineButton.text = getString(R.string.btn_edit_medication)
             layout.addMedicineButton.setOnClickListener() {
@@ -63,6 +64,7 @@ class MedicineFragment : Fragment() {
                     medicine.dosage = layout.medicineDosage.text.toString().trim()
                     medicine.sideEffects = medicineViewModel.observableMedicine.value!!.sideEffects
                     medicine.type = medicineViewModel.observableMedicine.value!!.type
+                    medicine.unit = units[medicineViewModel.observableMedicine.value!!.type]
                     medicineViewModel.updateMedicine(
                         loggedInViewModel.liveFirebaseUser.value?.uid!!,
                         args.groupId, args.medicineId, medicine
@@ -78,7 +80,8 @@ class MedicineFragment : Fragment() {
                     medicine.reminderLimit = layout.medicineReminderLimit.text.toString().toInt()
                     medicine.usageDir = layout.medicineUserDir.text.toString().trim()
                     medicine.dosage = layout.medicineDosage.text.toString().trim()
-                    medicine.type = medicineViewModel.observableMedicine.value!!.type
+                    medicine.type = layout.typePicker.value
+                    medicine.unit = units[layout.typePicker.value]
                     medicineViewModel.addMedicine(
                         loggedInViewModel.liveFirebaseUser,
                         medicine,
