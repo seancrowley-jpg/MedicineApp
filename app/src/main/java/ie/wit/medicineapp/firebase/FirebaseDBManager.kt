@@ -225,6 +225,12 @@ object FirebaseDBManager : MedicineAppStore {
         database.updateChildren(childDelete)
     }
 
+    override fun deleteAllReminders(userid: String) {
+        val childDelete: MutableMap<String, Any?> = HashMap()
+        childDelete["/user-reminders/$userid"] = null
+        database.updateChildren(childDelete)
+    }
+
     override fun findReminderById(
         userid: String,
         reminderId: String,
@@ -420,6 +426,18 @@ object FirebaseDBManager : MedicineAppStore {
                     reminderCount.value = snapshot.childrenCount.toInt()
                 }
             })
+    }
+
+    override fun deleteAllConfirmationHistory(userid: String) {
+        val childDelete: MutableMap<String, Any?> = HashMap()
+        childDelete["/user-confirmations/$userid"] = null
+        database.updateChildren(childDelete)
+    }
+
+    override fun deleteAllData(userid: String){
+        deleteAllGroups(userid)
+        deleteAllReminders(userid)
+        deleteAllConfirmationHistory(userid)
     }
 }
 

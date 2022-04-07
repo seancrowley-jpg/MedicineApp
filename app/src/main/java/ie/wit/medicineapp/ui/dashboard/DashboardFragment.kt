@@ -93,7 +93,6 @@ class DashboardFragment : Fragment() {
                     fragBinding.userNameHeader.text =  dashboardViewModel.liveFirebaseUser.value!!.displayName
                 else
                 fragBinding.userNameHeader.text =  dashboardViewModel.liveFirebaseUser.value!!.email
-
                 dashboardViewModel.load()
             }
         })

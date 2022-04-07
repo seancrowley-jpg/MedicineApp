@@ -39,8 +39,6 @@ class ReminderFragment : Fragment() {
     private val schedulerViewModel: SchedulerViewModel by activityViewModels()
     private val args by navArgs<ReminderFragmentArgs>()
     var reminder = ReminderModel()
-    private var pickerHour = 0
-    private var pickerMinute = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
@@ -355,7 +353,7 @@ class ReminderFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        medicineDetailsViewModel.observableMedicine.value!!.name = ""
+        //medicineDetailsViewModel.observableMedicine.value!!.name = ""
     }
 
 }

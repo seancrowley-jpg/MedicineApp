@@ -2,10 +2,8 @@ package ie.wit.medicineapp.ui.history
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -13,6 +11,7 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ie.wit.medicineapp.R
 import ie.wit.medicineapp.adapters.HistoryAdapter
 import ie.wit.medicineapp.databinding.FragmentHistoryBinding
 import ie.wit.medicineapp.databinding.FragmentMedicineListBinding
@@ -37,6 +36,11 @@ class HistoryFragment : Fragment() {
     private lateinit var adapter: HistoryAdapter
     private val calendar: Calendar = Calendar.getInstance()
     lateinit var loader : AlertDialog
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
+        super.onCreate(savedInstanceState)
+    }
 
 
     override fun onCreateView(
@@ -104,6 +108,39 @@ class HistoryFragment : Fragment() {
         } else {
             fragBinding.recyclerView.visibility = View.VISIBLE
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_history,menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.delete_all_confirmation) {
+            val alertDialog = AlertDialog.Builder(context)
+            alertDialog.setTitle("Delete All History?")
+            alertDialog.setMessage("Are you sure you want to delete all your confirmation history?")
+            alertDialog.setNegativeButton("No") { _, _ ->
+                historyViewModel.load(loggedInViewModel.liveFirebaseUser.value!!.uid,
+                    calendar.get(Calendar.DAY_OF_MONTH),calendar.get(Calendar.MONTH)+1,
+                    calendar.get(Calendar.YEAR))
+            }
+            alertDialog.setPositiveButton("Yes") { _, _ ->
+                historyViewModel.deleteAllConfirmations(loggedInViewModel.liveFirebaseUser.value!!.uid)
+                historyViewModel.load(
+                    loggedInViewModel.liveFirebaseUser.value!!.uid,
+                    calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH) + 1,
+                    calendar.get(Calendar.YEAR)
+                )
+                hideLoader(loader)
+            }
+            alertDialog.setOnDismissListener {
+                historyViewModel.load(loggedInViewModel.liveFirebaseUser.value!!.uid,
+                    calendar.get(Calendar.DAY_OF_MONTH),calendar.get(Calendar.MONTH)+1,
+                    calendar.get(Calendar.YEAR))}
+            alertDialog.show()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {

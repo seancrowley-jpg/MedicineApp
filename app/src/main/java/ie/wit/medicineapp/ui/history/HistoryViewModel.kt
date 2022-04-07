@@ -38,4 +38,13 @@ class HistoryViewModel : ViewModel() {
             Timber.i("Error Deleting Confirmation : $e.message")
         }
     }
+
+    fun deleteAllConfirmations(userId: String){
+        try {
+            FirebaseDBManager.deleteAllConfirmationHistory(liveFirebaseUser.value?.uid!!)
+            Timber.i("Success")
+        }catch (e: Exception) {
+            Timber.i("Error Deleting Confirmation : $e.message")
+        }
+    }
 }

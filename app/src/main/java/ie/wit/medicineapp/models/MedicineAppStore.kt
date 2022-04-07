@@ -25,6 +25,7 @@ interface MedicineAppStore {
     fun createReminder(firebaseUser: MutableLiveData<FirebaseUser>, reminder: ReminderModel)
     fun findReminders(userid:String, reminderList: MutableLiveData<List<ReminderModel>>)
     fun deleteReminder(userid:String, reminderId: String)
+    fun deleteAllReminders(userid:String)
     fun findReminderById(userid:String, reminderId: String, reminder: MutableLiveData<ReminderModel>)
     fun updateReminder(userid:String, reminderId: String, reminder: ReminderModel)
     fun onceOffReminderTriggered(userid: String, reminderId: String)
@@ -38,6 +39,8 @@ interface MedicineAppStore {
         year: Int
     )
     fun deleteConfirmationHistory(userid: String, confirmationId: String)
+    fun deleteAllConfirmationHistory(userid: String)
     fun getStats(userid: String, groupCount: MutableLiveData<Int>, medCount: MutableLiveData<Int>,
                  historyCount: MutableLiveData<Int>, reminderCount: MutableLiveData<Int>)
+    fun deleteAllData(userid: String)
 }

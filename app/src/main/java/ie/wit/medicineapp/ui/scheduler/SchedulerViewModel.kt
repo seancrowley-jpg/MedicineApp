@@ -43,4 +43,13 @@ class SchedulerViewModel : ViewModel() {
             Timber.i("Error Deleting Reminder : $e.message")
         }
     }
+
+    fun deleteAllReminders(userId: String){
+        try {
+            FirebaseDBManager.deleteAllReminders(liveFirebaseUser.value?.uid!!)
+            Timber.i("Success")
+        }catch (e: Exception) {
+            Timber.i("Error Deleting Reminder : $e.message")
+        }
+    }
 }

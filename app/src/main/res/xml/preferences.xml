@@ -71,4 +71,14 @@
             android:title="Confirm before quiting app" />
     </PreferenceCategory>
 
+    <PreferenceCategory
+        app:key="account_category"
+        app:title="Account">
+
+        <Preference
+            android:key="delete_account_setting"
+            android:title="Delete Account"
+            app:icon="@drawable/ic_baseline_delete_forever"/>
+    </PreferenceCategory>
+
 </PreferenceScreen>

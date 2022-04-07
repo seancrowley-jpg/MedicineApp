@@ -15,4 +15,8 @@ class LoggedInViewModel(app: Application) : AndroidViewModel(app) {
     fun logOut() {
         firebaseAuthManager.logOut()
     }
+
+    fun deleteAccount() {
+        firebaseAuthManager.deleteAccount()
+    }
 }

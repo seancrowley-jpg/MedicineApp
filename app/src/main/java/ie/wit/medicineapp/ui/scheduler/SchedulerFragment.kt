@@ -153,6 +153,33 @@ class SchedulerFragment : Fragment(), ReminderListener {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.delete_all_reminders) {
+            if (schedulerViewModel.observableRemindersList.value!!.isNotEmpty()) {
+                val alertDialog = AlertDialog.Builder(context)
+                alertDialog.setTitle("Delete All Reminders")
+                alertDialog.setMessage("Are you sure you want to delete all your reminders?")
+                alertDialog.setNegativeButton("No") { _, _ -> }
+                alertDialog.setPositiveButton("Yes") { _, _ ->
+                    schedulerViewModel.observableRemindersList.value!!.forEach { reminder ->
+                        NotificationService.cancelAlarm(
+                            context!!,
+                            reminder,
+                            loggedInViewModel.liveFirebaseUser.value!!.uid
+                        )
+                    }
+                    schedulerViewModel.deleteAllReminders(loggedInViewModel.liveFirebaseUser.value!!.uid)
+                    schedulerViewModel.load()
+                }
+                alertDialog.show()
+            }
+            else{
+                Toast.makeText(context, "No Reminders To Delete Found", Toast.LENGTH_LONG).show()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun renderReminders(reminders: ArrayList<ReminderModel>) {
         fragBinding.recyclerView.adapter = ReminderAdapter(reminders, this)
         adapter = fragBinding.recyclerView.adapter as ReminderAdapter
