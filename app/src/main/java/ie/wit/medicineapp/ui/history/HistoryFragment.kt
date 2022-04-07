@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -60,43 +61,8 @@ class HistoryFragment : Fragment() {
         }
         })
         setSwipeRefresh()
-        fragBinding.calendarView.setOnDateChangeListener { _, year, month, day ->
-            historyViewModel.load(loggedInViewModel.liveFirebaseUser.value!!.uid,day, month+1, year)
-            calendar.set(year,month,day)
-        }
-        val swipeDeleteHandler = object : SwipeToDeleteCallback(requireContext()) {
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context!!)
-                val confirmBool = sharedPreferences.getBoolean("confirm_delete", true)
-                if (confirmBool) {
-                    val alertDialog = AlertDialog.Builder(context)
-                    alertDialog.setTitle("Delete?")
-                    alertDialog.setMessage("Are you sure you want to delete this Confirmation from your history?")
-                    alertDialog.setNegativeButton("No") { _, _ ->
-                        historyViewModel.load(loggedInViewModel.liveFirebaseUser.value!!.uid,
-                            calendar.get(Calendar.DAY_OF_MONTH),calendar.get(Calendar.MONTH)+1,
-                            calendar.get(Calendar.YEAR))
-                    }
-                    alertDialog.setPositiveButton("Yes") { _, _ ->
-                        adapter.removeAt(viewHolder.adapterPosition)
-                        historyViewModel.deleteConfirmation(viewHolder.itemView.tag as ConfirmationModel)
-                        hideLoader(loader)
-                    }
-                    alertDialog.setOnDismissListener {
-                        historyViewModel.load(loggedInViewModel.liveFirebaseUser.value!!.uid,
-                            calendar.get(Calendar.DAY_OF_MONTH),calendar.get(Calendar.MONTH)+1,
-                            calendar.get(Calendar.YEAR))}
-                    alertDialog.show()
-                }
-                else{
-                    adapter.removeAt(viewHolder.adapterPosition)
-                    historyViewModel.deleteConfirmation(viewHolder.itemView.tag as ConfirmationModel)
-                    hideLoader(loader)
-                }
-            }
-        }
-        val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
-        itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerView)
+        setButtonListener(fragBinding)
+        swipeToDeleteCallback()
         return root
     }
 
@@ -105,8 +71,10 @@ class HistoryFragment : Fragment() {
         adapter = fragBinding.recyclerView.adapter as HistoryAdapter
         if (historyList.isEmpty()) {
             fragBinding.recyclerView.visibility = View.GONE
+            fragBinding.historyNotFound.visibility = View.VISIBLE
         } else {
             fragBinding.recyclerView.visibility = View.VISIBLE
+            fragBinding.historyNotFound.visibility = View.GONE
         }
     }
 
@@ -141,6 +109,53 @@ class HistoryFragment : Fragment() {
             alertDialog.show()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun setButtonListener(layout: FragmentHistoryBinding){
+        layout.btnAddConfirmation.setOnClickListener {
+            val action = HistoryFragmentDirections.actionHistoryFragmentToAddConfirmationFragment()
+            findNavController().navigate(action)
+        }
+        layout.calendarView.setOnDateChangeListener { _, year, month, day ->
+            historyViewModel.load(loggedInViewModel.liveFirebaseUser.value!!.uid,day, month+1, year)
+            calendar.set(year,month,day)
+        }
+    }
+
+    private fun swipeToDeleteCallback(){
+        val swipeDeleteHandler = object : SwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context!!)
+                val confirmBool = sharedPreferences.getBoolean("confirm_delete", true)
+                if (confirmBool) {
+                    val alertDialog = AlertDialog.Builder(context)
+                    alertDialog.setTitle("Delete?")
+                    alertDialog.setMessage("Are you sure you want to delete this Confirmation from your history?")
+                    alertDialog.setNegativeButton("No") { _, _ ->
+                        historyViewModel.load(loggedInViewModel.liveFirebaseUser.value!!.uid,
+                            calendar.get(Calendar.DAY_OF_MONTH),calendar.get(Calendar.MONTH)+1,
+                            calendar.get(Calendar.YEAR))
+                    }
+                    alertDialog.setPositiveButton("Yes") { _, _ ->
+                        adapter.removeAt(viewHolder.adapterPosition)
+                        historyViewModel.deleteConfirmation(viewHolder.itemView.tag as ConfirmationModel)
+                        hideLoader(loader)
+                    }
+                    alertDialog.setOnDismissListener {
+                        historyViewModel.load(loggedInViewModel.liveFirebaseUser.value!!.uid,
+                            calendar.get(Calendar.DAY_OF_MONTH),calendar.get(Calendar.MONTH)+1,
+                            calendar.get(Calendar.YEAR))}
+                    alertDialog.show()
+                }
+                else{
+                    adapter.removeAt(viewHolder.adapterPosition)
+                    historyViewModel.deleteConfirmation(viewHolder.itemView.tag as ConfirmationModel)
+                    hideLoader(loader)
+                }
+            }
+        }
+        val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
+        itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerView)
     }
 
     override fun onResume() {

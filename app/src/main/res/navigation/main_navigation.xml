@@ -245,7 +245,11 @@
         android:id="@+id/historyFragment"
         android:name="ie.wit.medicineapp.ui.history.HistoryFragment"
         android:label="Medication History"
-        tools:layout="@layout/fragment_history" />
+        tools:layout="@layout/fragment_history" >
+        <action
+            android:id="@+id/action_historyFragment_to_addConfirmationFragment"
+            app:destination="@id/addConfirmationFragment" />
+    </fragment>
     <fragment
         android:id="@+id/dashboardFragment"
         android:name="ie.wit.medicineapp.ui.dashboard.DashboardFragment"
@@ -261,4 +265,9 @@
             android:id="@+id/action_dashboardFragment_to_schedulerFragment"
             app:destination="@id/schedulerFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/addConfirmationFragment"
+        android:name="ie.wit.medicineapp.ui.addConfirmation.AddConfirmationFragment"
+        android:label="fragment_add_confirmation"
+        tools:layout="@layout/fragment_add_confirmation" />
 </navigation>

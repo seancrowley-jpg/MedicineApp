@@ -38,6 +38,7 @@
     <string name="empty_groups">No Groups found. Add some with the button below</string>
     <string name="empty_medication">No Medication Found For this Group. Add some with the button below</string>
     <string name="empty_reminders">No Reminders found</string>
+    <string name="empty_history">No Confirmations for selected day</string>
 
 
     <string name="medicine_header">Enter the info of your Medication</string>
