@@ -197,13 +197,14 @@ class AddConfirmationFragment : Fragment() {
 
     private fun getTime(hour: Int, minute: Int): Long {
         val calendar = Calendar.getInstance().apply {
+            set(Calendar.DAY_OF_YEAR, args.day)
+            set(Calendar.YEAR, args.year)
             set(Calendar.MINUTE, minute)
             set(Calendar.HOUR_OF_DAY, hour)
             set(Calendar.SECOND,0)
         }
-        if(calendar.timeInMillis < System.currentTimeMillis()) {
-            calendar.add(Calendar.DAY_OF_YEAR, 1);
-        }
+        calendar.add(Calendar.MONTH, args.month - 1)
+        Timber.i("Day: ${calendar.get(Calendar.DAY_OF_YEAR)}, Month: ${calendar.get(Calendar.MONTH)}, Year: ${calendar.get(Calendar.YEAR)}")
         return calendar.timeInMillis
     }
 
