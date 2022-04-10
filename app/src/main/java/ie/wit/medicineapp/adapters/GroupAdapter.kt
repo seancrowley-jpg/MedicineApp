@@ -14,7 +14,7 @@ interface GroupListener{
     fun onEditGroupClick(group: GroupModel)
 }
 
-class GroupAdapter constructor(private var groups: ArrayList<GroupModel>, private val listener: GroupListener, private val reminder: Boolean) :
+class GroupAdapter constructor(private var groups: ArrayList<GroupModel>, private val listener: GroupListener, private val reminder: Boolean, private val confirmation: Boolean) :
     RecyclerView.Adapter<GroupAdapter.MainHolder>(), Filterable{
 
     private val groupsFiltered = groups
@@ -25,7 +25,7 @@ class GroupAdapter constructor(private var groups: ArrayList<GroupModel>, privat
         val binding = CardGroupBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
 
-        return MainHolder(binding, reminder)
+        return MainHolder(binding, reminder, confirmation)
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
@@ -69,9 +69,10 @@ class GroupAdapter constructor(private var groups: ArrayList<GroupModel>, privat
         }
     }
 
-    class MainHolder(private val binding : CardGroupBinding, private val reminder: Boolean) :
+    class MainHolder(private val binding : CardGroupBinding, private val reminder: Boolean, private val confirmation: Boolean) :
         RecyclerView.ViewHolder(binding.root) {
         val reminderRow = reminder
+        val confirmationRow = confirmation
         fun bind(group: GroupModel, listener: GroupListener) {
             binding.group = group
             binding.root.tag = group

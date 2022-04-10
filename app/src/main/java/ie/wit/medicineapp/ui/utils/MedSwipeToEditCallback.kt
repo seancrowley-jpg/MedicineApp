@@ -31,6 +31,7 @@ abstract class MedSwipeToEditCallback(context: Context) : ItemTouchHelper.Simple
          */
         //if((viewHolder as GroupAdapter.MainHolder).reminderRow) return 0
         if((viewHolder as MedicineAdapter.MainHolder).reminderRow) return 0
+        if(viewHolder.confirmationRow) return 0
         return super.getMovementFlags(recyclerView, viewHolder)
     }
 

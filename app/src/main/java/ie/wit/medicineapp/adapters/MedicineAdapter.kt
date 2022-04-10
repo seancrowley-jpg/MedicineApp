@@ -16,7 +16,7 @@ interface MedicineListener{
     fun onEditMedicineClick(medicine: MedicineModel)
 }
 
-class MedicineAdapter constructor(private var medicine: ArrayList<MedicineModel>, private val listener: MedicineListener, private val reminder: Boolean) :
+class MedicineAdapter constructor(private var medicine: ArrayList<MedicineModel>, private val listener: MedicineListener, private val reminder: Boolean, private val confirmation: Boolean) :
     RecyclerView.Adapter<MedicineAdapter.MainHolder>(), Filterable{
 
     private val medsFiltered = medicine
@@ -27,7 +27,7 @@ class MedicineAdapter constructor(private var medicine: ArrayList<MedicineModel>
         val binding = CardMedicineBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
 
-        return MainHolder(binding, reminder)
+        return MainHolder(binding, reminder, confirmation)
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
@@ -71,9 +71,10 @@ class MedicineAdapter constructor(private var medicine: ArrayList<MedicineModel>
         }
     }
 
-    class MainHolder(private val binding : CardMedicineBinding,private val reminder: Boolean) :
+    class MainHolder(private val binding : CardMedicineBinding,private val reminder: Boolean, private val confirmation: Boolean) :
         RecyclerView.ViewHolder(binding.root) {
         val reminderRow = reminder
+        val confirmationRow = confirmation
         fun bind(medicine: MedicineModel, listener: MedicineListener) {
             binding.medicine = medicine
             binding.root.tag = medicine

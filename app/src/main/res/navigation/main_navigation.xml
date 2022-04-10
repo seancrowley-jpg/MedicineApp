@@ -58,6 +58,25 @@
             android:name="edit"
             app:argType="boolean"
             android:defaultValue="false" />
+        <argument
+            android:name="confirmation"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="confirmationId"
+            app:argType="string"
+            android:defaultValue="0" />
+        <argument
+            android:name="day"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument android:name="month"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="year"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 
     <fragment
@@ -127,6 +146,29 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_medicineListFragment_to_addConfirmationFragment"
+            app:destination="@id/addConfirmationFragment" />
+        <argument
+            android:name="confirmation"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="confiramtionId"
+            app:argType="string"
+            android:defaultValue="0" />
+        <argument
+            android:name="day"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="month"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="year"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/medicineDetails"
@@ -268,6 +310,41 @@
     <fragment
         android:id="@+id/addConfirmationFragment"
         android:name="ie.wit.medicineapp.ui.addConfirmation.AddConfirmationFragment"
-        android:label="fragment_add_confirmation"
-        tools:layout="@layout/fragment_add_confirmation" />
+        android:label="Add Confirmation"
+        tools:layout="@layout/fragment_add_confirmation">
+        <action
+            android:id="@+id/action_addConfirmationFragment_to_groupListFragment"
+            app:destination="@id/groupListFragment" />
+        <argument
+            android:name="medicineId"
+            android:defaultValue="0"
+            app:argType="string" />
+        <argument
+            android:name="groupId"
+            android:defaultValue="0"
+            app:argType="string" />
+        <argument
+            android:name="confirmationId"
+            android:defaultValue="0"
+            app:argType="string" />
+        <argument
+            android:name="edit"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_addConfirmationFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
+        <argument
+            android:name="day"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <argument
+            android:name="month"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <argument
+            android:name="year"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
 </navigation>

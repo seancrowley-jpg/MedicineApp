@@ -283,13 +283,17 @@ object FirebaseDBManager : MedicineAppStore {
                         path.child("quantity").setValue(newQuantity)
                     }
                     if (newQuantity <= reminderLimit.toInt()) {
-                        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+                        val sharedPreferences =
+                            PreferenceManager.getDefaultSharedPreferences(context)
                         val phoneNum = sharedPreferences.getString("pharmacy", "")
-                        val callIntent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNum, null))
-                        val callPendingIntent = PendingIntent.getActivity(context, 5,
+                        val callIntent =
+                            Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNum, null))
+                        val callPendingIntent = PendingIntent.getActivity(
+                            context, 5,
                             callIntent,
-                            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
-                        val bundle  = Bundle()
+                            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                        )
+                        val bundle = Bundle()
                         bundle.putString("groupId", groupId)
                         bundle.putString("medicineId", medicineId)
                         bundle.putString("userId", userid)
@@ -310,8 +314,10 @@ object FirebaseDBManager : MedicineAppStore {
                             )
                             .setSmallIcon(R.drawable.ic_launcher_foreground)
                             .setChannelId("highChannelID")
-                            .addAction(R.drawable.ic_launcher_foreground,"Call Pharmacy",
-                                callPendingIntent)
+                            .addAction(
+                                R.drawable.ic_launcher_foreground, "Call Pharmacy",
+                                callPendingIntent
+                            )
                             .setAutoCancel(true)
                             .setContentIntent(tapIntent)
                             .build()
@@ -399,7 +405,7 @@ object FirebaseDBManager : MedicineAppStore {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val children = snapshot.children
                     val localList = ArrayList<Int>()
-                    children.forEach{
+                    children.forEach {
                         localList.add(it.childrenCount.toInt())
                     }
                     medCount.value = localList.sum()
@@ -434,10 +440,35 @@ object FirebaseDBManager : MedicineAppStore {
         database.updateChildren(childDelete)
     }
 
-    override fun deleteAllData(userid: String){
+    override fun deleteAllData(userid: String) {
         deleteAllGroups(userid)
         deleteAllReminders(userid)
         deleteAllConfirmationHistory(userid)
+    }
+
+    override fun findConfirmationById(
+        userid: String,
+        confirmationId: String,
+        confirmation: MutableLiveData<ConfirmationModel>
+    ) {
+        database.child("user-confirmations").child(userid)
+            .child(confirmationId).get().addOnSuccessListener {
+                confirmation.value = it.getValue(ConfirmationModel::class.java)
+                Timber.i("firebase Got value ${it.value}")
+            }.addOnFailureListener {
+                Timber.e("firebase Error getting data $it")
+            }
+    }
+
+    override fun updateConfirmation(
+        userid: String,
+        confirmationId: String,
+        confirmation: ConfirmationModel
+    ) {
+        val confirmationValues = confirmation.toMap()
+        val childUpdate: MutableMap<String, Any?> = HashMap()
+        childUpdate["user-confirmations/$userid/$confirmationId"] = confirmationValues
+        database.updateChildren(childUpdate)
     }
 }
 
