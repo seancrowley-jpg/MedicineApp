@@ -65,7 +65,7 @@ class GroupListFragment : Fragment(), GroupListener {
                 }
         })
         setSwipeRefresh()
-        if(args.reminder) {
+        if(args.reminder || args.confirmation) {
             fragBinding.fab.visibility = View.GONE
         }
 
@@ -162,7 +162,7 @@ class GroupListFragment : Fragment(), GroupListener {
     }
 
     private fun render(groupList: ArrayList<GroupModel>) {
-        fragBinding.recyclerView.adapter = GroupAdapter(groupList, this, args.reminder)
+        fragBinding.recyclerView.adapter = GroupAdapter(groupList, this, args.reminder, args.confirmation)
         adapter = fragBinding.recyclerView.adapter as GroupAdapter
         if (groupList.isEmpty()) {
             fragBinding.recyclerView.visibility = View.GONE
@@ -204,12 +204,29 @@ class GroupListFragment : Fragment(), GroupListener {
     }
 
     override fun onGroupClick(group: GroupModel) {
-        if (args.reminder){
-            val action = GroupListFragmentDirections.actionGroupListFragmentToMedicineListFragment(group.uid!!, reminder = true, reminderId = args.reminderId, edit = args.edit)
+        if (args.reminder) {
+            val action = GroupListFragmentDirections.actionGroupListFragmentToMedicineListFragment(
+                group.uid!!,
+                reminder = true,
+                reminderId = args.reminderId,
+                edit = args.edit
+            )
             findNavController().navigate(action)
         }
-        else {
-            val action = GroupListFragmentDirections.actionGroupListFragmentToMedicineListFragment(group.uid!!)
+        if (args.confirmation) {
+            val action = GroupListFragmentDirections.actionGroupListFragmentToMedicineListFragment(
+                group.uid!!,
+                confirmation = true,
+                confiramtionId = args.confirmationId,
+                edit = args.edit,
+                day = args.day,
+                month = args.month,
+                year = args.year
+            )
+            findNavController().navigate(action)
+        } else {
+            val action =
+                GroupListFragmentDirections.actionGroupListFragmentToMedicineListFragment(group.uid!!)
             findNavController().navigate(action)
         }
     }

@@ -66,7 +66,7 @@ class MedicineListFragment : Fragment(), MedicineListener {
         }
         })
         setSwipeRefresh()
-        if(args.reminder) {
+        if(args.reminder || args.confirmation) {
             fragBinding.fab.visibility = View.GONE
         }
 
@@ -213,7 +213,7 @@ class MedicineListFragment : Fragment(), MedicineListener {
     }
 
     private fun render(medicineList: ArrayList<MedicineModel>) {
-        fragBinding.recyclerView.adapter = MedicineAdapter(medicineList, this, args.reminder)
+        fragBinding.recyclerView.adapter = MedicineAdapter(medicineList, this, args.reminder, args.confirmation)
         adapter = fragBinding.recyclerView.adapter as MedicineAdapter
         if (medicineList.isEmpty()) {
             fragBinding.recyclerView.visibility = View.GONE
@@ -242,6 +242,14 @@ class MedicineListFragment : Fragment(), MedicineListener {
             val actionReminder = MedicineListFragmentDirections.actionMedicineListFragmentToReminderFragment(
                 medicineId = medicine.uid!!, groupId = args.groupId,
                 reminderId = args.reminderId, edit = args.edit)
+            findNavController().navigate(actionReminder)
+        }
+        if (args.confirmation) {
+            val actionReminder = MedicineListFragmentDirections.actionMedicineListFragmentToAddConfirmationFragment(
+                medicineId = medicine.uid!!, groupId = args.groupId,
+                 confirmationId = args.confiramtionId, edit = args.edit, day = args.day,
+                month = args.month,
+                year = args.year)
             findNavController().navigate(actionReminder)
         }
         else {

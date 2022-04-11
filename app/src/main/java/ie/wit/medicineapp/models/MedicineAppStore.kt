@@ -43,4 +43,6 @@ interface MedicineAppStore {
     fun getStats(userid: String, groupCount: MutableLiveData<Int>, medCount: MutableLiveData<Int>,
                  historyCount: MutableLiveData<Int>, reminderCount: MutableLiveData<Int>)
     fun deleteAllData(userid: String)
+    fun findConfirmationById(userid: String, confirmationId: String, confirmation: MutableLiveData<ConfirmationModel>)
+    fun updateConfirmation(userid: String, confirmationId: String, confirmation: ConfirmationModel)
 }

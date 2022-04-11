@@ -31,7 +31,7 @@ import ie.wit.medicineapp.ui.group.GroupViewModel
 import ie.wit.medicineapp.ui.medicineDetails.MedicineDetailsViewModel
 import ie.wit.medicineapp.ui.reminder.ReminderViewModel
 import ie.wit.medicineapp.ui.utils.NotificationService
-import ie.wit.medicineapp.ui.utils.SwipeToDeleteCallback
+import ie.wit.medicineapp.ui.utils.HistorySwipeToDeleteCallback
 import java.util.*
 
 class SchedulerFragment : Fragment(), ReminderListener {
@@ -76,7 +76,7 @@ class SchedulerFragment : Fragment(), ReminderListener {
             findNavController().navigate(action)
         }
 
-        val swipeDeleteHandler = object : SwipeToDeleteCallback(requireContext()) {
+        val swipeDeleteHandler = object : HistorySwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context!!)
                 val confirmBool = sharedPreferences.getBoolean("confirm_delete", true)
