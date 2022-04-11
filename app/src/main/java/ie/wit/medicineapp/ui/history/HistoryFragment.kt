@@ -19,9 +19,7 @@ import ie.wit.medicineapp.helpers.createLoader
 import ie.wit.medicineapp.helpers.hideLoader
 import ie.wit.medicineapp.helpers.showLoader
 import ie.wit.medicineapp.models.ConfirmationModel
-import ie.wit.medicineapp.models.GroupModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
-import ie.wit.medicineapp.ui.utils.GroupSwipeToEditCallback
 import ie.wit.medicineapp.ui.utils.HistorySwipeToDeleteCallback
 import ie.wit.medicineapp.ui.utils.HistorySwipeToEditCallback
 import java.util.*

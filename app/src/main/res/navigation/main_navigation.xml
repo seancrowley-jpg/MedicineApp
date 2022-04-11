@@ -48,35 +48,36 @@
             app:popExitAnim="@android:anim/slide_out_right" />
         <argument
             android:name="reminder"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
         <argument
             android:name="reminderId"
-            app:argType="string"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="string" />
         <argument
             android:name="edit"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
         <argument
             android:name="confirmation"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
         <argument
             android:name="confirmationId"
-            app:argType="string"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="string" />
         <argument
             android:name="day"
-            app:argType="integer"
-            android:defaultValue="0" />
-        <argument android:name="month"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="integer" />
+        <argument
+            android:name="month"
+            android:defaultValue="0"
+            app:argType="integer" />
         <argument
             android:name="year"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="integer" />
     </fragment>
 
     <fragment
@@ -129,16 +130,16 @@
             app:popExitAnim="@android:anim/slide_out_right" />
         <argument
             android:name="reminder"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
         <argument
             android:name="reminderId"
-            app:argType="string"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="string" />
         <argument
             android:name="edit"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
         <action
             android:id="@+id/action_medicineListFragment_to_groupListFragment"
             app:destination="@id/groupListFragment"
@@ -151,24 +152,24 @@
             app:destination="@id/addConfirmationFragment" />
         <argument
             android:name="confirmation"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
         <argument
             android:name="confiramtionId"
-            app:argType="string"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="string" />
         <argument
             android:name="day"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="integer" />
         <argument
             android:name="month"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="integer" />
         <argument
             android:name="year"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/medicineDetails"
@@ -184,8 +185,8 @@
             app:argType="string" />
         <argument
             android:name="userId"
-            app:argType="string"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/schedulerFragment"
@@ -214,23 +215,23 @@
             app:popExitAnim="@android:anim/fade_out" />
         <argument
             android:name="medicineId"
-            app:argType="string"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="string" />
         <argument
             android:name="groupId"
-            app:argType="string"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="string" />
         <action
             android:id="@+id/action_reminderFragment_to_schedulerFragment"
             app:destination="@id/schedulerFragment" />
         <argument
             android:name="edit"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
         <argument
             android:name="reminderId"
-            app:argType="string"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/confirmationFragment"
@@ -281,13 +282,12 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="ie.wit.medicineapp.ui.settings.SettingsFragment"
-        android:label="@string/settings"
-        />
+        android:label="@string/settings" />
     <fragment
         android:id="@+id/historyFragment"
         android:name="ie.wit.medicineapp.ui.history.HistoryFragment"
         android:label="Medication History"
-        tools:layout="@layout/fragment_history" >
+        tools:layout="@layout/fragment_history">
         <action
             android:id="@+id/action_historyFragment_to_addConfirmationFragment"
             app:destination="@id/addConfirmationFragment" />

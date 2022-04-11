@@ -112,7 +112,7 @@ class MedicineListFragment : Fragment(), MedicineListener {
 
         val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
         itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerView)
-
+        Timber.i("ARGS:  $args")
         return root
     }
 
@@ -238,26 +238,23 @@ class MedicineListFragment : Fragment(), MedicineListener {
     }
 
     override fun onMedicineClick(medicine: MedicineModel) {
+        var action = MedicineListFragmentDirections.actionMedicineListFragmentToMedicineDetails(
+            medicineId = medicine.uid!!, groupId = args.groupId
+        )
         if (args.reminder) {
-            val actionReminder = MedicineListFragmentDirections.actionMedicineListFragmentToReminderFragment(
+            action = MedicineListFragmentDirections.actionMedicineListFragmentToReminderFragment(
                 medicineId = medicine.uid!!, groupId = args.groupId,
                 reminderId = args.reminderId, edit = args.edit)
-            findNavController().navigate(actionReminder)
+
         }
         if (args.confirmation) {
-            val actionReminder = MedicineListFragmentDirections.actionMedicineListFragmentToAddConfirmationFragment(
+            action = MedicineListFragmentDirections.actionMedicineListFragmentToAddConfirmationFragment(
                 medicineId = medicine.uid!!, groupId = args.groupId,
                  confirmationId = args.confiramtionId, edit = args.edit, day = args.day,
                 month = args.month,
                 year = args.year)
-            findNavController().navigate(actionReminder)
         }
-        else {
-            val action = MedicineListFragmentDirections.actionMedicineListFragmentToMedicineDetails(
-                medicineId = medicine.uid!!, groupId = args.groupId
-            )
-            findNavController().navigate(action)
-        }
+        findNavController().navigate(action)
     }
 
     override fun onDeleteMedicineClick(medicine: MedicineModel) {

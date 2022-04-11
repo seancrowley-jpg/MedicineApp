@@ -10,6 +10,7 @@ import android.widget.TimePicker
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
@@ -84,6 +85,7 @@ class ReminderFragment : Fragment() {
                 loggedInViewModel.liveFirebaseUser.value!!.uid,
                 args.reminderId
             )
+            (requireActivity() as AppCompatActivity).supportActionBar?.title = "Edit Reminder"
         }
         setButtonListener(fragBinding)
         return root
@@ -179,6 +181,12 @@ class ReminderFragment : Fragment() {
                     findNavController().navigate(action)
                     Toast.makeText(context, "Reminder Created", Toast.LENGTH_SHORT).show()
                 }
+            }
+            layout.btnAddMed.setOnClickListener() {
+                val action = ReminderFragmentDirections.actionReminderFragmentToGroupListFragment(
+                    reminder = true
+                )
+                findNavController().navigate(action)
             }
         }
         layout.btnRepeat.setOnClickListener() {
@@ -338,6 +346,7 @@ class ReminderFragment : Fragment() {
 
     private fun validateForm(): Boolean {
         var valid = true
+        if(fragBinding.quantityInput.text.toString() == "")  fragBinding.quantityInput.setText("0")
         if (fragBinding.quantityInput.text.toString().toInt() <=0 ){
             fragBinding.quantityInput.requestFocus()
             fragBinding.quantityInput.error = "Please enter a quantity greater than 0"

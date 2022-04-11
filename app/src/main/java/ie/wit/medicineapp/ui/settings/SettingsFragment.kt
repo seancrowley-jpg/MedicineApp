@@ -41,7 +41,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
         findPreference<EditTextPreference>(getString(R.string.pharmacy_preference_key))
     }
     private val deleteAccountSetting by lazy {
-        findPreference<Preference>("delete_account_setting")
+        findPreference<Preference>(getString(R.string.delete_account_preference_key))
+    }
+    private val repositorySetting by lazy {
+        findPreference<Preference>(getString(R.string.repository_preference_key))
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -51,6 +54,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         openAppNotificationSettings()
         setPharmacyNumber()
         deleteAccount()
+        openRepository()
     }
 
     //snooze option setup
@@ -135,6 +139,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
                         Timber.i("Confirm")}
                     .setNegativeButton("Cancel") { _, _ -> }
                     .show()
+                true
+            }
+    }
+
+    private fun openRepository() {
+        repositorySetting!!.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener { _ ->
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.repository_link)))
+                startActivity(intent)
                 true
             }
     }

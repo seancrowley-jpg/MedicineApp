@@ -61,14 +61,25 @@
         <CheckBoxPreference
             android:defaultValue="ture"
             android:icon="@drawable/ic_delete_icon"
-            android:key="confirm_delete"
+            android:key="@string/confirm_delete_preference_key"
             android:title="Confirm before deleting" />
 
         <CheckBoxPreference
             android:defaultValue="true"
             android:icon="@drawable/ic_exit_app"
-            android:key="confirm_exit"
+            android:key="@string/confirm_exit_preference_key"
             android:title="Confirm before quiting app" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="about_category"
+        app:title="About">
+
+        <Preference
+            android:key="@string/repository_preference_key"
+            android:title="View app repository"
+            android:summary="@string/repository_desc"
+            app:icon="@drawable/ic_baseline_info" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -76,7 +87,7 @@
         app:title="Account">
 
         <Preference
-            android:key="delete_account_setting"
+            android:key="@string/delete_account_preference_key"
             android:title="Delete Account"
             app:icon="@drawable/ic_baseline_delete_forever"/>
     </PreferenceCategory>

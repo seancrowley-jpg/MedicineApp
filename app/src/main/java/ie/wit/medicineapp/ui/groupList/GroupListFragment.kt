@@ -29,6 +29,7 @@ import ie.wit.medicineapp.models.GroupModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
 import ie.wit.medicineapp.ui.utils.GroupSwipeToDeleteCallback
 import ie.wit.medicineapp.ui.utils.GroupSwipeToEditCallback
+import timber.log.Timber
 
 class GroupListFragment : Fragment(), GroupListener {
 
@@ -113,7 +114,7 @@ class GroupListFragment : Fragment(), GroupListener {
 
         val itemTouchEditHelper = ItemTouchHelper(swipeEditHandler)
         itemTouchEditHelper.attachToRecyclerView(fragBinding.recyclerView)
-
+        Timber.i("ARGS:  $args")
         return root
     }
 
@@ -204,17 +205,17 @@ class GroupListFragment : Fragment(), GroupListener {
     }
 
     override fun onGroupClick(group: GroupModel) {
+        var action = GroupListFragmentDirections.actionGroupListFragmentToMedicineListFragment(group.uid!!)
         if (args.reminder) {
-            val action = GroupListFragmentDirections.actionGroupListFragmentToMedicineListFragment(
+            action = GroupListFragmentDirections.actionGroupListFragmentToMedicineListFragment(
                 group.uid!!,
                 reminder = true,
                 reminderId = args.reminderId,
                 edit = args.edit
             )
-            findNavController().navigate(action)
         }
         if (args.confirmation) {
-            val action = GroupListFragmentDirections.actionGroupListFragmentToMedicineListFragment(
+            action = GroupListFragmentDirections.actionGroupListFragmentToMedicineListFragment(
                 group.uid!!,
                 confirmation = true,
                 confiramtionId = args.confirmationId,
@@ -223,12 +224,8 @@ class GroupListFragment : Fragment(), GroupListener {
                 month = args.month,
                 year = args.year
             )
-            findNavController().navigate(action)
-        } else {
-            val action =
-                GroupListFragmentDirections.actionGroupListFragmentToMedicineListFragment(group.uid!!)
-            findNavController().navigate(action)
         }
+        findNavController().navigate(action)
     }
 
     override fun onDeleteGroupClick(group: GroupModel) {

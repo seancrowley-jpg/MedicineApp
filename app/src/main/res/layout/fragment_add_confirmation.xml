@@ -70,7 +70,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="28dp"
                 android:layout_marginTop="380dp"
-                android:text="Choose Med status"/>
+                android:text="@string/add_confirm_status_header"/>
 
             <RadioGroup
                 android:id="@+id/statusGroup"
@@ -89,14 +89,14 @@
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:text="Taken" />
+                    android:text="@string/add_confirm_radio_taken" />
 
                 <RadioButton
                     android:id="@+id/skippedRadio"
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
                     android:checked="false"
-                    android:text="Skipped" />
+                    android:text="@string/add_confirm_radio_skipped" />
             </RadioGroup>
 
 
@@ -117,14 +117,14 @@
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:text="Yes" />
+                    android:text="@string/add_confirm_radio_yes" />
 
                 <RadioButton
                     android:id="@+id/noRadio"
                     android:layout_width="170dp"
                     android:layout_height="wrap_content"
                     android:checked="false"
-                    android:text="No" />
+                    android:text="@string/add_confirm_radio_no" />
             </RadioGroup>
 
             <TextView
@@ -135,7 +135,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="28dp"
                 android:layout_marginTop="470dp"
-                android:text="Update this medicines quantity">
+                android:text="@string/add_confirm_update_header">
 
             </TextView>
 
@@ -148,7 +148,7 @@
                 android:layout_marginStart="28dp"
                 android:layout_marginTop="41dp"
                 android:layout_marginEnd="20dp"
-                android:text="Quantity"
+                android:text="@string/add_confirm_quantity_header"
                 android:textSize="25sp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -160,7 +160,7 @@
                 android:layout_marginStart="225dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="13dp"
-                android:hint="Quantity"
+                android:hint="@string/add_confirm_quantity_header"
                 app:icon="@android:drawable/ic_input_add"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:iconGravity="textStart">
@@ -180,7 +180,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginStart="145dp"
                 android:layout_marginTop="15dp"
-                android:text="Add Confirmation"/>
+                android:text="@string/btn_add_confirmation"/>
         </RelativeLayout>
     </ScrollView>
 </layout>

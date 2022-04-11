@@ -55,5 +55,6 @@
         android:layout_margin="@dimen/fab_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/med_list_floating_action_btn_desc"
         app:srcCompat="@android:drawable/ic_input_add" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

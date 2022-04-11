@@ -18,6 +18,13 @@
     <string name="menu_history">History</string>
     <string name="menu_access_control">Access Control</string>
     <string name="menu_dashboard">Dashboard</string>
+    <string name="menu_fragment_search">Search</string>
+    <string name="menu_fragment_delete_all">Delete All</string>
+    <string name="menu_fragment_delete">Delete</string>
+    <string name="menu_history_fragment_delete_all">Delete History</string>
+    <string name="menu_medicine_fragment_print">Print</string>
+
+
 
     <string name="group_header">Create a Group</string>
     <string name="hint_group">Group Name</string>
@@ -25,6 +32,7 @@
     <string name="btn_edit_group">Edit Group</string>
     <string name="hint_group_priority">Pick a Priority Level</string>
     <string name="group_error">Error Creating Group</string>
+    <string name="group_floating_action_btn_desc">Button for adding groups</string>
 
     <string name="auth_failed">Error Authenticating with Firebase</string>
     <string name="sign_out">Sign Out</string>
@@ -54,6 +62,7 @@
     <string name="enter_dosage">Enter Dosage:</string>
     <string name="btn_add_medication">Add Med</string>
     <string name="btn_edit_medication">Edit Med</string>
+    <string name="med_list_floating_action_btn_desc">Button for adding medicine to group</string>
     <string name="medicine_details_header">Medicine Info</string>
     <string name="medicine_details_quantity">Quantity:</string>
     <string name="medicine_details_dosage">Dosage:</string>
@@ -65,6 +74,10 @@
     <string name="reminder_header">Reminders:</string>
     <string name="btn_edit_reminder">Edit Reminder</string>
     <string name="btn_change_medication">Change Medicine</string>
+    <string name="reminder_repeat_header">Repeat</string>
+    <string name="reminder_quantity_header">Quantity</string>
+    <string name="btn_add_reminder">Add reminder</string>
+    <string name="scheduler_floating_action_btn_desc">Button for adding reminders</string>
 
     <string-array name="days_of_week">
         <item>Monday</item>
@@ -87,6 +100,12 @@
     <string name="theme_preferences_key">theme</string>
     <string name="notif_preferences_key">notif_settings</string>
     <string name="pharmacy_preference_key">pharmacy</string>
+    <string name="confirm_delete_preference_key">confirm_delete</string>
+    <string name="confirm_exit_preference_key">confirm_exit</string>
+    <string name="delete_account_preference_key">delete_account_setting</string>
+    <string name="repository_preference_key">about_setting</string>
+    <string name="repository_desc">View apps GitHub repository</string>
+    <string name="repository_link">https://github.com/seancrowley-jpg/MedicineApp</string>
     <string name="dark_theme_description">Dark mode</string>
     <string name="light_theme_description">Light mode</string>
     <string name="system_theme_description">Following systems theme</string>
@@ -150,5 +169,23 @@
         <item>ml(s)</item>
         <item>puff(s)</item>
     </string-array>
+
+    <string name="splash_screen_content_desc">Application logo</string>
+
+    <string name="add_confirm_status_header">Choose status</string>
+    <string name="add_confirm_radio_taken">Taken</string>
+    <string name="add_confirm_radio_skipped">Skipped</string>
+    <string name="add_confirm_radio_yes">Yes</string>
+    <string name="add_confirm_radio_no">No</string>
+    <string name="add_confirm_update_header">Update this medicines quantity?</string>
+    <string name="add_confirm_quantity_header">Quantity</string>
+    <string name="btn_add_confirmation">Add Confirmation</string>
+    <string name="btn_edit_confirmation">Edit Confirmation</string>
+
+
+
+
+
+
 
 </resources>

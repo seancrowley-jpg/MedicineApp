@@ -3,6 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/delete_all_confirmation"
-        android:title="Delete History"
+        android:title="@string/menu_history_fragment_delete_all"
         app:showAsAction="collapseActionView" />
 </menu>

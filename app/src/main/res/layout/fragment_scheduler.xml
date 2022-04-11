@@ -57,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_margin="@dimen/fab_margin"
+                android:contentDescription="@string/scheduler_floating_action_btn_desc"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:srcCompat="@android:drawable/ic_input_add" />
@@ -69,7 +70,6 @@
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/black"
-                app:layout_anchor="@+id/recyclerView"
                 app:layout_anchorGravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

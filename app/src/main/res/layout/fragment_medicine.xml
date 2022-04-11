@@ -85,6 +85,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/medicineQuantity"
+                    android:inputType="numberDecimal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@{`` + medicinevm.observableMedicine.quantity}" />
@@ -183,6 +184,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/medicineReminderLimit"
                     android:layout_width="match_parent"
+                    android:inputType="numberDecimal"
                     android:layout_height="wrap_content"
                     android:text="@{`` + medicinevm.observableMedicine.reminderLimit}" />
 

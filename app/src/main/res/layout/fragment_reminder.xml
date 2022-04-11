@@ -72,7 +72,7 @@
                 android:layout_marginStart="28dp"
                 android:layout_marginTop="41dp"
                 android:layout_marginEnd="20dp"
-                android:text="Repeat"
+                android:text="@string/reminder_repeat_header"
                 android:textSize="25sp" />
 
             <com.google.android.material.button.MaterialButton
@@ -96,7 +96,7 @@
                 android:layout_marginStart="28dp"
                 android:layout_marginTop="41dp"
                 android:layout_marginEnd="20dp"
-                android:text="Quantity"
+                android:text="@string/reminder_quantity_header"
                 android:textSize="25sp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -108,7 +108,7 @@
                 android:layout_marginStart="225dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="13dp"
-                android:hint="Quantity"
+                android:hint="@string/reminder_quantity_header"
                 app:icon="@android:drawable/ic_input_add"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:iconGravity="textStart" >
@@ -117,6 +117,7 @@
                     android:id="@+id/quantity_input"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:inputType="numberDecimal"
                     android:text="@{`` + reminderVM.observableReminder.quantity}"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -128,7 +129,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/repeat"
                 android:layout_marginTop="141dp"
-                android:text="Add Reminder" />
+                android:text="@string/btn_add_reminder" />
         </RelativeLayout>
     </ScrollView>
 </layout>

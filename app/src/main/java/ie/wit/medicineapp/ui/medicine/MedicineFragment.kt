@@ -98,6 +98,8 @@ class MedicineFragment : Fragment() {
 
     private fun validateForm(): Boolean {
         var valid = true
+        if(fragBinding.medicineQuantity.text.toString() == "")  fragBinding.medicineQuantity.setText("0")
+        if(fragBinding.medicineReminderLimit.text.toString() == "")  fragBinding.medicineReminderLimit.setText("0")
         if (fragBinding.medicineName.text!!.isEmpty()){
             fragBinding.medicineName.requestFocus()
             fragBinding.medicineName.error = "Please enter medication name"

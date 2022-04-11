@@ -96,7 +96,7 @@ class AddConfirmationFragment : Fragment() {
             }
         }
         if (args.edit) {
-            layout.btnAddConfirmation.text = "Edit Confirmation"
+            layout.btnAddConfirmation.text = getString(R.string.btn_edit_confirmation)
             layout.btnAddConfirmation.setOnClickListener() {
                 if (validateForm()) {
                     confirmation.uid = args.confirmationId

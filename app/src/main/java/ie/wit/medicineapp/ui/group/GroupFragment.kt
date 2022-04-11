@@ -54,7 +54,7 @@ class GroupFragment : Fragment() {
         }
 
         fragBinding.priorityLevelGroup.setOnCheckedChangeListener { radioGroup, i ->
-            if(fragBinding.priorityLevelGroup.checkedRadioButtonId == R.id.highPriorityRadio)
+            if(radioGroup.checkedRadioButtonId == R.id.highPriorityRadio)
                 fragBinding.priorityHelperText.text = getString(R.string.high_priority_helper_text)
             else
                 fragBinding.priorityHelperText.text = getString(R.string.low_priority_helper_text)
@@ -77,6 +77,12 @@ class GroupFragment : Fragment() {
 
     private fun render() {
         fragBinding.groupvm = groupViewModel
+        if (args.edit) {
+            if (groupViewModel.observableGroup.value!!.priorityLevel == 0)
+                fragBinding.priorityLevelGroup.check(R.id.lowPriority)
+            else
+                fragBinding.priorityLevelGroup.check(R.id.highPriorityRadio)
+        }
     }
 
     private fun setButtonListener(layout: FragmentGroupBinding){
