@@ -24,6 +24,7 @@ class PrintAdapter constructor(private val pathName: String) : PrintDocumentAdap
             val builder = PrintDocumentInfo.Builder("Medicine List Pdf")
             builder.setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT)
                 .setPageCount(PrintDocumentInfo.PAGE_COUNT_UNKNOWN)
+                .setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT)
                 .build()
 
             callback.onLayoutFinished(builder.build(), newAttributes == oldAttributes)

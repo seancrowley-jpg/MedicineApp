@@ -156,6 +156,7 @@ class ReminderFragment : Fragment() {
 
 
     private fun setButtonListener(layout: FragmentReminderBinding) {
+        layout.quantityInput.transformationMethod = null
         if (args.edit) {
             layout.btnSetReminder.text = getString(R.string.btn_edit_reminder)
             layout.btnSetReminder.setOnClickListener() {

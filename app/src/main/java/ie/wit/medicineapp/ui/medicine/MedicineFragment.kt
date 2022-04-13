@@ -51,6 +51,8 @@ class MedicineFragment : Fragment() {
     }
 
     private fun setButtonListener(layout: FragmentMedicineBinding) {
+        layout.medicineQuantity.transformationMethod = null
+        layout.medicineReminderLimit.transformationMethod = null
         val units: Array<String> = resources.getStringArray(R.array.unit)
         if (args.edit) {
             layout.addMedicineButton.text = getString(R.string.btn_edit_medication)

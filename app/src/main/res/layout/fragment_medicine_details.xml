@@ -78,9 +78,8 @@
                 android:layout_marginTop="75dp"
                 android:layout_marginEnd="25dp"
                 android:autoSizeTextType="uniform"
-                android:text="@{medicineVM.observableMedicine.dosage}"
-                android:textSize="20sp"
-                tools:text="200" />
+                android:text='@{medicineVM.observableMedicine.dosage  == "" ? @string/na : medicineVM.observableMedicine.dosage}'
+                />
 
             <TextView
                 android:id="@+id/medicine_details_reminder_limit"
@@ -122,13 +121,15 @@
             <TextView
                 android:id="@+id/medicine_details_usage_dir"
                 android:layout_width="match_parent"
-                android:layout_height="57dp"
+                android:layout_height="100dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="370dp"
                 android:autoSizeTextType="uniform"
                 android:text="@{medicineVM.observableMedicine.usageDir}"
                 android:textSize="11sp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 tools:text="Usage Directions" />
 
             <View

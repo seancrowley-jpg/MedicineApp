@@ -71,6 +71,7 @@ class AddConfirmationFragment : Fragment() {
     }
 
     private fun setButtonListener(layout: FragmentAddConfirmationBinding) {
+        layout.quantityInput.transformationMethod = null
         layout.statusGroup.setOnCheckedChangeListener { radioGroup, _ ->
             if(radioGroup.checkedRadioButtonId == R.id.skippedRadio) {
                 fragBinding.quantity.visibility = View.GONE
