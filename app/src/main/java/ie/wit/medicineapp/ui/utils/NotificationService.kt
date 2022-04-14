@@ -1,6 +1,7 @@
 package ie.wit.medicineapp.ui.utils
 
 import android.app.AlarmManager
+import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
@@ -15,6 +16,10 @@ import ie.wit.medicineapp.firebase.FirebaseDBManager
 import ie.wit.medicineapp.models.ReminderModel
 import ie.wit.medicineapp.ui.home.Home
 import java.util.*
+import android.os.PowerManager
+
+import android.os.Build
+import android.os.PowerManager.WakeLock
 
 
 class NotificationService : BroadcastReceiver() {
@@ -119,9 +124,11 @@ class NotificationService : BroadcastReceiver() {
             val pendingIntent = getIntent(context, reminder,userId)
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             var requestCode = reminder.requestCode
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = reminder.time
             if (reminder.repeatDays!!.size == 7) {
                 alarmManager.setRepeating(
-                    AlarmManager.RTC_WAKEUP, reminder.time,
+                    AlarmManager.RTC_WAKEUP,  calendar.timeInMillis,
                     AlarmManager.INTERVAL_DAY, pendingIntent
                 )
             }
@@ -231,19 +238,34 @@ class NotificationService : BroadcastReceiver() {
             .setContentIntent(tapIntent)
             .addAction(R.drawable.ic_launcher_foreground,"Snooze", snoozePendingIntent)
             .addAction(R.drawable.ic_launcher_foreground,"Confirm",confirmPendingIntent)
-            .setFullScreenIntent(tapIntent, true)
-            .setLights(Color.CYAN, 3000,3000)
 
         if(intent.getStringExtra("channelID") == channelID) {
             notification.addAction(R.drawable.ic_launcher_foreground,"Skip",skipPendingIntent)
         }
         else{
-            notification.setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
+            notification.setFullScreenIntent(tapIntent, true)
         }
 
+        val finalNotification = notification.build()
+
+        if(intent.getStringExtra("channelID") == highChannelId) {
+            finalNotification.flags = Notification.FLAG_INSISTENT
+        }
+
+        //Wakes Screen for notification
+        val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+        val isScreenOn = pm.isInteractive // check if screen is on
+
+        if (!isScreenOn) {
+            val wl = pm.newWakeLock(
+                PowerManager.SCREEN_DIM_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
+                "myApp:notificationLock"
+            )
+            wl.acquire(3000) //set your time in milliseconds
+        }
 
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        manager.notify(notificationID, notification.build())
+        manager.notify(notificationID, finalNotification)
     }
 
 }

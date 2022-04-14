@@ -45,9 +45,6 @@ class LoginActivity : AppCompatActivity() {
         loginBinding.googleSignInButton.setSize(SignInButton.SIZE_WIDE)
         loginBinding.googleSignInButton.setColorScheme(2)
         loginBinding.googleSignInButton.setOnClickListener { googleSignIn() }
-        //initialise theme from shared preferences
-        val theme = ThemeProvider(this).getThemeFromPreferences()
-        AppCompatDelegate.setDefaultNightMode(theme)
     }
 
     public override fun onStart() {
