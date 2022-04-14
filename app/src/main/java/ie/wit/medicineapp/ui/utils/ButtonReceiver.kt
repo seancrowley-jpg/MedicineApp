@@ -21,8 +21,7 @@ class ButtonReceiver : BroadcastReceiver(){
 
         fun snoozeAlarm(context: Context, intent: Intent?) {
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-            val snoozeTime = sharedPreferences.getString("snooze_limit", "")
-            val minute = snoozeTime?.toInt()
+            val snoozeTime = sharedPreferences.getInt("snooze_limit", 5)
 
             val notificationIntent = Intent(context, NotificationService::class.java)
             notificationIntent.putExtras(intent!!)
@@ -36,7 +35,7 @@ class ButtonReceiver : BroadcastReceiver(){
 
             val calendar = Calendar.getInstance().apply {
                 timeInMillis = System.currentTimeMillis()
-                add(Calendar.MINUTE, minute!!)
+                add(Calendar.MINUTE, snoozeTime)
             }
 
 
