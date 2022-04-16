@@ -1,10 +1,6 @@
 package ie.wit.medicineapp.ui.home
 
 import android.app.AlertDialog
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -28,7 +24,6 @@ import ie.wit.medicineapp.databinding.NavHeaderBinding
 import ie.wit.medicineapp.helpers.customTransformation
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
 import ie.wit.medicineapp.ui.auth.LoginActivity
-import ie.wit.medicineapp.ui.utils.NotificationService
 import timber.log.Timber
 
 class Home : AppCompatActivity() {

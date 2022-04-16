@@ -27,7 +27,6 @@ import ie.wit.medicineapp.adapters.MedicineAdapter
 import ie.wit.medicineapp.adapters.MedicineListener
 import ie.wit.medicineapp.databinding.FragmentMedicineListBinding
 import ie.wit.medicineapp.helpers.*
-import ie.wit.medicineapp.models.GroupModel
 import ie.wit.medicineapp.models.MedicineModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
 import ie.wit.medicineapp.ui.utils.MedSwipeToDeleteCallback

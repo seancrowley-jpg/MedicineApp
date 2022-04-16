@@ -23,7 +23,6 @@ import ie.wit.medicineapp.ui.reminder.ReminderViewModel
 import ie.wit.medicineapp.ui.utils.ButtonReceiver
 import ie.wit.medicineapp.ui.utils.NotificationService
 import java.util.*
-import timber.log.Timber
 
 class ConfirmationFragment : Fragment() {
 

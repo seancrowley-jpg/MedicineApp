@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ie.wit.medicineapp.R
 import ie.wit.medicineapp.databinding.FragmentMedicineBinding
@@ -71,6 +72,7 @@ class MedicineFragment : Fragment() {
                         loggedInViewModel.liveFirebaseUser.value?.uid!!,
                         args.groupId, args.medicineId, medicine
                     )
+                    findNavController().popBackStack()
                 }
             }
         }
@@ -89,6 +91,7 @@ class MedicineFragment : Fragment() {
                         medicine,
                         args.groupId
                     )
+                    findNavController().popBackStack()
                 }
             }
         }

@@ -38,8 +38,8 @@ class NotificationService : BroadcastReceiver() {
             intent.putExtra(titleExtra, "Medicine Due!")
             intent.putExtra(
                 messageExtra,
-                reminder.medName + " " + reminder.medDosage + " " + reminder.requestCode +
-                        " -- Quantity Due: " + reminder.quantity + " " + reminder.unit
+                reminder.medName + " " + reminder.medDosage + " \n" +
+                        "Quantity Due: " + reminder.quantity + " " + reminder.unit
             )
             intent.putExtra(time, reminder.time)
             intent.putExtra("reminderID", reminder.uid)
@@ -69,8 +69,8 @@ class NotificationService : BroadcastReceiver() {
             intent.putExtra(titleExtra, "Medicine Due!")
             intent.putExtra(
                 messageExtra,
-                reminder.medName + " " + reminder.medDosage + " " + reminder.requestCode +
-                        "\n Quantity Due:" + reminder.quantity + " " + reminder.unit
+                reminder.medName + " " + reminder.medDosage + " \n" +
+                        "Quantity Due:" + reminder.quantity + " " + reminder.unit
             )
             intent.putExtra(time, reminder.time)
             intent.putExtra("reminderID", reminder.uid)
@@ -139,6 +139,7 @@ class NotificationService : BroadcastReceiver() {
                     requestCode++
                 }
             }
+            Toast.makeText(context, "Alarm set for", Toast.LENGTH_SHORT).show()
         }
 
         fun cancelAlarm(context: Context, reminder: ReminderModel, userId: String) {
@@ -151,7 +152,6 @@ class NotificationService : BroadcastReceiver() {
                     val repeatPendingIntent = getIntent(context, reminder, userId, requestCode)
                     alarmManager.cancel(repeatPendingIntent)
                     requestCode++
-                    Toast.makeText(context, "Canceled", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -173,7 +173,7 @@ class NotificationService : BroadcastReceiver() {
                 AlarmManager.INTERVAL_DAY * 7,
                 repeatIntent
             )
-            Toast.makeText(context,"Alarm set for ${Date(calendar.timeInMillis)} DAY: $day",Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context,"Alarm set for ${Date(calendar.timeInMillis)} DAY: $day",Toast.LENGTH_SHORT).show()
         }
 
     }
@@ -236,6 +236,7 @@ class NotificationService : BroadcastReceiver() {
             .setChannelId(intent.getStringExtra(channelID)!!)
             .setGroup(intent.getStringExtra(group))
             .setContentIntent(tapIntent)
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
             .addAction(R.drawable.ic_launcher_foreground,"Snooze", snoozePendingIntent)
             .addAction(R.drawable.ic_launcher_foreground,"Confirm",confirmPendingIntent)
 
