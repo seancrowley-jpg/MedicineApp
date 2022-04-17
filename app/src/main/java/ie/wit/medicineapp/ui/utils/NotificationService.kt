@@ -139,7 +139,7 @@ class NotificationService : BroadcastReceiver() {
                     requestCode++
                 }
             }
-            Toast.makeText(context, "Alarm set for", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Alarm set", Toast.LENGTH_SHORT).show()
         }
 
         fun cancelAlarm(context: Context, reminder: ReminderModel, userId: String) {
@@ -173,7 +173,7 @@ class NotificationService : BroadcastReceiver() {
                 AlarmManager.INTERVAL_DAY * 7,
                 repeatIntent
             )
-            //Toast.makeText(context,"Alarm set for ${Date(calendar.timeInMillis)} DAY: $day",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,"Alarm set for ${Date(calendar.timeInMillis)} DAY: $day",Toast.LENGTH_SHORT).show()
         }
 
     }

@@ -120,7 +120,8 @@ class AddConfirmationFragment : Fragment() {
                             fragBinding.quantityInput.text.toString().toInt()
                         )
                     }
-                    findNavController().popBackStack()
+                    val action = AddConfirmationFragmentDirections.actionAddConfirmationFragmentToHistoryFragment()
+                    findNavController().navigate(action)
                     Toast.makeText(context, "Confirmation Updated", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -162,7 +163,8 @@ class AddConfirmationFragment : Fragment() {
                             fragBinding.quantityInput.text.toString().toInt()
                         )
                     }
-                    findNavController().popBackStack()
+                    val action = AddConfirmationFragmentDirections.actionAddConfirmationFragmentToHistoryFragment()
+                    findNavController().navigate(action)
                     Toast.makeText(context, "Reminder Created", Toast.LENGTH_SHORT).show()
                 }
             }
