@@ -71,6 +71,7 @@ class AddConfirmationFragment : Fragment() {
     }
 
     private fun setButtonListener(layout: FragmentAddConfirmationBinding) {
+        layout.quantityInput.transformationMethod = null
         layout.statusGroup.setOnCheckedChangeListener { radioGroup, _ ->
             if(radioGroup.checkedRadioButtonId == R.id.skippedRadio) {
                 fragBinding.quantity.visibility = View.GONE
@@ -162,8 +163,7 @@ class AddConfirmationFragment : Fragment() {
                             fragBinding.quantityInput.text.toString().toInt()
                         )
                     }
-                    val action =
-                        AddConfirmationFragmentDirections.actionAddConfirmationFragmentToHistoryFragment()
+                    val action = AddConfirmationFragmentDirections.actionAddConfirmationFragmentToHistoryFragment()
                     findNavController().navigate(action)
                     Toast.makeText(context, "Reminder Created", Toast.LENGTH_SHORT).show()
                 }

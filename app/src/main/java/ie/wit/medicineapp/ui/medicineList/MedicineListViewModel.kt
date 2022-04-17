@@ -3,7 +3,6 @@ package ie.wit.medicineapp.ui.medicineList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseUser
 import ie.wit.medicineapp.firebase.FirebaseDBManager
 import ie.wit.medicineapp.models.MedicineModel

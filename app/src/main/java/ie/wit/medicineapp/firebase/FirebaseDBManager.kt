@@ -276,6 +276,7 @@ object FirebaseDBManager : MedicineAppStore {
                     val reminderLimit = snapshot.child("reminderLimit").value.toString()
                     var newQuantity = quantity.toInt() - quantityDue
                     val name = snapshot.child("name").value.toString()
+                    val unit = snapshot.child("unit").value.toString()
                     if (newQuantity >= 0) {
                         path.child("quantity").setValue(newQuantity)
                     } else {
@@ -310,10 +311,11 @@ object FirebaseDBManager : MedicineAppStore {
                             .setContentTitle("Limit Reached")
                             .setContentText(
                                 "Limit for $name has been reached. " +
-                                        "Remaining: $newQuantity"
+                                        "\nRemaining: $newQuantity $unit"
                             )
                             .setSmallIcon(R.drawable.ic_launcher_foreground)
                             .setChannelId("highChannelID")
+                            .setCategory(NotificationCompat.CATEGORY_REMINDER)
                             .addAction(
                                 R.drawable.ic_launcher_foreground, "Call Pharmacy",
                                 callPendingIntent

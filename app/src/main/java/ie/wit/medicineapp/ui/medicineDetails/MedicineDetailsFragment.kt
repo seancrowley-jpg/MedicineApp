@@ -1,25 +1,16 @@
 package ie.wit.medicineapp.ui.medicineDetails
 
 import PrintAdapter
-import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.print.PrintAttributes
 import android.print.PrintManager
 import android.view.*
 import androidx.fragment.app.Fragment
-import android.widget.Toast
-import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.itextpdf.text.Document
-import com.itextpdf.text.Paragraph
-import com.itextpdf.text.pdf.PdfWriter
 import ie.wit.medicineapp.R
 import ie.wit.medicineapp.adapters.SideEffectAdapter
 import ie.wit.medicineapp.adapters.SideEffectListener
@@ -29,10 +20,6 @@ import ie.wit.medicineapp.helpers.saveAsPdf
 import ie.wit.medicineapp.models.MedicineModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
 import timber.log.Timber
-import java.io.File
-import java.io.FileOutputStream
-import java.text.SimpleDateFormat
-import java.util.*
 
 class MedicineDetailsFragment : Fragment(), SideEffectListener {
 

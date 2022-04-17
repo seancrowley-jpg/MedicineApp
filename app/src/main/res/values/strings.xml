@@ -66,14 +66,15 @@
     <string name="medicine_details_header">Medicine Info</string>
     <string name="medicine_details_quantity">Quantity:</string>
     <string name="medicine_details_dosage">Dosage:</string>
-    <string name="medicine_details_reminder_limit">Reminder limit:</string>
+    <string name="medicine_details_reminder_limit">Limit:</string>
     <string name="medicine_details_usage_directions">Usage Directions</string>
+    <string name="na">N/A</string>
 
     <string name="formatDate">%1$td/%1$tm/%1$tY</string>
     <string name="formatTime">%1$tI:%1$tM%1$tp</string>
     <string name="reminder_header">Reminders:</string>
     <string name="btn_edit_reminder">Edit Reminder</string>
-    <string name="btn_change_medication">Change Medicine</string>
+    <string name="btn_change_medication">Edit Med</string>
     <string name="reminder_repeat_header">Repeat</string>
     <string name="reminder_quantity_header">Quantity</string>
     <string name="btn_add_reminder">Add reminder</string>
@@ -127,7 +128,7 @@
     <string name="low_priority_helper_text">Low Priority Medication\nUsed for skippable medication (eg. Vitamins)that can be missed. You will receive non intrusive notifications for meds in this group.</string>
     <string name="group_high">High</string>
     <string name="group_low">Low</string>
-    <string name="group_priority">Priority</string>
+    <string name="group_priority">Priority: </string>
     <string name="group_history">Group: </string>
     <string name="med_history">Med: </string>
     <string name="history_header">Reminder History</string>

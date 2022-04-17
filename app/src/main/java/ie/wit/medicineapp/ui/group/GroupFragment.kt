@@ -4,13 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ie.wit.medicineapp.R
@@ -88,14 +86,14 @@ class GroupFragment : Fragment() {
     private fun setButtonListener(layout: FragmentGroupBinding){
         if (args.edit) {
             layout.addGroupButton.text = getString(R.string.btn_edit_group)
+            layout.groupText.text = getString(R.string.btn_edit_group)
             layout.addGroupButton.setOnClickListener() {
                 if (validateForm()) {
                     group.name = layout.groupName.text.toString()
                     group.uid = args.uid
                     group.priorityLevel = if(layout.priorityLevelGroup.checkedRadioButtonId == R.id.highPriorityRadio) 1 else 0
                     groupViewModel.updateGroup(group,loggedInViewModel.liveFirebaseUser.value?.uid!!,args.uid)
-                    val action = GroupFragmentDirections.actionGroupFragmentToGroupListFragment()
-                    findNavController().navigate(action)
+                    findNavController().popBackStack()
                 }
                 else
                     Toast.makeText(context, "Please Enter a Group Name", Toast.LENGTH_LONG).show()
@@ -107,8 +105,7 @@ class GroupFragment : Fragment() {
                     group.name = layout.groupName.text.toString()
                     group.priorityLevel = if(layout.priorityLevelGroup.checkedRadioButtonId == R.id.highPriorityRadio) 1 else 0
                     groupViewModel.addGroup(loggedInViewModel.liveFirebaseUser, group)
-                    val action = GroupFragmentDirections.actionGroupFragmentToGroupListFragment()
-                    findNavController().navigate(action)
+                    findNavController().popBackStack()
                 }
                 else
                     Toast.makeText(context, "Please Enter a Group Name", Toast.LENGTH_LONG).show()

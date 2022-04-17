@@ -1,30 +1,24 @@
 package ie.wit.medicineapp.ui.confirmation
 
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
-import androidx.appcompat.app.ActionBar
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseAuth
-import ie.wit.medicineapp.R
 import ie.wit.medicineapp.databinding.FragmentConfirmationBinding
 import ie.wit.medicineapp.models.ConfirmationModel
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
 import ie.wit.medicineapp.ui.group.GroupViewModel
 import ie.wit.medicineapp.ui.home.Home
 import ie.wit.medicineapp.ui.medicineDetails.MedicineDetailsViewModel
-import ie.wit.medicineapp.ui.reminder.ReminderFragmentDirections
 import ie.wit.medicineapp.ui.reminder.ReminderViewModel
 import ie.wit.medicineapp.ui.utils.ButtonReceiver
 import ie.wit.medicineapp.ui.utils.NotificationService
@@ -84,10 +78,7 @@ class ConfirmationFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        val actionBar: ActionBar? = (activity as Home).supportActionBar
-        if(actionBar != null) {
-            actionBar!!.setDisplayHomeAsUpEnabled(false)
-        }
+        (activity as Home).supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     private fun setButtonListener(layout: FragmentConfirmationBinding){
@@ -130,7 +121,6 @@ class ConfirmationFragment : Fragment() {
             ButtonReceiver.snoozeAlarm(context!!,snoozeIntent)
             manager.cancel(requestCode)
             Toast.makeText(context, "Snoozing", Toast.LENGTH_SHORT).show()
-            //findNavController().popBackStack(R.id.dashboardFragment, true)
             if(FirebaseAuth.getInstance().currentUser == null) {
                 val action =
                     ConfirmationFragmentDirections.actionConfirmationFragmentToLoginActivity()
@@ -148,7 +138,6 @@ class ConfirmationFragment : Fragment() {
                 confirmation.status = "Skipped"
                 confirmationViewModel.createConfirmation(args.userId, confirmation)
                 manager.cancel(requestCode)
-                //findNavController().popBackStack(R.id.dashboardFragment, true)
                 if(FirebaseAuth.getInstance().currentUser == null) {
                     val action =
                         ConfirmationFragmentDirections.actionConfirmationFragmentToLoginActivity()

@@ -5,12 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
 import ie.wit.medicineapp.firebase.FirebaseDBManager
-import ie.wit.medicineapp.models.GroupModel
 import ie.wit.medicineapp.models.ReminderModel
 import timber.log.Timber
 import java.lang.Exception
-import java.time.LocalDate
-import java.util.*
 
 class SchedulerViewModel : ViewModel() {
     private val reminderList = MutableLiveData<List<ReminderModel>>()

@@ -6,7 +6,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.TimePicker
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.activity.addCallback
@@ -26,7 +25,6 @@ import ie.wit.medicineapp.ui.group.GroupViewModel
 import ie.wit.medicineapp.ui.medicineDetails.MedicineDetailsViewModel
 import ie.wit.medicineapp.ui.scheduler.SchedulerViewModel
 import ie.wit.medicineapp.ui.utils.NotificationService
-import timber.log.Timber
 import java.util.*
 
 class ReminderFragment : Fragment() {
@@ -156,6 +154,7 @@ class ReminderFragment : Fragment() {
 
 
     private fun setButtonListener(layout: FragmentReminderBinding) {
+        layout.quantityInput.transformationMethod = null
         if (args.edit) {
             layout.btnSetReminder.text = getString(R.string.btn_edit_reminder)
             layout.btnSetReminder.setOnClickListener() {
@@ -231,7 +230,7 @@ class ReminderFragment : Fragment() {
         reminder.unit = medicineDetailsViewModel.observableMedicine.value!!.unit
 
         reminderViewModel.addReminder(loggedInViewModel.liveFirebaseUser, reminder)
-        showAlert(time)
+        //showAlert(time)
     }
 
     private fun updateReminder() {
@@ -251,7 +250,7 @@ class ReminderFragment : Fragment() {
         reminder.medDosage = medicineDetailsViewModel.observableMedicine.value!!.dosage!!
         reminder.groupPriorityLevel = groupViewModel.observableGroup.value!!.priorityLevel
         reminder.repeatDays = reminderViewModel.observableReminder.value!!.repeatDays
-        reminder.quantity = reminderViewModel.observableReminder.value!!.quantity
+        reminder.quantity = fragBinding.quantityInput.text.toString().toInt()
         reminder.unit = medicineDetailsViewModel.observableMedicine.value!!.unit
 
         reminderViewModel.updateReminder(
@@ -261,7 +260,7 @@ class ReminderFragment : Fragment() {
         )
         if(reminderViewModel.observableReminder.value!!.active)
             NotificationService.cancelAlarm(context!!, reminder, loggedInViewModel.liveFirebaseUser.value!!.uid)
-        showAlert(time)
+        //showAlert(time)
     }
 
     private fun showAlert(time: Long) {

@@ -27,7 +27,7 @@ fun saveAsPdf(medicine: MedicineModel, context:Context,userName:String){
         doc.add(Paragraph("Name: " +medicine.name))
         doc.add(Paragraph("Dosage: " +medicine.dosage))
         doc.add(Paragraph("Usage Directions: " +medicine.usageDir))
-        doc.add(Paragraph("Remaining Quantity: " +medicine.quantity))
+        doc.add(Paragraph("Remaining Quantity: " +medicine.quantity+ " " + medicine.unit))
         doc.close()
         Toast.makeText(context,"PDF Saved to $filePath", Toast.LENGTH_LONG).show()
     }
@@ -53,7 +53,7 @@ fun saveListAsPdf(medicineList: ArrayList<MedicineModel>, context:Context, userN
             doc.add(Paragraph("Name: " +medicine.name))
             doc.add(Paragraph("Dosage: " +medicine.dosage))
             doc.add(Paragraph("Usage Directions: " +medicine.usageDir))
-            doc.add(Paragraph("Remaining Quantity: " +medicine.quantity))
+            doc.add(Paragraph("Remaining Quantity: " +medicine.quantity+ " " + medicine.unit))
             doc.add(Paragraph(" "))
             doc.add(lineSeparator)
         }
@@ -85,7 +85,7 @@ fun createPdf(medicine: MedicineModel, context:Context,userName:String) : File{
         doc.add(Paragraph("Name: " +medicine.name))
         doc.add(Paragraph("Dosage: " +medicine.dosage))
         doc.add(Paragraph("Usage Directions: " +medicine.usageDir))
-        doc.add(Paragraph("Remaining Quantity: " +medicine.quantity))
+        doc.add(Paragraph("Remaining Quantity: " +medicine.quantity+ " " + medicine.unit))
         doc.close()
 
     }
@@ -113,7 +113,7 @@ fun createListPdf(medicineList: ArrayList<MedicineModel>, context:Context, userN
             doc.add(Paragraph("Name: " +medicine.name))
             doc.add(Paragraph("Dosage: " +medicine.dosage))
             doc.add(Paragraph("Usage Directions: " +medicine.usageDir))
-            doc.add(Paragraph("Remaining Quantity: " +medicine.quantity))
+            doc.add(Paragraph("Remaining Quantity: " +medicine.quantity + " " + medicine.unit))
             doc.add(Paragraph(" "))
             doc.add(lineSeparator)
         }

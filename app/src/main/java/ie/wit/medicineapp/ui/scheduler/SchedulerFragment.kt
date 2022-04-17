@@ -41,10 +41,6 @@ class SchedulerFragment : Fragment(), ReminderListener {
     private val schedulerViewModel : SchedulerViewModel by activityViewModels()
     private val loggedInViewModel : LoggedInViewModel by activityViewModels()
     private lateinit var adapter: ReminderAdapter
-    private var alarmManager: AlarmManager? = null
-    private lateinit var pendingIntent: PendingIntent
-    private val medicineDetailsViewModel: MedicineDetailsViewModel by activityViewModels()
-    private val groupViewModel: GroupViewModel by activityViewModels()
     private val reminderViewModel: ReminderViewModel by activityViewModels()
     lateinit var loader : AlertDialog
 

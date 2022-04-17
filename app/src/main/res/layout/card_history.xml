@@ -14,7 +14,7 @@
         android:layout_marginBottom="8dp"
         android:elevation="24dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,69 +24,60 @@
             <TextView
                 android:id="@+id/confirmationDate"
                 android:layout_width="115dp"
-                android:layout_height="27dp"
+                android:layout_height="wrap_content"
                 android:text="@{@string/formatDate(confirmation.time)}"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                tools:text="04/04/2022" />
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                tools:text="31/12/2222" />
 
             <TextView
                 android:id="@+id/confirmationTime"
-                android:layout_width="80dp"
-                android:layout_height="27dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/confirmationDate"
+                android:layout_alignParentStart="true"
                 android:text="@{@string/formatTime(confirmation.time)}"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toStartOf="@+id/medName"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/confirmationDate"
+
                 tools:text="12:59pm" />
 
             <TextView
                 android:id="@+id/GroupName"
                 android:layout_width="140dp"
-                android:layout_height="27dp"
-                android:layout_marginEnd="112dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/confirmationDate"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="@{@string/group_history + confirmation.groupName}"
+                android:text="@{@string/group_history + ' ' + confirmation.groupName}"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
                 tools:text="Group Name" />
 
             <TextView
                 android:id="@+id/medName"
                 android:layout_width="140dp"
-                android:layout_height="27dp"
-                android:layout_marginEnd="112dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/GroupName"
+                android:layout_marginTop="0dp"
+                android:layout_toEndOf="@+id/confirmationDate"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="@{@string/med_history + confirmation.medicineName}"
+                android:text="@{@string/med_history + ' ' + confirmation.medicineName}"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0"
                 tools:text="Med Name" />
 
             <TextView
                 android:id="@+id/historyStatus"
-                android:layout_width="96dp"
-                android:layout_height="36dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:text="@{confirmation.status}"
                 android:textSize="25sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 tools:text="Skipped" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </layout>

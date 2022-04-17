@@ -75,7 +75,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
                 android:hint="@string/hint_medicine_quantity"
-                android:inputType="number"
                 android:padding="8dp"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -85,7 +84,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/medicineQuantity"
-                    android:inputType="numberDecimal"
+                    android:inputType="numberPassword"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@{`` + medicinevm.observableMedicine.quantity}" />
@@ -173,7 +172,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
                 android:hint="@string/hint_medicine_reminderLimit"
-                android:inputType="number"
                 android:padding="8dp"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -184,8 +182,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/medicineReminderLimit"
                     android:layout_width="match_parent"
-                    android:inputType="numberDecimal"
                     android:layout_height="wrap_content"
+                    android:inputType="numberPassword"
                     android:text="@{`` + medicinevm.observableMedicine.reminderLimit}" />
 
             </com.google.android.material.textfield.TextInputLayout>

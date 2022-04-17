@@ -24,10 +24,10 @@
                 android:id="@+id/medicine_details_name"
                 android:layout_width="wrap_content"
                 android:layout_height="46dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="25dp"
                 android:autoSizeTextType="uniform"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentTop="true"
                 android:ellipsize="end"
                 android:text="@{medicineVM.observableMedicine.name}"
                 android:textSize="35sp" />
@@ -78,9 +78,8 @@
                 android:layout_marginTop="75dp"
                 android:layout_marginEnd="25dp"
                 android:autoSizeTextType="uniform"
-                android:text="@{medicineVM.observableMedicine.dosage}"
-                android:textSize="20sp"
-                tools:text="200" />
+                android:text='@{medicineVM.observableMedicine.dosage  == "" ? @string/na : medicineVM.observableMedicine.dosage}'
+                />
 
             <TextView
                 android:id="@+id/medicine_details_reminder_limit"
@@ -122,13 +121,15 @@
             <TextView
                 android:id="@+id/medicine_details_usage_dir"
                 android:layout_width="match_parent"
-                android:layout_height="57dp"
-                android:layout_alignParentTop="true"
+                android:layout_height="100dp"
+                android:layout_below="@+id/medicine_details_usage_dir_header"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="370dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="15dp"
                 android:autoSizeTextType="uniform"
                 android:text="@{medicineVM.observableMedicine.usageDir}"
-                android:textSize="11sp"
+                android:textSize="15sp"
                 tools:text="Usage Directions" />
 
             <View
@@ -146,10 +147,10 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="241dp"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/divider"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
                 android:layout_marginStart="25dp"
-                android:layout_marginTop="475dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="225dp"
                 android:ems="10"
                 android:gravity="start|top"
@@ -171,26 +172,28 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_add_sideEffect"
                 style="@style/Widget.MaterialComponents.Button.Icon"
-                android:layout_width="60dp"
+                android:layout_width="150dp"
                 android:layout_height="50dp"
-                android:layout_alignParentTop="true"
+                android:layout_below="@+id/divider"
+                android:layout_alignBottom="@+id/MedicineSideEffectTextField"
                 android:layout_alignParentEnd="true"
-                android:layout_marginStart="56dp"
-                android:layout_marginTop="492dp"
-                android:layout_marginEnd="25dp"
-                android:layout_marginBottom="188dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_toEndOf="@+id/MedicineSideEffectTextField"
                 android:textAlignment="center"
                 app:icon="@android:drawable/ic_input_add"
-                app:iconGravity="start" />
+                app:iconGravity="textStart" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:scrollbars="vertical"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:scrollbars="vertical"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         </RelativeLayout>

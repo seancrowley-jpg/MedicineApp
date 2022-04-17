@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import ie.wit.medicineapp.R
 import ie.wit.medicineapp.databinding.FragmentDashboardBinding
 import ie.wit.medicineapp.ui.auth.LoggedInViewModel
